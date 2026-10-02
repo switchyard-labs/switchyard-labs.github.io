@@ -6,28 +6,28 @@
 	<body>
 		<header class="site-header">
 			<div class="header-inner">
-				<a class="brand" href="/"><span class="brand-mark">S</span><span class="brand-name">Switchyard</span></a>
+				<a class="brand" href="@path('/')"><span class="brand-mark">S</span><span class="brand-name">Switchyard</span></a>
 				<nav class="site-nav" id="site-nav">
-					<a href="/">Overview</a>
-					<a href="/stack.html">Stack</a>
-					<a href="/architecture.html">Architecture</a>
-					<a href="/how-it-works.html">How it works</a>
-					<a href="/human-dx.html">Human DX</a>
-					<a href="/ai-dx.html">AI DX</a>
-					<a href="/docs.html">Docs</a>
+					<a href="@path('/')">Overview</a>
+					<a href="@path('stack')">Stack</a>
+					<a href="@path('architecture')">Architecture</a>
+					<a href="@path('how-it-works')">How it works</a>
+					<a href="@path('human-dx')">Human DX</a>
+					<a href="@path('ai-dx')">AI DX</a>
+					<a href="@path('docs')">Docs</a>
 				</nav>
 				<button class="hamburger" id="hamburger" aria-label="Menu" aria-expanded="false" aria-controls="mobile-menu">☰</button>
 			</div>
 		</header>
 		<nav class="mobile-menu" id="mobile-menu" hidden>
 			<div class="mobile-menu-head"><span class="brand-name">Switchyard</span><button class="hamburger" id="mobile-close" aria-label="Close menu">×</button></div>
-			<a href="/">Overview</a>
-			<a href="/stack.html">Stack</a>
-			<a href="/architecture.html">Architecture</a>
-			<a href="/how-it-works.html">How it works</a>
-			<a href="/human-dx.html">Human DX</a>
-			<a href="/ai-dx.html">AI DX</a>
-			<a href="/docs.html">Docs</a>
+			<a href="@path('/')">Overview</a>
+			<a href="@path('stack')">Stack</a>
+			<a href="@path('architecture')">Architecture</a>
+			<a href="@path('how-it-works')">How it works</a>
+			<a href="@path('human-dx')">Human DX</a>
+			<a href="@path('ai-dx')">AI DX</a>
+			<a href="@path('docs')">Docs</a>
 		</nav>
 		<main class="site-main">
 			@content
@@ -38,6 +38,6 @@
 				<span class="muted">Deterministic loop proven end-to-end; real-LLM agent leg pending a provider credential.</span>
 			</div>
 		</footer>
-		<script src="/assets/js/app.js"></script>
+		<script src="@path('public/assets/js/app.js')"></script>
 	</body>
 </html>
