@@ -1,0 +1,100 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<title>Switchyard — How it works</title>
+		<link rel="icon" type="image/webp" href="/assets/images/favicon.webp">
+		<link rel="stylesheet" href="/assets/css/app.css">
+	</head>
+	<body>
+		<header class="site-header">
+			<div class="header-inner">
+				<a class="brand" href="/"><span class="brand-mark">S</span><span class="brand-name">Switchyard</span></a>
+				<nav class="site-nav" id="site-nav">
+					<a href="/">Overview</a>
+					<a href="/stack.html">Stack</a>
+					<a href="/architecture.html">Architecture</a>
+					<a href="/how-it-works.html">How it works</a>
+					<a href="/human-dx.html">Human DX</a>
+					<a href="/ai-dx.html">AI DX</a>
+					<a href="/docs.html">Docs</a>
+				</nav>
+				<button class="hamburger" id="hamburger" aria-label="Menu" aria-expanded="false" aria-controls="mobile-menu">☰</button>
+			</div>
+		</header>
+		<nav class="mobile-menu" id="mobile-menu" hidden>
+			<div class="mobile-menu-head"><span class="brand-name">Switchyard</span><button class="hamburger" id="mobile-close" aria-label="Close menu">×</button></div>
+			<a href="/">Overview</a>
+			<a href="/stack.html">Stack</a>
+			<a href="/architecture.html">Architecture</a>
+			<a href="/how-it-works.html">How it works</a>
+			<a href="/human-dx.html">Human DX</a>
+			<a href="/ai-dx.html">AI DX</a>
+			<a href="/docs.html">Docs</a>
+		</nav>
+		<main class="site-main">
+			<section class="hero">
+				<h1>The engineering loop, in detail</h1>
+				<p class="lede">
+					What actually happens from "an intent exists" to "canonical moved" — and
+					the evidence that each step is real, not a diagram.
+				</p>
+			</section>
+			
+			<h2>The loop</h2>
+			<div class="flow">
+				<ol>
+					<li><strong>Work</strong> is created (title, kind, owner).</li>
+					<li><strong>Attempt</strong> is opened on an isolated branch (e.g. <code>attempt-&lt;id&gt;</code>) with a marker file.</li>
+					<li><strong>Agent</strong> (implementer role) reads the branch, edits a bounded file, and commits via the ref substrate. Every run is an <code>execution</code> record (role, adapter, status, output).</li>
+					<li><strong>Check</strong> validates the marker (deterministic; real CI-style hooks are future work).</li>
+					<li><strong>PR</strong> is opened from the attempt branch against base.</li>
+					<li><strong>Review</strong> produces structured findings (severity, message, file).</li>
+					<li><strong>Preview integration</strong>: does the branch merge into current canonical cleanly? If yes, is the merged tree semantically valid (repo contract)?</li>
+					<li><strong>Integration Queue</strong> integrates the PR into canonical only when policy allows, strictly FIFO, CAS-guarded.</li>
+					<li><strong>Provenance</strong> records the whole chain.</li>
+				</ol>
+			</div>
+			
+			<h2>Evidence behind each step</h2>
+			<table>
+				<tr><th>Capability</th><th>Live proof</th></tr>
+				<tr><td>Real Git hosting</td><td>Ordinary <code>git clone/push</code> against Cloudflare Artifacts; refs and objects are exactly what git wrote.</td></tr>
+				<tr><td>Ref CAS</td><td>Three concurrent writers to one ref → exactly one success, clean stale handling (CP3/CP4).</td></tr>
+				<tr><td>Durable workflows</td><td>Control plane killed during a running durable step; on restart the completed agent step <strong>replayed, not re-executed</strong> (attempts=1), the in-flight sleep retried, later steps ran once, no duplicated external effects (CP7).</td></tr>
+				<tr><td>Textual conflict handling</td><td>Two attempts editing the same line: preview finds the Git conflict, the conflict-resolver performs a three-way merge, re-preview is clean, integration succeeds (CP8).</td></tr>
+				<tr><td>Semantic conflict</td><td>Attempt A bumps <code>api.version</code> and the consumer together (contract holds). Attempt B adds a new consumer requiring an incompatible version — <code>git merge</code> is clean, but contract validation on the merged tree reports the mismatch, parks the attempt, and blocks the queue (post-CP13 experiment, 5/5).</td></tr>
+				<tr><td>Integration queue under churn</td><td>Strict FIFO: 3 clean PRs integrate in order; same-file contention blocks the second and repairs via requeue; measured ~18–22 s for 3 PRs and ~42 s for 10 PRs (CP9).</td></tr>
+				<tr><td>Editor concurrency</td><td>Draft revision CAS: two sessions both load rev 1; the second save is rejected (<code>draft_stale</code>), and an external push between draft and commit is detected (<code>stale_base</code>). No last-writer-wins (post-CP13, 6/6).</td></tr>
+				<tr><td>Dogfooding</td><td>Switchyard ran its own source through the full deterministic loop and integrated the result into canonical (CP13, 7/7).</td></tr>
+			</table>
+			
+			<h2>Workflow durability detail</h2>
+			<pre><code>step = (run_id, step_key, op, args_hash, status, result, attempts)
+
+run script from top
+  for each operation:
+    if a step with this key already completed → REPLAY its result
+    if in-flight (crash mid-step) → re-execute (bounded retries)
+    else → record intent, execute, record result
+    if new → count against budget</code></pre>
+			
+			<h2>Realtime</h2>
+			<p>
+				The control plane is the coordination truth, so it is also the realtime
+				source: authenticated SSE (<code>/api/events/stream</code>) delivers
+				normalized domain events to browsers. Reconciliation catches external
+				<code>git push</code>es and they appear live without a refresh. A distributed
+				Worker/DO fan-out remains a later hosted-scale option.
+			</p>
+		</main>
+		<footer class="site-footer">
+			<div class="footer-inner">
+				<span>Switchyard — agent-native Git collaboration.</span>
+				<span class="muted">Deterministic loop proven end-to-end; real-LLM agent leg pending a provider credential.</span>
+			</div>
+		</footer>
+		<script src="/assets/js/app.js"></script>
+	</body>
+</html>
