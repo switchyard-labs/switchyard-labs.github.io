@@ -51,86 +51,46 @@
 
 		<main class="site-main" id="main-content">
 			<section class="hero">
-	<div class="kicker">Concepts · Architecture</div>
-	<h1>Two truths, one substrate.</h1>
-	<p class="lede">
-		Git is the truth for content. A coordination store is the truth for
-		state. The control plane is the only place that can move canonical.
-	</p>
-</section>
+			  <div class="kicker">Concepts · Architecture</div>
+			  <h1>Git truth and coordination truth stay separate.</h1>
+			  <p class="lede">Cloudflare Artifacts owns the repository. Trestle owns Switchyard's durable collaboration state. The control plane connects them without making either pretend to be the other.</p>
+			</section>
 
-<div class="converge" role="img" aria-label="Switchyard architecture diagram">
-<svg viewBox="0 0 900 380" xmlns="http://www.w3.org/2000/svg">
-	<rect x="40" y="20" width="820" height="60" rx="8" fill="#13151b" stroke="#262b37"/>
-	<text x="60" y="48" fill="#f0a43a" font-family="monospace" font-size="13">switchyard control plane</text>
-	<text x="60" y="68" fill="#9aa1b2" font-size="12">work · attempts · PRs · workflow engine · review/conflict · integration queue · policy/attention</text>
+			<section class="architecture-truths">
+			  <article class="architecture-truth git-truth"><div class="tag">Git truth</div><h2>Cloudflare Artifacts</h2><p>The actual remote Git server: repositories, objects, commits, branches, tags and canonical refs.</p><code>git clone · fetch · push</code></article>
+			  <article class="architecture-control"><div class="tag">Coordination + policy</div><h2>Switchyard</h2><p>Work, Attempts, Pull Requests, review, workflows, Integration Queue, permissions, provenance and the browser experience.</p></article>
+			  <article class="architecture-truth coordination-truth"><div class="tag">Coordination truth</div><h2>Trestle</h2><p>Durable records for Switchyard state: idempotency, optimistic concurrency, workflow steps, findings, queue state, policy and audit.</p><code>records · If-Match · events</code></article>
+			</section>
 
-	<path d="M60,110 L60,150" stroke="#f0a43a" stroke-width="2" marker-end="url(#arr)"/>
-	<rect x="20" y="150" width="80" height="34" rx="6" fill="#1a1d25" stroke="#262b37"/>
-	<text x="34" y="172" fill="#e9e7e2" font-size="12">browser</text>
+			<div class="architecture-flow" role="img" aria-label="Git clients and Switchyard interacting with Cloudflare Artifacts and Trestle">
+			  <div class="arch-client"><strong>Git clients</strong><span>clone · fetch · push</span></div>
+			  <div class="arch-arrow">↕</div>
+			  <div class="arch-artifacts"><small>AUTHORITATIVE GIT</small><strong>Cloudflare Artifacts</strong><span>repos · objects · refs · canonical history</span></div>
+			  <div class="arch-bridge">↕ <span>Git state + events</span></div>
+			  <div class="arch-switchyard"><small>COLLABORATION CONTROL PLANE</small><strong>Switchyard</strong><span>UI · API · Git/ref substrate · workflows · review · Integration Queue · policy</span></div>
+			  <div class="arch-bridge">↕ <span>durable coordination</span></div>
+			  <div class="arch-trestle"><small>APPLICATION STATE</small><strong>Trestle</strong><span>Work · Attempts · PR state · findings · runs · audit · attention</span></div>
+			</div>
 
-	<path d="M300,110 L300,150" stroke="#f0a43a" stroke-width="2" marker-end="url(#arr)"/>
-	<rect x="240" y="150" width="120" height="34" rx="6" fill="#1a1d25" stroke="#262b37"/>
-	<text x="254" y="172" fill="#e9e7e2" font-size="12">trestle</text>
-	<text x="254" y="190" fill="#9aa1b2" font-size="10">coordination truth</text>
+			<h2>Who does what?</h2>
+			<table>
+			  <tr><th>Operation</th><th>Responsible layer</th></tr>
+			  <tr><td>Clone / fetch / push</td><td><strong>Git</strong>, talking to the <strong>Artifacts</strong> remote.</td></tr>
+			  <tr><td>Store commits, trees, branches and tags</td><td><strong>Cloudflare Artifacts</strong>.</td></tr>
+			  <tr><td>Create Work / Attempts / findings / workflow runs</td><td><strong>Switchyard</strong>, durably recorded in <strong>Trestle</strong>.</td></tr>
+			  <tr><td>Reject a stale non-force push</td><td><strong>Git/Artifacts</strong>; Switchyard interprets the rejection and reconciles.</td></tr>
+			  <tr><td>Decide whether canonical may move</td><td><strong>Switchyard Integration Queue</strong> after checks, review and policy.</td></tr>
+			  <tr><td>Move canonical</td><td>Switchyard performs a real Git ref mutation against <strong>Artifacts</strong>.</td></tr>
+			</table>
 
-	<path d="M540,110 L540,150" stroke="#f0a43a" stroke-width="2" marker-end="url(#arr)"/>
-	<rect x="470" y="150" width="140" height="34" rx="6" fill="#1a1d25" stroke="#262b37"/>
-	<text x="484" y="172" fill="#e9e7e2" font-size="12">artifacts (git)</text>
-	<text x="484" y="190" fill="#9aa1b2" font-size="10">git truth · clone/push</text>
+			<h2>Why two truths?</h2>
+			<p>If a branch exists, its SHA comes from Git/Artifacts—not from a Trestle row. If an Attempt is waiting for review, that collaboration state comes from Trestle—not from a magic Git ref. Keeping those responsibilities explicit means ordinary Git remains interoperable while the agent-native workflow can be much richer than Git metadata alone.</p>
 
-	<path d="M780,110 L780,150" stroke="#f0a43a" stroke-width="2" marker-end="url(#arr)"/>
-	<rect x="720" y="150" width="120" height="34" rx="6" fill="#1a1d25" stroke="#262b37"/>
-	<text x="734" y="172" fill="#e9e7e2" font-size="12">strut</text>
-	<text x="734" y="190" fill="#9aa1b2" font-size="10">bounded execution</text>
+			<h2>External pushes stay coherent</h2>
+			<p>A direct <code>git push</code> changes Artifacts first. Switchyard learns about that movement through the Cloudflare event fast path and its reconciliation safety net. Both feed the same idempotent ingest, so external Git activity becomes visible coordination state without turning Switchyard into the repository authority.</p>
 
-	<text x="60" y="240" fill="#9aa1b2" font-family="monospace" font-size="12">event fast path</text>
-	<path d="M60,250 L140,250" stroke="#3fd0a8" stroke-width="2"/>
-	<path d="M250,250 L330,250" stroke="#3fd0a8" stroke-width="2"/>
-	<rect x="140" y="236" width="110" height="28" rx="6" fill="#0f0f14" stroke="#3fd0a8"/>
-	<text x="150" y="255" fill="#3fd0a8" font-size="11">queue → consumer</text>
+			<div class="callout warn"><span class="t">Event delivery vs repository authority</span>Even if event delivery is delayed, Artifacts is still the Git truth. Reconciliation reads the actual refs back from the remote and converges Switchyard's coordination state.</div>
 
-	<text x="60" y="300" fill="#9aa1b2" font-family="monospace" font-size="12">safety net</text>
-	<path d="M60,310 L330,310" stroke="#f0a43a" stroke-width="2" stroke-dasharray="4 4"/>
-	<text x="340" y="313" fill="#9aa1b2" font-size="11">reconciliation → same idempotent ingest</text>
-	<text x="640" y="313" fill="#9aa1b2" font-size="11">identity: (repo, ref, before, after)</text>
-</svg>
-</div>
-
-<h2>The layers</h2>
-<div class="grid">
-	<div class="card"><div class="tag">Presentation</div><h3>Nift-built static app</h3><p class="muted">Dark UI served directly by the control plane; a CodeMirror editor; SSE realtime.</p></div>
-	<div class="card"><div class="tag">Control plane</div><h3>One Go binary</h3><p class="muted">API, ref substrate, event consumer, reconciler, workflow runner, queue worker, policy engine.</p></div>
-	<div class="card"><div class="tag">Coordination</div><h3>Trestle</h3><p class="muted">HTTP record store: idempotent writes, If-Match CAS, strict schema. All coordination state.</p></div>
-	<div class="card"><div class="tag">Git truth</div><h3>Cloudflare Artifacts</h3><p class="muted">A real Git server. Objects/refs are exactly what git wrote.</p></div>
-	<div class="card"><div class="tag">Execution</div><h3>Strut / deterministic worker</h3><p class="muted">Bounded executor behind the runner adapter; a coding-agent CLI adapter is wired.</p></div>
-</div>
-
-<h2>The ref substrate</h2>
-<p>
-	Every canonical mutation goes through <code>Update(repo, ref, expected, changes, message, provenance)</code>:
-	read the current SHA, build a commit, <strong>push non-force</strong> — Git
-	itself rejects stale writers. Force-push is policy-gated and never used by
-	the integration path. Agents never hold a canonical-write credential.
-</p>
-
-<h2>Events: fast path + safety net</h2>
-<p>
-	External Git movement is observed twice. The fast path pulls
-	<code>cf.artifacts.repo.pushed</code> events from a Cloudflare Queue. The
-	safety net periodically reconciles with <code>git ls-remote</code>. Both feed
-	one idempotent ingest keyed by the transition identity, so the same movement
-	converges to one domain event and one broadcast. <em>Events accelerate
-	convergence; reconciliation guarantees it.</em>
-</p>
-
-<div class="callout warn">
-	<span class="t">Upstream note</span>
-	Cloudflare's event-subscription → Queue delivery for pushed events is
-	currently not flowing account-wide (it was proven in CP0). The fast path is
-	implemented and gated from the Queue onward; reconciliation covers
-	correctness meanwhile.
-</div>
 		</main>
 
 		<footer class="site-footer">
