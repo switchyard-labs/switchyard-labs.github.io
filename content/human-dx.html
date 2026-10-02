@@ -1,0 +1,76 @@
+---
+title: Human DX
+---
+<section class="hero">
+	<h1>Human developer experience</h1>
+	<p class="lede">
+		Switchyard must feel like excellent ordinary Git hosting — and add the
+		surfaces a human needs to supervise autonomous agents.
+	</p>
+</section>
+
+<h2>Ordinary Git, unchanged</h2>
+<ul>
+	<li>Repositories live on a real Git server; <code>git clone / pull / push</code> work out of the box with repo-scoped tokens.</li>
+	<li>An external <code>git push</code> to a branch is observed (fast path + reconciliation) and appears live in the UI via SSE.</li>
+	<li>Your branch history, diffs, and merges are the real git history.</li>
+</ul>
+
+<h2>Browser editor</h2>
+<ul>
+	<li><strong>CodeMirror 6</strong> with line numbers, history, highlighting, and a dark theme.</li>
+	<li><strong>Save ≠ Commit.</strong> Saving writes a durable draft that survives reload; only an explicit Commit changes the repository (through the shared ref substrate).</li>
+	<li><strong>No last-writer-wins.</strong> Drafts use revision compare-and-swap: a stale save is rejected with <code>draft_stale</code> and the editor reloads the current revision instead of overwriting it. If the branch moved after your draft was based, Commit reports <code>stale_base</code> with guidance rather than silently rebasing your work.</li>
+	<li><strong>Diff surface</strong> shows your draft versus the committed content.</li>
+	<li><strong>Findings panel</strong> lists file-scoped review findings.</li>
+	<li><strong>Agent panel</strong> runs the implementer against the attempt branch (formal Attempt mode) and refreshes committed state.</li>
+</ul>
+<div class="callout warn">
+	<strong>Honest gap:</strong> the interactive <em>draft-assistance</em> flow —
+	you ask the Agent to edit your draft, it proposes a change, you inspect the
+	diff, then you choose Commit — is not yet implemented. Today the Agent panel
+	uses the formal Attempt path (legitimate autonomous commits). Draft CAS is
+	the correct substrate for the interactive flow and is a CP14/v1 target.
+</div>
+
+<h2>Needs Attention</h2>
+<p>
+	<code>/api/attention</code> aggregates everything that needs a decision:
+	attempts parked in conflict, blocked queue items, workflow runs waiting for
+	approval, and open error findings. One endpoint, one list, no archaeology.
+</p>
+
+<h2>Escalation decision packets</h2>
+<p>
+	When a change is blocked, you can escalate it into a <strong>self-contained
+	decision packet</strong>: target, repository, branch, base, the conflicting
+	files with base + source versions, the findings, and suggested resolutions.
+	You decide without reconstructing history:
+</p>
+<table>
+	<tr><th>Decision</th><th>What happens</th></tr>
+	<tr><td><code>take_ours</code></td><td>Canonical's version wins; the attempt is resolved and can be re-queued.</td></tr>
+	<tr><td><code>take_theirs</code></td><td>The attempt's version is kept (recorded; note this alone doesn't resolve a real content conflict).</td></tr>
+	<tr><td><code>three_way</code></td><td>A real three-way merge (git merge-file) resolves the files.</td></tr>
+	<tr><td><code>approve</code></td><td>Unblocks a workflow waiting for approval.</td></tr>
+	<tr><td><code>requeue</code></td><td>Re-runs a blocked integration item.</td></tr>
+</table>
+
+<h2>Organisation &amp; policy (v1)</h2>
+<ul>
+	<li>Orgs own repos; members and owners are recorded.</li>
+	<li>Policies are evaluated at run choke points: which files the implementer may write, which integration risk requires approval, workflow step budgets.</li>
+	<li>Every decision is audited (<code>allow / deny / escalate</code> + actor + reason).</li>
+	<li>A fleet view aggregates repos, queue items, workflow runs, and escalations per org.</li>
+</ul>
+<div class="callout">
+	This proves the <strong>organisation/policy architecture</strong>. Enterprise
+	authorization (role enforcement matrices, SSO, org-secret lifecycle,
+	compliance retention) is later hardening, not claimed here.
+</div>
+
+<h2>Mobile &amp; accessibility</h2>
+<ul>
+	<li>Dark-first shell with a full-screen hamburger menu (a hidden-menu CSS bug was found and fixed by the browser test gate).</li>
+	<li>Responsive layouts; keyboard/focus accessibility and a full browser matrix are CP14 UX items.</li>
+</ul>

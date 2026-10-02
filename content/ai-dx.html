@@ -1,0 +1,88 @@
+---
+title: AI DX
+---
+<section class="hero">
+	<h1>AI developer experience</h1>
+	<p class="lede">
+		Give agents a real engineering substrate — not a sandbox that has nothing
+		to do with your repository. Roles, scoped credentials, durable
+		workflows, and a canonical branch agents cannot reach.
+	</p>
+</section>
+
+<h2>Agent model</h2>
+<ul>
+	<li><strong>Roles</strong> (implementer / reviewer / conflict-resolver) with explicit capabilities. A provider secret never grants Switchyard authority; capabilities are role-scoped.</li>
+	<li><strong>Scoped execution</strong>: agents hold repo tokens for their attempt branch only. Canonical-write credentials are never given to an agent.</li>
+	<li><strong>Pluggable runner</strong>: one interface, two adapters — a deterministic worker (proven, used for certification and isolation) and a coding-agent CLI adapter (wired, pending a provider credential).</li>
+</ul>
+
+<h2>Credentials</h2>
+<ul>
+	<li>Encrypted at rest (AES-256-GCM); the secret is never returned by any endpoint.</li>
+	<li>Create / list-metadata / rotate / delete lifecycle with zero plaintext exposure.</li>
+	<li>Plaintext materializes only during execution resolution (scoped 0600 file).</li>
+	<li>Threat model documented honestly: a co-located key protects against database-only compromise, not full host compromise. KMS/external secret backends are CP14+/hosted options.</li>
+</ul>
+
+<h2>Durable programmable workflows</h2>
+<pre><code>function run(ctx) {
+  await ctx.agent({repo, branch, file, append});
+  await ctx.check({repo, branch});
+  await ctx.review({repo, branch});
+  await ctx.parallel([
+    () => ctx.agent({...}),
+    () => ctx.review({...}),
+  ]);
+  await ctx.wait_approval({reason});
+  await ctx.integrate({repo, branch, base});
+}</code></pre>
+<ul>
+	<li>Durable boundaries are explicit Switchyard operations; ordinary local JS computation between them runs normally.</li>
+	<li>Crash/restart is safe: completed steps replay, in-flight steps retry, nothing external is duplicated.</li>
+	<li>Budget (step cap) and bounded recursion are enforced; workflows can spawn children and wait on human approval.</li>
+</ul>
+
+<h2>Determinism</h2>
+<p>
+	Workflow scripts are replayed from the top, so they must be deterministic:
+	wall-clock and entropy are removed from the interpreter surface
+	(<code>Date.now → 0</code>, seeded <code>ctx.random(seed)</code>). The
+	step-key counter is deterministic per pass, so replay converges to the same
+	durable steps.
+</p>
+
+<h2>Execution records &amp; provenance</h2>
+<p>
+	Every agent run is an <code>execution</code> record: role, adapter, status,
+	output, started/finished. Every canonical change carries provenance
+	(workflow / attempt / queue / decision). A change's full chain is queryable.
+</p>
+
+<h2>Concurrency, not last-writer-wins</h2>
+<ul>
+	<li>Ref mutations are compare-and-swap; a stale agent commit is rejected by Git itself.</li>
+	<li>Draft saves use revision CAS: an agent result based on an older draft revision is rejected rather than overwriting the human's newer edit (proven: Race B in the draft concurrency gate).</li>
+	<li>Two agents editing the same file produce a preview conflict that routes to the repair loop — they never clobber each other on canonical.</li>
+</ul>
+
+<h2>Autonomy + policy</h2>
+<ul>
+	<li>Org policies gate agent writes (<code>deny_paths</code>), workflow budgets, and integration risk.</li>
+	<li>High-risk integrations require approval (escalated, then decided by a human through a decision packet).</li>
+	<li>The audit trail records every policy decision.</li>
+</ul>
+
+<h2>Honest status</h2>
+<div class="callout ok">
+	The deterministic substrate is production-shaped and exercised across the
+	campaign (executions, roles, workflows, review, queue, dogfood).
+</div>
+<div class="callout warn">
+	The real provider-backed coding-Agent CLI adapter has not yet executed a real
+	LLM edit through the substrate. It is wired; it needs a provider credential
+	and a coding-agent CLI on the control-plane host (CP6's bounded condition).
+	When available, the closing test is: Work → Attempt → role implementer →
+	coding-agent CLI → agent reads context → edits bounded files → commits to the
+	isolated branch → execution/provenance recorded.
+</div>

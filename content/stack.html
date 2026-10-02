@@ -1,0 +1,102 @@
+---
+title: Stack
+---
+<section class="hero">
+	<h1>The stack, and why each piece exists</h1>
+	<p class="lede">
+		Every component was chosen to preserve two truths: <strong>Git is the
+		truth</strong> (ordinary git clients work unchanged) and
+		<strong>coordination is durable</strong> (nothing important lives only in
+		a process or a browser tab).
+	</p>
+</section>
+
+<h2>Core components</h2>
+<table>
+	<tr><th>Layer</th><th>Technology</th><th>Role in Switchyard</th></tr>
+	<tr>
+		<td><strong>Git truth</strong></td>
+		<td>Cloudflare Artifacts</td>
+		<td>A real Git server. Repositories live here; ordinary <code>git clone / push / pull</code> work out of the box. Objects/refs/commits are exactly what git wrote. This is why "switch to a different Git host" is never needed.</td>
+	</tr>
+	<tr>
+		<td><strong>Coordination truth</strong></td>
+		<td>Trestle (single-node)</td>
+		<td>A record store with idempotent writes and If-Match compare-and-swap. Work, attempts, PRs, findings, queue items, workflow runs, escalations, audit — all durable coordination state.</td>
+	</tr>
+	<tr>
+		<td><strong>Bounded execution</strong></td>
+		<td>Strut + a deterministic worker</td>
+		<td>Agent work runs inside a bounded executor. A deterministic worker proves the substrate (fixed input → fixed edit); a real coding-agent CLI adapter is wired behind the same runner interface.</td>
+	</tr>
+	<tr>
+		<td><strong>Control plane</strong></td>
+		<td>Go, single binary</td>
+		<td>One self-hosted process: HTTP API, ref substrate, reconciliation, event consumer, workflow runner, integration queue, policy engine, SSE. No framework lock-in.</td>
+	</tr>
+	<tr>
+		<td><strong>Web UI</strong></td>
+		<td>Nift-built static + CodeMirror 6</td>
+		<td>Dark, mobile-friendly app shell; a real browser editor (line numbers, history, diff panel, findings, Agent panel). Built to static assets so it can be hosted anywhere.</td>
+	</tr>
+</table>
+
+<h2>Why these choices</h2>
+<div class="grid">
+	<div class="card">
+		<div class="tag">Git truth</div>
+		<h3>Artifacts, not a custom store</h3>
+		<p>Git's object model already solves history, diffing, and merge. Store the objects there; treat the repo as authoritative. CAS falls out of non-force push semantics.</p>
+	</div>
+	<div class="card">
+		<div class="tag">Durable coordination</div>
+		<h3>Records, not memory</h3>
+		<p>Every decision, run, finding, and integration is a record. Restart the control plane and nothing important is lost.</p>
+	</div>
+	<div class="card">
+		<div class="tag">Bounded agents</div>
+		<h3>Adapter, not a fork</h3>
+		<p>One runner interface; the deterministic adapter proves the contract; a coding-agent CLI adapter slots in without redesigning the substrate.</p>
+	</div>
+	<div class="card">
+		<div class="tag">Self-hosted</div>
+		<h3>One binary, documented env vars</h3>
+		<p>Point it at a Trestle, an Artifacts namespace, a token helper, and a worker; it runs. No Kubernetes required.</p>
+	</div>
+</div>
+
+<h2>The dual-path event architecture</h2>
+<p>
+	External Git movement is observed twice, by design:
+</p>
+<div class="grid">
+	<div class="card">
+		<h3>Fast path</h3>
+		<p><code>git push → cf.artifacts.repo.pushed → Cloudflare Queue → Switchyard consumer → normalized event → Trestle → SSE</code></p>
+		<p class="muted">Responsive. The consumer pulls, ingests through the same idempotent path, and acks.</p>
+	</div>
+	<div class="card">
+		<h3>Safety net</h3>
+		<p><code>periodic git reconciliation → normalized event → Trestle → SSE</code></p>
+		<p class="muted">Correct. Repairs anything missed while the control plane was down or the queue lagged.</p>
+	</div>
+</div>
+<div class="callout">
+	Both paths share the transition identity <code>(repo, ref, before, after)</code>,
+	so the same Git movement observed by both converges to <strong>one</strong>
+	durable domain event and one broadcast. Events accelerate convergence;
+	reconciliation guarantees it.
+</div>
+<div class="callout warn">
+	<strong>Upstream note:</strong> Cloudflare's event-subscription → Queue
+	delivery for <code>cf.artifacts.repo.pushed</code> was proven in CP0 but is
+	currently not flowing account-wide. The Switchyard fast path is implemented
+	and gated from the Queue onward; reconciliation covers correctness meanwhile.
+</div>
+
+<h2>Interesting details</h2>
+<ul>
+	<li>Queue messages are JSON-encoded strings; the consumer decodes the string, then the envelope.</li>
+	<li>Trestle's Idempotency-Key returns <code>replayed=true</code> only for byte-identical content; the same identity with different metadata yields <code>409 idempotency_conflict</code> — treated as convergence, not an error.</li>
+	<li>Scratch clones are used per mutation (preview, merge, diff, changed-files). Measured ~4 s per integration — a real CP14 optimization target (bare mirror + worktree).</li>
+</ul>

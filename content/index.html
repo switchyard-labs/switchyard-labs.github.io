@@ -1,0 +1,93 @@
+---
+title: Overview
+---
+<section class="hero">
+	<h1>Agent-native Git collaboration, built for real.</h1>
+	<p class="lede">
+		Switchyard is a self-hosted Git collaboration platform where concurrent
+		autonomous agents and humans work in <strong>isolated Git state</strong>.
+		Integration into canonical repositories flows through deterministic,
+		policy-controlled serialized integration — not last-writer-wins.
+	</p>
+	<p>
+		<span class="pill pass">13 checkpoints, end-to-end</span>
+		<span class="pill pass">Real Git hosting on Cloudflare Artifacts</span>
+		<span class="pill pass">Durable programmable workflows</span>
+		<span class="pill pass">Browser editor with draft CAS</span>
+		<span class="pill bound">Real-LLM agent leg pending a provider credential</span>
+	</p>
+</section>
+
+<h2>The core idea</h2>
+<p>
+	Ordinary Git hosting lets humans push to a branch and merge. Switchyard
+	generalizes that to <strong>agents</strong>: every actor — human or AI —
+	works on an isolated branch, and the canonical branch only moves through a
+	deterministic, policy-controlled pipeline.
+</p>
+<div class="flow">
+	<ol>
+		<li><strong>Work</strong> — an intent (feature, fix, task) is recorded.</li>
+		<li><strong>Attempt</strong> — an isolated branch is created from the intent.</li>
+		<li><strong>Agent</strong> — an implementer edits files on that branch (deterministic substrate today; a real coding-agent CLI adapter is wired).</li>
+		<li><strong>Commit</strong> — the change lands on the attempt branch via a compare-and-swap ref substrate.</li>
+		<li><strong>PR + check</strong> — a pull request is opened; deterministic validation runs.</li>
+		<li><strong>Review + preview</strong> — findings are produced; preview integration checks whether the branch merges cleanly and whether the merged tree satisfies repo contracts.</li>
+		<li><strong>Integration Queue</strong> — strictly FIFO, policy-gated, CAS-guarded integration into canonical.</li>
+	</ol>
+</div>
+<p>
+	Everything is recorded in a durable provenance chain (Work → Attempt → PR →
+	ref updates → events), so every canonical change is attributable.
+</p>
+
+<h2>Why this matters for AI developers</h2>
+<p>
+	An LLM coding agent editing a shared branch and force-pushing is a liability.
+	Switchyard gives agents:
+</p>
+<div class="grid">
+	<div class="card">
+		<div class="tag">Isolation</div>
+		<h3>No canonical write access</h3>
+		<p>Agents hold scoped repo tokens for their attempt branch only. Canonical is unreachable by an agent.</p>
+	</div>
+	<div class="card">
+		<div class="tag">Concurrency</div>
+		<h3>No last-writer-wins</h3>
+		<p>Ref mutations are compare-and-swap; stale writers are rejected. Drafts use revision CAS too.</p>
+	</div>
+	<div class="card">
+		<div class="tag">Durability</div>
+		<h3>Durable workflows</h3>
+		<p>JS-authored workflows replay after process death; completed steps are never re-executed.</p>
+	</div>
+	<div class="card">
+		<div class="tag">Governance</div>
+		<h3>Policy + risk</h3>
+		<p>Org policies gate what agents may touch, which integrations need approval, and how much they may run.</p>
+	</div>
+</div>
+
+<h2>Honest status</h2>
+<div class="callout ok">
+	<strong>Proven end-to-end:</strong> the deterministic loop — Work → Attempt →
+	agent → edit → PR → review → preview → Integration Queue → canonical — runs
+	against a repository seeded with Switchyard's own source.
+</div>
+<div class="callout warn">
+	<strong>Bounded:</strong> the real LLM coding-agent leg (CLI adapter) is
+	implemented and wired but not yet exercised, because no provider credential
+	and no coding-agent CLI exist on the control-plane host. The deterministic
+	adapter runs on the identical substrate.
+</div>
+
+<h2>Explore</h2>
+<ul>
+	<li><a href="/stack.html">The stack and why each piece exists</a></li>
+	<li><a href="/architecture.html">How it all fits together</a></li>
+	<li><a href="/how-it-works.html">The engineering loop in detail</a></li>
+	<li><a href="/human-dx.html">Human developer experience</a></li>
+	<li><a href="/ai-dx.html">AI developer experience</a></li>
+	<li><a href="/docs.html">Setup, configuration and running Switchyard</a></li>
+</ul>

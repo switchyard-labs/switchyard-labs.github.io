@@ -1,9 +1,43 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" data-theme="dark">
 	<head>
 		@input("templates/head.html")
 	</head>
 	<body>
-		@content
+		<header class="site-header">
+			<div class="header-inner">
+				<a class="brand" href="/"><span class="brand-mark">S</span><span class="brand-name">Switchyard</span></a>
+				<nav class="site-nav" id="site-nav">
+					<a href="/">Overview</a>
+					<a href="/stack.html">Stack</a>
+					<a href="/architecture.html">Architecture</a>
+					<a href="/how-it-works.html">How it works</a>
+					<a href="/human-dx.html">Human DX</a>
+					<a href="/ai-dx.html">AI DX</a>
+					<a href="/docs.html">Docs</a>
+				</nav>
+				<button class="hamburger" id="hamburger" aria-label="Menu" aria-expanded="false" aria-controls="mobile-menu">☰</button>
+			</div>
+		</header>
+		<nav class="mobile-menu" id="mobile-menu" hidden>
+			<div class="mobile-menu-head"><span class="brand-name">Switchyard</span><button class="hamburger" id="mobile-close" aria-label="Close menu">×</button></div>
+			<a href="/">Overview</a>
+			<a href="/stack.html">Stack</a>
+			<a href="/architecture.html">Architecture</a>
+			<a href="/how-it-works.html">How it works</a>
+			<a href="/human-dx.html">Human DX</a>
+			<a href="/ai-dx.html">AI DX</a>
+			<a href="/docs.html">Docs</a>
+		</nav>
+		<main class="site-main">
+			@content
+		</main>
+		<footer class="site-footer">
+			<div class="footer-inner">
+				<span>Switchyard — agent-native Git collaboration.</span>
+				<span class="muted">Deterministic loop proven end-to-end; real-LLM agent leg pending a provider credential.</span>
+			</div>
+		</footer>
+		<script src="/assets/js/app.js"></script>
 	</body>
 </html>

@@ -4,6 +4,36 @@
       "name": "/",
       "title": "index",
       "template": "templates/template.html"
+    },
+    {
+      "name": "stack",
+      "title": "Stack",
+      "template": "templates/template.html"
+    },
+    {
+      "name": "architecture",
+      "title": "Architecture",
+      "template": "templates/template.html"
+    },
+    {
+      "name": "how-it-works",
+      "title": "How it works",
+      "template": "templates/template.html"
+    },
+    {
+      "name": "human-dx",
+      "title": "Human DX",
+      "template": "templates/template.html"
+    },
+    {
+      "name": "ai-dx",
+      "title": "AI DX",
+      "template": "templates/template.html"
+    },
+    {
+      "name": "docs",
+      "title": "Docs",
+      "template": "templates/template.html"
     }
   ]
 }
