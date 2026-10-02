@@ -1,46 +1,50 @@
 <section class="hero">
-	<div class="kicker">Concepts · Repositories &amp; Git truth</div>
-	<h1>Git stays Git.</h1>
-	<p class="lede">
-		The repository is a real Git repository. Switchyard adds the coordination
-		layer around it, never a copy of it.
-	</p>
+  <div class="kicker">Concepts · Repositories &amp; Git truth</div>
+  <h1>Real Git, hosted in Cloudflare Artifacts.</h1>
+  <p class="lede">Switchyard does not copy your repository into an application database. The repository itself lives in <strong>Cloudflare Artifacts</strong>; ordinary <strong>Git</strong> is what clones, fetches, commits and pushes it.</p>
 </section>
 
-<h2>What you get</h2>
-<ul>
-	<li>Repositories on a real Git server; ordinary <code>git</code> clients work unchanged.</li>
-	<li>Repo-scoped, short-lived tokens: read tokens clone, write tokens push.</li>
-	<li>A repository browser with a file tree, raw file view, and refs.</li>
-	<li>An <em>Edit in editor</em> path into the CodeMirror editor.</li>
-</ul>
+<section class="truth-explainer">
+  <div><span class="truth-label">Git</span><h2>The tool and protocol.</h2><p><code>git clone</code>, <code>git fetch</code>, <code>git commit</code>, merge and <code>git push</code> remain ordinary Git operations.</p></div>
+  <div><span class="truth-label">Cloudflare Artifacts</span><h2>The remote Git server.</h2><p>Repositories, objects, refs, branches, tags and canonical history live in Artifacts. It is Switchyard's authoritative Git truth.</p></div>
+  <div><span class="truth-label">Switchyard</span><h2>The collaboration layer.</h2><p>Switchyard adds Work, Attempts, reviews, durable workflows, policy, provenance and deterministic integration around that real Git repository.</p></div>
+</section>
 
-<h2>Compare-and-swap substrate</h2>
-<p>
-	The safety property that makes concurrent agents possible:
-</p>
-<pre><code>Update(repo, ref, expected_sha, changes, message, provenance)
-  current = ls-remote(ref)
-  build commit from changes
-  git push --force=false        # non-force
-  if rejected: STALE            # Git said "fetch first"
-      reconcile or re-queue (bounded)</code></pre>
-<p>
-	Stale writers are rejected by Git itself, not by Switchyard policy. This was
-	demonstrated with three concurrent writers to one ref: exactly one success,
-	clean stale handling, and the tree reflecting only successful writers.
-</p>
+<h2>Clone, work and push with Git</h2>
+<p>Open a repository in Switchyard and choose <strong>Code</strong>. The HTTPS URL shown there is the repository's Cloudflare Artifacts Git remote.</p>
+<pre><code># Clone the Artifacts-hosted repository
+git clone &lt;https-clone-url-from-switchyard&gt;
+cd &lt;repo&gt;
 
-<h2>Direct Git still works</h2>
-<p>
-	A human (or an external CI) can <code>git push</code> straight to a branch.
-	The control plane observes it via the event fast path and reconciliation, and
-	it appears live in the UI. Nothing requires the UI as a gate for ordinary Git
-	use.
-</p>
+# Work normally
+git switch -c my-change
+# edit files
+git add .
+git commit -m "Implement my change"
 
-<div class="callout">
-	<span class="t">Canonical is protected</span>
-	Agents hold tokens scoped to their attempt branch. The only path that moves
-	canonical is the Integration Queue — policy-gated and CAS-guarded.
-</div>
+# Push the branch back to the same Artifacts remote
+git push -u origin my-change
+
+# Later, fetch everybody else's Git state normally
+git fetch origin</code></pre>
+<div class="callout"><span class="t">Nothing proprietary in the Git loop</span>The commands above are normal Git. Artifacts is simply the remote server on the other end. Switchyard supplies scoped credentials and observes the resulting ref movement so its coordination state stays in sync.</div>
+
+<h2>Authentication</h2>
+<p>Switchyard obtains short-lived, repository-scoped Artifacts credentials for Git access. The clone URL shown in the Code menu contains no secret. Read credentials can clone/fetch; write credentials can push only where Switchyard policy allows them to.</p>
+
+<h2>Direct Git is first-class</h2>
+<p>A human or external CI system can push directly to an allowed branch with Git. That branch is still in Artifacts. Switchyard observes external ref movement through its event path and reconciliation safety net, then reflects it in the product UI and provenance model.</p>
+
+<h2>Attempts are real branches too</h2>
+<p>When Switchyard creates an Attempt, it creates isolated Git state against the same Artifacts repository. Agent work is not held in a special model-only store: its resulting commits and branch state are ordinary Git. Agents are prevented from writing canonical directly; the Integration Queue is the controlled path that eventually moves the canonical ref.</p>
+
+<h2>Compare-and-swap comes from Git</h2>
+<pre><code>Update(repo, ref, expected_sha, change)
+  read current ref from Artifacts
+  build an ordinary Git commit
+  git push --force=false
+
+  if another writer moved the ref first:
+      Git rejects the push as stale
+      Switchyard reconciles or re-queues</code></pre>
+<p>Switchyard therefore does not pretend Trestle owns repository refs. Git and Artifacts remain authoritative for repository state.</p>
