@@ -1,0 +1,41 @@
+<section class="hero">
+	<div class="kicker">Docs · Operations</div>
+	<h1>Running it, reliably.</h1>
+	<p class="lede">
+		Idempotent provisioning, restart safety, and the operational notes that
+		matter for a self-hosted control plane.
+	</p>
+</section>
+
+<h2>Restart safety</h2>
+<ul>
+	<li>Provisioning is idempotent; restarting the process is safe.</li>
+	<li>Reconciliation + durable records mean nothing important lives only in memory.</li>
+	<li>Workflow runs resume after process death (durable steps replay).</li>
+	<li>Queue items survive restart (strict FIFO with an in-flight guard).</li>
+</ul>
+
+<h2>Credentials</h2>
+<p>
+	Provider credentials are encrypted at rest (AES-256-GCM). The key is read
+	from <code>SWITCHYARD_SECRET_KEY</code> or persisted to
+	<code>data/secret.key</code>. Honest threat model: a co-located key protects
+	against database-only / accidental disclosure, not full host compromise.
+	Back up <code>data/secret.key</code> together with the Trestle records to
+	restore the store.
+</p>
+
+<h2>Backup &amp; recovery</h2>
+<p>
+	Git truth lives in Artifacts; coordination state lives in Trestle. A restore
+	is: restore Trestle records + the secret key + (optionally) the Cloudflare
+	namespace. Full backup/restore tooling and disaster recovery are hardening
+	items.
+</p>
+
+<h2>Observability</h2>
+<p>
+	The control plane logs startup, reconciliation, queue, workflow, and
+	integration activity. Prometheus-style metrics, structured logs, and
+	alerting are hardening items.
+</p>

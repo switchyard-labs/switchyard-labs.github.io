@@ -6,33 +6,93 @@
       "template": "templates/template.html"
     },
     {
-      "name": "stack",
-      "title": "Stack",
+      "name": "product/overview",
+      "title": "overview",
       "template": "templates/template.html"
     },
     {
-      "name": "architecture",
-      "title": "Architecture",
+      "name": "product/how-it-works",
+      "title": "how-it-works",
       "template": "templates/template.html"
     },
     {
-      "name": "how-it-works",
-      "title": "How it works",
+      "name": "product/human-ai",
+      "title": "human-ai",
       "template": "templates/template.html"
     },
     {
-      "name": "human-dx",
-      "title": "Human DX",
+      "name": "product/demo",
+      "title": "demo",
       "template": "templates/template.html"
     },
     {
-      "name": "ai-dx",
-      "title": "AI DX",
+      "name": "concepts/architecture",
+      "title": "architecture",
       "template": "templates/template.html"
     },
     {
-      "name": "docs",
-      "title": "Docs",
+      "name": "concepts/repositories",
+      "title": "repositories",
+      "template": "templates/template.html"
+    },
+    {
+      "name": "concepts/work-attempts",
+      "title": "work-attempts",
+      "template": "templates/template.html"
+    },
+    {
+      "name": "concepts/integration-queue",
+      "title": "integration-queue",
+      "template": "templates/template.html"
+    },
+    {
+      "name": "concepts/reviews-conflicts",
+      "title": "reviews-conflicts",
+      "template": "templates/template.html"
+    },
+    {
+      "name": "concepts/workflows",
+      "title": "workflows",
+      "template": "templates/template.html"
+    },
+    {
+      "name": "concepts/provenance-needs-attention",
+      "title": "provenance-needs-attention",
+      "template": "templates/template.html"
+    },
+    {
+      "name": "docs/getting-started",
+      "title": "getting-started",
+      "template": "templates/template.html"
+    },
+    {
+      "name": "docs/configuration",
+      "title": "configuration",
+      "template": "templates/template.html"
+    },
+    {
+      "name": "docs/api",
+      "title": "api",
+      "template": "templates/template.html"
+    },
+    {
+      "name": "docs/operations",
+      "title": "operations",
+      "template": "templates/template.html"
+    },
+    {
+      "name": "docs/status",
+      "title": "status",
+      "template": "templates/template.html"
+    },
+    {
+      "name": "docs/internals",
+      "title": "internals",
+      "template": "templates/template.html"
+    },
+    {
+      "name": "docs/performance",
+      "title": "performance",
       "template": "templates/template.html"
     }
   ]

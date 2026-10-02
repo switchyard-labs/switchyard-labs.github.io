@@ -1,0 +1,47 @@
+<section class="hero">
+	<div class="kicker">Docs · Internals</div>
+	<h1>Notes for the curious.</h1>
+	<p class="lede">
+		Implementation-level detail that didn't belong in the product story, but
+		is honest and useful.
+	</p>
+</section>
+
+<h2>The dual-path event identity</h2>
+<p>
+	The event fast path and reconciliation both write normalized domain events
+	keyed by the transition identity <code>(repo, ref, before, after)</code> —
+	deliberately free of delivery metadata (message id, seen time). Both paths
+	converge on one durable domain event and one broadcast. Trestle's
+	Idempotency-Key returns <code>replayed=true</code> only for byte-identical
+	content; the same identity with different metadata yields
+	<code>409 idempotency_conflict</code>, which Switchyard treats as
+	convergence (the fact already exists once) and acknowledges — no retry
+	churn, no duplicate broadcast.
+</p>
+
+<h2>Queue mechanics</h2>
+<ul>
+	<li>Cloudflare queue message bodies arrive as JSON-encoded strings; the
+	consumer decodes the string, then the envelope.</li>
+	<li>Pull + ack semantics with visibility timeouts give at-least-once delivery.</li>
+	<li>Failed ingests are returned to the queue (retried), not acked.</li>
+</ul>
+
+<h2>Workflow durability</h2>
+<pre><code>step = (run_id, step_key, op, args_hash, status, result, attempts)
+
+run script from top
+  for each operation:
+    completed step?  → REPLAY recorded result
+    in-flight step?  → re-execute (bounded retries)
+    new step?        → record intent, execute, record result, count against budget</code></pre>
+
+<h2>Credential store</h2>
+<ul>
+	<li>AES-256-GCM ciphertext at rest; metadata-only API; plaintext only during
+	execution resolution (scoped 0600 file).</li>
+	<li>Key from <code>SWITCHYARD_SECRET_KEY</code> or <code>data/secret.key</code>.</li>
+	<li>Threat model: co-located key ⇒ protects against database-only compromise,
+	not full host compromise.</li>
+</ul>

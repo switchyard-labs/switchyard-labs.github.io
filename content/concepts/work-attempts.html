@@ -1,0 +1,39 @@
+<section class="hero">
+	<div class="kicker">Concepts · Work, Attempts &amp; Pull Requests</div>
+	<h1>Intent, isolation, and a pull request.</h1>
+	<p class="lede">
+		Work is the intent. An Attempt is an isolated branch where the change is
+		built. A Pull Request is how it offers itself for review.
+	</p>
+</section>
+
+<h2>Work</h2>
+<p>
+	A Work item is a recorded intent — a feature, fix, or task — with an owner
+	and a status. It is the root of the provenance chain.
+</p>
+
+<h2>Attempts</h2>
+<p>
+	An Attempt opens an isolated branch (for example <code>attempt-&lt;id&gt;</code>)
+	with a marker file. Agents and humans work there in complete isolation:
+</p>
+<ul>
+	<li>the attempt branch is the only place an agent can write;</li>
+	<li>every agent run is an <code>execution</code> record (role, adapter, status, output);</li>
+	<li>draft edits in the editor are saved to an ephemeral draft and committed
+	explicitly through the same ref substrate.</li>
+</ul>
+
+<h2>Pull Requests</h2>
+<p>
+	A PR proposes an attempt branch against a base. It carries a deterministic
+	check, structured review findings, and — critically — a preview of whether it
+	will integrate. Then it enters the <a href="/concepts/integration-queue.html">Integration Queue</a>.
+</p>
+
+<div class="callout ok">
+	<span class="t">Demo</span>
+	<code>demo-agents</code> is one Work item with two concurrent attempts, both
+	executed and reviewed.
+</div>

@@ -1,0 +1,34 @@
+<section class="hero">
+	<div class="kicker">Docs · API</div>
+	<h1>The HTTP surface.</h1>
+	<p class="lede">
+		One authenticated JSON API. Sessions via bcrypt + HttpOnly cookies; refs,
+		work, attempts, PRs, the queue, workflows, policy, and the editor.
+	</p>
+</section>
+
+<table>
+	<tr><th>Area</th><th>Endpoints</th></tr>
+	<tr><td>Auth</td><td><code>POST /api/auth/register|login|logout</code> · <code>GET /api/auth/me</code></td></tr>
+	<tr><td>Repos</td><td><code>GET /api/repos</code> · <code>/api/repos/{name}</code> · <code>/tree</code> · <code>/content</code> · <code>/refs</code></td></tr>
+	<tr><td>Work / Attempts / PRs</td><td><code>/api/work…</code> · <code>/api/attempts/{id}/run|review|preview|resolve</code> · <code>/api/prs/{id}/check|integrate|enqueue</code></td></tr>
+	<tr><td>Events / realtime</td><td><code>POST /api/events/ingest</code> · <code>GET /api/events</code> · <code>GET /api/events/stream</code> (SSE)</td></tr>
+	<tr><td>Editor</td><td><code>POST /api/drafts</code> (revision CAS) · <code>GET /api/drafts/…</code> · <code>POST /api/drafts/{id}/commit</code> · <code>POST /api/diff</code></td></tr>
+	<tr><td>Workflows</td><td><code>/api/workflows…</code> · <code>/api/workflow_runs…</code> (run / cancel / approve / retry)</td></tr>
+	<tr><td>Queue / Attention / Escalation</td><td><code>GET /api/queue</code> · <code>GET /api/attention</code> · <code>/api/escalations…</code></td></tr>
+	<tr><td>Org / Policy / Audit</td><td><code>POST /api/orgs</code> · <code>POST /api/orgs/{id}/policies</code> · <code>GET /api/orgs/{id}/fleet</code> · <code>GET /api/audit</code></td></tr>
+	<tr><td>Agents / credentials</td><td><code>/api/credentials…</code> · <code>GET /api/roles</code></td></tr>
+</table>
+
+<h2>Notable semantics</h2>
+<ul>
+	<li><strong>Draft CAS:</strong> saves carry <code>expected_revision</code>; a
+	stale save returns <code>409 draft_stale</code>. Commits compare
+	<code>base_sha</code> to the current head and return
+	<code>409 stale_base</code> on external movement.</li>
+	<li><strong>Queue:</strong> <code>POST /api/prs/{id}/enqueue</code> enqueues;
+	the worker integrates strictly FIFO under policy; blocked items expose
+	<code>preview_conflict</code> or <code>semantic_conflict</code>.</li>
+	<li><strong>Realtime:</strong> authenticated SSE at <code>/api/events/stream</code>
+	delivers normalized domain events.</li>
+</ul>

@@ -1,0 +1,48 @@
+<section class="hero">
+	<div class="kicker">Concepts · Durable workflows</div>
+	<h1>JS you can crash on.</h1>
+	<p class="lede">
+		Workflows are authored in JavaScript, but their state is not the lifetime
+		of a process. Durable steps, replay, and bounded autonomy.
+	</p>
+</section>
+
+<h2>The authoring model</h2>
+<p>
+	A workflow is a function <code>run(ctx)</code> that calls Switchyard
+	operations. Ordinary local computation between the calls runs normally; only
+	the operations are durable boundaries.
+</p>
+<pre><code>function run(ctx) {
+  await ctx.agent({ repo, branch, file, append });
+  await ctx.check({ repo, branch });
+  await ctx.review({ repo, branch });
+  await ctx.parallel([
+    () => ctx.agent({ ... }),
+    () => ctx.review({ ... }),
+  ]);
+  await ctx.wait_approval({ reason });
+  await ctx.integrate({ repo, branch, base });
+}</code></pre>
+
+<h2>Durability by replay</h2>
+<ul>
+	<li>Every operation is a durable step keyed by <code>(run_id, step_key, args_hash)</code>.</li>
+	<li>On restart the script re-runs from the top; completed steps <em>replay</em> their recorded result.</li>
+	<li>In-flight steps retry (at-least-once); later steps run exactly once.</li>
+	<li>External effects are never duplicated.</li>
+</ul>
+<p>
+	This is proven by killing the control plane during a running durable step:
+	the completed agent step replayed with <code>attempts=1</code>, the in-flight
+	sleep retried, later steps ran once, and the execution count was exactly
+	right.
+</p>
+
+<h2>Governance</h2>
+<ul>
+	<li>Step budgets and bounded recursion are enforced.</li>
+	<li>Workflows can spawn children and wait on human approval.</li>
+	<li>Determinism is enforced: no wall-clock in control flow, seeded
+	<code>ctx.random(seed)</code>.</li>
+</ul>

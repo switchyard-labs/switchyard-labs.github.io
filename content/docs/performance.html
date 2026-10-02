@@ -1,0 +1,36 @@
+<section class="hero">
+	<div class="kicker">Docs · Performance</div>
+	<h1>Measured, not guessed.</h1>
+	<p class="lede">
+		Numbers from the live integration queue, and the honest cost model behind
+		them.
+	</p>
+</section>
+
+<h2>Integration Queue timings</h2>
+<table>
+	<tr><th>Scenario</th><th>Wall time</th><th>Per item</th></tr>
+	<tr><td>3 clean PRs (churn)</td><td>18–22 s</td><td>~6–7 s</td></tr>
+	<tr><td>10 clean PRs</td><td>~42 s full queue→done</td><td>~4.2 s</td></tr>
+</table>
+<p>
+	Each integration does a scratch clone for preview plus a scratch clone + push
+	for the merge — repeated full object transfer. At this scale it is
+	acceptable; the data justifies a <strong>cached bare-mirror + shared-object
+	worktree</strong> model as the next optimization target.
+</p>
+
+<h2>What dominates</h2>
+<ul>
+	<li>Clone preparation (full object transfer per operation).</li>
+	<li>Preview + merge each clone once.</li>
+	<li>Strict FIFO serializes integrations (by design).</li>
+</ul>
+
+<h2>What is not yet measured</h2>
+<ul>
+	<li>Concurrent agent execution at scale (the deterministic adapter is
+	subprocess-fast; real LLM executors are bounded on the credential condition).</li>
+	<li>Repository-size effects (all tests used small repos).</li>
+	<li>SSE fan-out under many browsers (single-node).</li>
+</ul>

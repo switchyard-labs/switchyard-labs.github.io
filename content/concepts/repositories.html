@@ -1,0 +1,46 @@
+<section class="hero">
+	<div class="kicker">Concepts · Repositories &amp; Git truth</div>
+	<h1>Git stays Git.</h1>
+	<p class="lede">
+		The repository is a real Git repository. Switchyard adds the coordination
+		layer around it, never a copy of it.
+	</p>
+</section>
+
+<h2>What you get</h2>
+<ul>
+	<li>Repositories on a real Git server; ordinary <code>git</code> clients work unchanged.</li>
+	<li>Repo-scoped, short-lived tokens: read tokens clone, write tokens push.</li>
+	<li>A repository browser with a file tree, raw file view, and refs.</li>
+	<li>An <em>Edit in editor</em> path into the CodeMirror editor.</li>
+</ul>
+
+<h2>Compare-and-swap substrate</h2>
+<p>
+	The safety property that makes concurrent agents possible:
+</p>
+<pre><code>Update(repo, ref, expected_sha, changes, message, provenance)
+  current = ls-remote(ref)
+  build commit from changes
+  git push --force=false        # non-force
+  if rejected: STALE            # Git said "fetch first"
+      reconcile or re-queue (bounded)</code></pre>
+<p>
+	Stale writers are rejected by Git itself, not by Switchyard policy. This was
+	demonstrated with three concurrent writers to one ref: exactly one success,
+	clean stale handling, and the tree reflecting only successful writers.
+</p>
+
+<h2>Direct Git still works</h2>
+<p>
+	A human (or an external CI) can <code>git push</code> straight to a branch.
+	The control plane observes it via the event fast path and reconciliation, and
+	it appears live in the UI. Nothing requires the UI as a gate for ordinary Git
+	use.
+</p>
+
+<div class="callout">
+	<span class="t">Canonical is protected</span>
+	Agents hold tokens scoped to their attempt branch. The only path that moves
+	canonical is the Integration Queue — policy-gated and CAS-guarded.
+</div>

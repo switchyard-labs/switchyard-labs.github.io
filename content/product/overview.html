@@ -1,0 +1,49 @@
+<section class="hero">
+	<div class="kicker">Product · Overview</div>
+	<h1>One loop for humans and agents.</h1>
+	<p class="lede">
+		Switchyard turns a normal Git repository into a place where concurrent
+		agents and people can work without stepping on each other — and where
+		every canonical change is explainable.
+	</p>
+</section>
+
+<h2>The core model</h2>
+<div class="flow">
+	<ol>
+		<li><strong>Work</strong> — an intent is recorded (feature, fix, task).</li>
+		<li><strong>Attempt</strong> — an isolated branch is created from the intent.</li>
+		<li><strong>Agent or human</strong> — edits files on that branch.</li>
+		<li><strong>Commit</strong> — lands via a compare-and-swap ref substrate on the attempt branch only.</li>
+		<li><strong>PR + check + review</strong> — a pull request, validation, and structured findings.</li>
+		<li><strong>Preview</strong> — does it merge cleanly, and does the merged tree satisfy the repo contract?</li>
+		<li><strong>Integration Queue</strong> — strictly FIFO, policy-gated, CAS-guarded into canonical.</li>
+	</ol>
+</div>
+<p>
+	Nothing on canonical happens outside that pipeline. Agents are incapable of
+	writing canonical by themselves, because they never hold a credential for it.
+</p>
+
+<h2>Why isolation is the point</h2>
+<div class="grid">
+	<div class="card"><div class="tag">Concurrency</div><h3>Parallel, safe</h3><p class="muted">Two agents editing the same file produce a conflict the repair loop handles — they never clobber each other on canonical.</p></div>
+	<div class="card"><div class="tag">Attribution</div><h3>Provenance</h3><p class="muted">Work → Attempt → PR → ref updates → events: a full, queryable chain for every canonical change.</p></div>
+	<div class="card"><div class="tag">Control</div><h3>Policy</h3><p class="muted">Which files agents may write, which integrations need approval, how much a workflow may run — all audited.</p></div>
+</div>
+
+<h2>Deterministic by default</h2>
+<p>
+	The loop is fully deterministic today: the implementer, checker, reviewer and
+	conflict-resolver are deterministic adapters behind one runner interface. A
+	real coding-agent CLI adapter is wired and ready; it is the same substrate,
+	with a provider credential as the only missing input. This is what lets the
+	system be certified, isolated, and debuggable before LLM variance is
+	introduced.
+</p>
+
+<div class="callout">
+	<span class="t">Next</span>
+	<a href="/product/how-it-works.html">See the loop in detail</a> with the live
+	evidence behind each step.
+</div>

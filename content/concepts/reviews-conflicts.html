@@ -1,0 +1,54 @@
+<section class="hero">
+	<div class="kicker">Concepts · Reviews &amp; Conflicts</div>
+	<h1>Findings, then a truthful conflict story.</h1>
+	<p class="lede">
+		Switchyard separates what Git can tell you from what Switchyard can tell
+		you — and it is careful not to conflate them.
+	</p>
+</section>
+
+<h2>Review findings</h2>
+<p>
+	Reviews produce structured, machine-actionable findings: severity, message,
+	and file. Findings are durable and drive the editor gutters and the Needs
+	Attention list.
+</p>
+
+<h2>Textual conflicts</h2>
+<p>
+	<strong>Textual / Git merge conflict</strong> — overlapping edits to the same
+	lines or files — is detected during preview integration (<code>git merge</code>
+	on a scratch clone). The conflict-resolver performs a real three-way merge
+	(<code>git merge-file</code>) onto the source branch; re-preview is then
+	clean; integration proceeds. This is ordinary merge-conflict handling, done
+	well.
+</p>
+
+<h2>Semantic conflicts</h2>
+<p>
+	The more interesting case: <strong>Git says the combined tree is fine, but
+	Switchyard knows the two pieces of work are incompatible.</strong> A
+	repository can declare a deterministic contract (<code>switchyard.contract.json</code>);
+	after a clean preview merge, Switchyard validates the contract against the
+	merged tree:
+</p>
+<pre><code>{ "rules": [
+    { "kind": "field_equals",
+      "a": "api/version.json:version",
+      "b": "consumers/consumer.json:requires_version" }
+] }</code></pre>
+<p>
+	Attempt A moves the API and its consumer to v2 together (contract holds,
+	integrates). Attempt B adds a <em>new</em> consumer file requiring v3 — a
+	different file, so <code>git merge</code> is clean — but the merged tree
+	violates the contract. Switchyard reports a semantic error finding, parks the
+	attempt, and blocks the Integration Queue. No LLM is involved; it is
+	deterministic contract validation on the preview-merged tree.
+</p>
+
+<div class="callout warn">
+	<span class="t">Precise language</span>
+	The two mechanisms are deliberately distinct. "Git reports a conflict" and
+	"Switchyard knows the pieces are incompatible" are different claims, and
+	both are proven separately.
+</div>

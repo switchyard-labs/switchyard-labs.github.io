@@ -1,0 +1,45 @@
+<section class="hero">
+	<div class="kicker">Product · Human + AI collaboration</div>
+	<h1>One pipeline, two ways to drive it.</h1>
+	<p class="lede">
+		Humans get ordinary Git and a careful editor. Agents get roles, scoped
+		credentials, and a durable workflow substrate. They converge on the same
+		Integration Queue.
+	</p>
+</section>
+
+<h2>For humans</h2>
+<div class="grid">
+	<div class="card"><div class="tag">Git</div><h3>Nothing to relearn</h3><p class="muted"><code>git clone / fetch / push</code> work unchanged. Branches, PRs and history are real Git.</p></div>
+	<div class="card"><div class="tag">Editor</div><h3>Save ≠ Commit</h3><p class="muted">A durable draft survives reload; only an explicit Commit changes the repository.</p></div>
+	<div class="card"><div class="tag">Concurrency</div><h3>Draft CAS</h3><p class="muted">A stale save is rejected, never silently overwritten. If the branch moved, you get reconcile guidance.</p></div>
+	<div class="card"><div class="tag">Oversight</div><h3>Needs Attention</h3><p class="muted">Conflicts, blocked integrations and approvals in one list, with self-contained decision packets.</p></div>
+</div>
+
+<h2>For agents</h2>
+<div class="grid">
+	<div class="card"><div class="tag">Roles</div><h3>Explicit capabilities</h3><p class="muted">Implementer, reviewer, conflict-resolver. A provider secret never grants Switchyard authority.</p></div>
+	<div class="card"><div class="tag">Credentials</div><h3>Scoped and encrypted</h3><p class="muted">Encrypted at rest; plaintext only at execution resolution; metadata-only API.</p></div>
+	<div class="card"><div class="tag">Workflows</div><h3>Durable by design</h3><p class="muted">JS steps that survive crashes; external effects never duplicated.</p></div>
+	<div class="card"><div class="tag">Autonomy</div><h3>Policy-bounded</h3><p class="muted">Org policies gate file writes, budgets and integration risk — audited end to end.</p></div>
+</div>
+
+<h2>The editor + agent boundary (honest)</h2>
+<p>
+	The Agent panel in the editor runs the <strong>formal Attempt path</strong>:
+	it executes the implementer against the attempt branch and refreshes the
+	committed state. That is legitimate autonomous execution with its own
+	provenance.
+</p>
+<p>
+	The <em>interactive draft-assistance</em> flow — you ask the Agent to edit
+	your <em>draft</em>, it proposes a change at your revision, you inspect the
+	diff, then you commit — is a targeted product task for the next milestone.
+	The draft revision/CAS machinery it builds on already exists and is proven.
+</p>
+
+<div class="callout">
+	<span class="t">Guarantee</span>
+	Neither mode can overwrite your work: ref mutations are compare-and-swap, and
+	draft saves reject stale revisions.
+</div>

@@ -1,0 +1,55 @@
+<section class="hero">
+	<div class="kicker">Product · How it works</div>
+	<h1>The loop, and the evidence it works.</h1>
+	<p class="lede">
+		Every step here was exercised against the live system — not drawn on a
+		whiteboard.
+	</p>
+</section>
+
+<h2>Step by step</h2>
+<table>
+	<tr><th>Step</th><th>What happens</th><th>Live evidence</th></tr>
+	<tr><td>Work</td><td>An intent is recorded with an owner.</td><td>Work items created and listed throughout the campaign.</td></tr>
+	<tr><td>Attempt</td><td>An isolated branch with a marker file.</td><td>Real branches on a real Git server.</td></tr>
+	<tr><td>Agent</td><td>An implementer edits a bounded file; every run is an execution record.</td><td>Deterministic adapter exercised across CP1–CP13; a real coding-agent CLI adapter is wired.</td></tr>
+	<tr><td>Check</td><td>Deterministic validation of the change.</td><td>Gate-passing checks on real PRs.</td></tr>
+	<tr><td>Review</td><td>Structured findings (severity, message, file).</td><td>Findings produced on Switchyard's own source.</td></tr>
+	<tr><td>Preview</td><td>Does it merge? Is the merged tree valid?</td><td>Textual conflicts detected; semantic conflicts detected on a clean merge.</td></tr>
+	<tr><td>Integration Queue</td><td>Strict FIFO, policy-gated, CAS-guarded integration.</td><td>3-PR churn integrates in order; same-file contention blocks and repairs; 10-PR scenario measured.</td></tr>
+</table>
+
+<h2>Durability</h2>
+<p>
+	The workflow substrate is <strong>replay-from-top</strong>. A workflow is a
+	JS function calling Switchyard operations; each operation is a durable step
+	keyed by <code>(run_id, step_key, args_hash)</code>. If the control plane
+	dies mid-run:
+</p>
+<ul>
+	<li>completed steps replay their recorded result instead of re-executing;</li>
+	<li>the in-flight step retries (at-least-once);</li>
+	<li>later steps run exactly once;</li>
+	<li>no external effect is duplicated.</li>
+</ul>
+<p>
+	This was proven by killing the control plane during a running durable step
+	and observing a completed agent step replay with <code>attempts=1</code>
+	and exactly the right number of executions.
+</p>
+
+<h2>Realtime</h2>
+<p>
+	External <code>git push</code>es are observed two ways: an event fast path
+	(Cloudflare Queue → Switchyard consumer) and a reconciliation safety net.
+	Both feed the same idempotent ingest, keyed by the transition identity
+	<code>(repo, ref, before, after)</code>, so the same movement converges to
+	one domain event. Browsers see it live over SSE.
+</p>
+
+<div class="callout">
+	<span class="t">Deeper</span>
+	See <a href="/concepts/architecture.html">the architecture</a>,
+	<a href="/concepts/workflows.html">durable workflows</a>, and
+	<a href="/concepts/reviews-conflicts.html">reviews &amp; conflicts</a>.
+</div>

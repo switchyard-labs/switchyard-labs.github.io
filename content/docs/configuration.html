@@ -1,0 +1,44 @@
+<section class="hero">
+	<div class="kicker">Docs · Configuration</div>
+	<h1>Environment variables.</h1>
+	<p class="lede">
+		The control plane is configured entirely through environment variables —
+		one process, no config files.
+	</p>
+</section>
+
+<table>
+	<tr><th>Variable</th><th>Purpose</th></tr>
+	<tr><td><code>SWITCHYARD_TRESTLE_URL</code></td><td>Trestle base URL (default <code>http://127.0.0.1:7350</code>).</td></tr>
+	<tr><td><code>SWITCHYARD_TRESTLE_USER</code> / <code>SWITCHYARD_TRESTLE_PASS</code></td><td>Trestle admin credentials (required).</td></tr>
+	<tr><td><code>SWITCHYARD_ARTIFACTS_ACCOUNT</code></td><td>Cloudflare account id (required).</td></tr>
+	<tr><td><code>SWITCHYARD_ARTIFACTS_NAMESPACE</code></td><td>Artifacts namespace.</td></tr>
+	<tr><td><code>SWITCHYARD_ARTIFACTS_TOKEN_CMD</code></td><td>Token helper path.</td></tr>
+	<tr><td><code>SWITCHYARD_STATIC_DIR</code></td><td>Built web app directory.</td></tr>
+	<tr><td><code>SWITCHYARD_LISTEN</code></td><td>Listen address (default <code>127.0.0.1:8080</code>).</td></tr>
+	<tr><td><code>SWITCHYARD_DATA_DIR</code></td><td>Data dir (scratch clones, secret key).</td></tr>
+	<tr><td><code>SWITCHYARD_STRUT_BIN</code></td><td>Strut worker binary.</td></tr>
+	<tr><td><code>SWITCHYARD_RECONCILE_INTERVAL</code></td><td>Reconciliation period (default <code>15s</code>).</td></tr>
+	<tr><td><code>SWITCHYARD_QUEUE_ID</code></td><td>Cloudflare Queue id for the event fast path (optional).</td></tr>
+	<tr><td><code>SWITCHYARD_QUEUE_PULL_INTERVAL</code></td><td>Queue pull period (default <code>5s</code>).</td></tr>
+	<tr><td><code>SWITCHYARD_WORKFLOW_INTERVAL</code></td><td>Workflow runner period (default <code>2s</code>).</td></tr>
+	<tr><td><code>SWITCHYARD_QUEUE_INTEGRATE_INTERVAL</code></td><td>Integration queue worker period (default <code>3s</code>).</td></tr>
+	<tr><td><code>SWITCHYARD_SECRET_KEY</code></td><td>Optional 32-byte key for credential encryption; otherwise persisted to <code>data/secret.key</code>.</td></tr>
+</table>
+
+<h2>Example</h2>
+<pre><code>SWITCHYARD_TRESTLE_URL=http://127.0.0.1:7350
+SWITCHYARD_TRESTLE_USER=admin
+SWITCHYARD_TRESTLE_PASS=CHANGE_ME
+SWITCHYARD_ARTIFACTS_ACCOUNT=YOUR_ACCOUNT_ID
+SWITCHYARD_ARTIFACTS_NAMESPACE=switchyard-cp0
+SWITCHYARD_ARTIFACTS_TOKEN_CMD=/opt/switchyard/token.sh
+SWITCHYARD_STATIC_DIR=/opt/switchyard/public
+SWITCHYARD_LISTEN=127.0.0.1:8080
+SWITCHYARD_DATA_DIR=/opt/switchyard/data
+SWITCHYARD_STRUT_BIN=/opt/switchyard/deterministic-worker
+SWITCHYARD_RECONCILE_INTERVAL=15s
+SWITCHYARD_QUEUE_ID=YOUR_QUEUE_ID          # optional
+SWITCHYARD_QUEUE_PULL_INTERVAL=5s
+SWITCHYARD_WORKFLOW_INTERVAL=2s
+SWITCHYARD_QUEUE_INTEGRATE_INTERVAL=3s</code></pre>

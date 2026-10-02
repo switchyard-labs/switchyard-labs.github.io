@@ -1,0 +1,42 @@
+<section class="hero">
+	<div class="kicker">Concepts · Integration Queue</div>
+	<h1>Canonical only moves through the queue.</h1>
+	<p class="lede">
+		Strict ordering, policy gates, compare-and-swap, and a repair loop — so
+		concurrent work lands predictably, never as a last-writer-wins race.
+	</p>
+</section>
+
+<h2>The rules</h2>
+<table>
+	<tr><th>Property</th><th>Behaviour</th></tr>
+	<tr><td>Ordering</td><td>Strict FIFO — at most one integration in flight. A later PR that edits the same file previews against the earlier PR's result.</td></tr>
+	<tr><td>Policy</td><td>Integrates only when the check passed AND preview is clean AND (for high-risk work) approval has been given.</td></tr>
+	<tr><td>Freshness</td><td>Integration is CAS-guarded; a moved base is re-queued with bounded attempts.</td></tr>
+	<tr><td>Repair loop</td><td>Preview conflicts block the item and route the attempt to the conflict-resolver; a fix re-queues it.</td></tr>
+	<tr><td>Risk classes</td><td>Low / medium / high from change scope; risk drives policy escalation.</td></tr>
+</table>
+
+<h2>Why strict FIFO matters</h2>
+<p>
+	Without ordering, two items that edit the same file would both preview
+	against the old canonical and one would conflict at merge time. With strict
+	FIFO, the second item previews against the first item's integration — so
+	conflicts are detected and routed to the repair loop instead of surfacing as
+	a merge failure. This was demonstrated with same-file contention: the first
+	PR integrated, the second was blocked by preview, resolved by the repair
+	loop, re-queued, and integrated.
+</p>
+
+<h2>Measured, not guessed</h2>
+<p>
+	The queue was exercised under churn and measured:
+</p>
+<ul>
+	<li>3 clean PRs integrate in order (~18–22 s wall).</li>
+	<li>10 PRs, full queue-to-done ~42 s (~4.2 s/item).</li>
+</ul>
+<p class="muted">
+	The dominant cost is a scratch clone per operation (preview + merge). A
+	cached bare-mirror + worktree model is the next optimization target.
+</p>

@@ -1,0 +1,44 @@
+<section class="hero">
+	<div class="kicker">Docs · Getting started</div>
+	<h1>Build and run the control plane.</h1>
+	<p class="lede">
+		A Go binary, a Trestle, an Artifacts namespace, and a token helper. That's
+		the whole platform.
+	</p>
+</section>
+
+<h2>Prerequisites</h2>
+<ul>
+	<li>A Cloudflare account on the <strong>Workers Paid</strong> plan (Artifacts is Paid-only).</li>
+	<li>Artifacts access with <code>artifacts.read</code> + <code>artifacts.write</code> scopes.</li>
+	<li>A <strong>token helper</strong> — a script that prints a fresh account token (the control plane never holds a static credential).</li>
+	<li>A <strong>Trestle</strong> instance with an admin user/password.</li>
+	<li>Go 1.22+, <code>git</code>, and the Strut worker binary (deterministic adapter).</li>
+</ul>
+
+<h2>Build &amp; run</h2>
+<pre><code>go build -o switchyard ./cmd/switchyard
+
+# configure via environment (see Configuration) then:
+set -a; source cp0.env; set +a
+./switchyard</code></pre>
+<p>
+	On startup the control plane provisions its Trestle collections and starts
+	the reconciler, the optional queue consumer, the workflow runner, and the
+	integration-queue worker, then serves the app.
+</p>
+
+<h2>Web app routes</h2>
+<table>
+	<tr><th>Route</th><th>Purpose</th></tr>
+	<tr><td><code>/</code></td><td>Dashboard — repos, work, live activity over SSE.</td></tr>
+	<tr><td><code>/repos.html?name=…&amp;ref=…&amp;path=…</code></td><td>Repository browser.</td></tr>
+	<tr><td><code>/edit.html?name=…&amp;ref=…&amp;path=…&amp;attempt=…</code></td><td>Editor (Save ≠ Commit, diff, findings, Agent panel).</td></tr>
+	<tr><td><code>/work.html</code></td><td>Work items.</td></tr>
+</table>
+
+<div class="callout">
+	<span class="t">Demo environment</span>
+	The demo is a self-hosted control plane bound to <code>127.0.0.1:8080</code>;
+	view it with <code>ssh -L 8080:127.0.0.1:8080 &lt;host&gt;</code>. See <a href="/product/demo.html">Demo</a>.
+</div>

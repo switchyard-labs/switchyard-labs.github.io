@@ -1,0 +1,47 @@
+<section class="hero">
+	<div class="kicker">Product · Demo</div>
+	<h1>See Switchyard running.</h1>
+	<p class="lede">
+		Real screenshots from the working product, driven by curated demo
+		repositories (ordinary Git, concurrent agent attempts, conflicts, and a
+		durable workflow).
+	</p>
+</section>
+
+<div class="shot-grid">
+	<div class="shot-card"><img src="/assets/images/screenshots/dashboard.png" alt="Switchyard dashboard"><div class="cap">Dashboard — repositories, work, and live activity over SSE.</div></div>
+	<div class="shot-card"><img src="/assets/images/screenshots/repo.png" alt="Switchyard repository browser"><div class="cap">Repository browser — a real file tree and file view, with the Edit-in-editor path.</div></div>
+	<div class="shot-card"><img src="/assets/images/screenshots/work.png" alt="Switchyard work items"><div class="cap">Work — the intents that become attempts, PRs and integrations.</div></div>
+	<div class="shot-card"><img src="/assets/images/screenshots/editor.png" alt="Switchyard browser editor"><div class="cap">Editor — CodeMirror, Save ≠ Commit, draft CAS, diff, findings, Agent panel.</div></div>
+</div>
+
+<h2>Demo repositories</h2>
+<p>The demo environment ships five curated repositories, themed around a small
+<code>railctl</code> project:</p>
+<ul>
+	<li><strong>demo-basic</strong> — ordinary human Git usage: history, a feature branch, an open PR.</li>
+	<li><strong>demo-agents</strong> — one Work item, two concurrent agent attempts, a review.</li>
+	<li><strong>demo-conflict</strong> — two attempts editing the same line: preview finds the textual conflict, the repair loop resolves it.</li>
+	<li><strong>demo-semantic</strong> — Git merges cleanly, but a repo contract is violated: Switchyard detects the semantic conflict and blocks the queue.</li>
+	<li><strong>demo-workflow</strong> — a durable JS workflow that implemented, checked, and integrated a change.</li>
+</ul>
+
+<h2>How to view it yourself</h2>
+<p>
+	The application is a self-hosted control plane currently bound to
+	<code>127.0.0.1:8080</code> on the CP0 development host. The cleanest way to
+	see it today is an SSH tunnel:
+</p>
+<pre><code>ssh -L 8080:127.0.0.1:8080 switchyard-cp0
+# then open http://127.0.0.1:8080/</code></pre>
+<p class="muted">
+	There is not yet a public demo URL. A safe public staging deployment is a
+	planned next step (see Status), rather than exposing an administrative
+	service directly.
+</p>
+
+<div class="callout">
+	<span class="t">Run it yourself</span>
+	Everything in the screenshots is reproducible — <a href="/docs/getting-started.html">Getting started</a>
+	walks through building and running the control plane.
+</div>
