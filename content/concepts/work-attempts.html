@@ -1,39 +1,49 @@
 <section class="hero">
 	<div class="kicker">Concepts · Work, Attempts &amp; Pull Requests</div>
-	<h1>Intent, isolation, and a pull request.</h1>
-	<p class="lede">
-		Work is the intent. An Attempt is an isolated branch where the change is
-		built. A Pull Request is how it offers itself for review.
-	</p>
+	<h1>Intent, isolated execution, familiar review.</h1>
+	<p class="lede">Work is the human-facing task or issue. Attempts are optional candidate executions underneath it. Pull Requests are the familiar Git collaboration boundary where a candidate asks to become canonical.</p>
 </section>
 
-<h2>Work</h2>
-<p>
-	A Work item is a recorded intent — a feature, fix, or task — with an owner
-	and a status. It is the root of the provenance chain.
-</p>
+<h2>The three layers</h2>
+<table>
+	<tr><th>Concept</th><th>Answers</th><th>Can exist without Agents?</th></tr>
+	<tr><td><strong>Work</strong></td><td>What are we trying to accomplish, who owns it, and is it open/closed?</td><td>Yes. Work is useful as an ordinary issue/task with body, assignee and comments.</td></tr>
+	<tr><td><strong>Attempt</strong></td><td>Which isolated candidate is trying to implement the Work?</td><td>Yes. A human or deterministic tool can own an Attempt; it is not inherently an LLM concept.</td></tr>
+	<tr><td><strong>Pull Request</strong></td><td>Is this concrete Git branch ready to review and integrate?</td><td>Yes. It remains a normal PR surface with commits/files/checks/conversation.</td></tr>
+</table>
 
-<h2>Attempts</h2>
-<p>
-	An Attempt opens an isolated branch (for example <code>attempt-&lt;id&gt;</code>)
-	with a marker file. Agents and humans work there in complete isolation:
-</p>
-<ul>
-	<li>the attempt branch is the only place an agent can write;</li>
-	<li>every agent run is an <code>execution</code> record (role, adapter, status, output);</li>
-	<li>draft edits in the editor are saved to an ephemeral draft and committed
-	explicitly through the same ref substrate.</li>
-</ul>
+<h2>Work is the issue/task model</h2>
+<p>A Work item records durable intent: feature, bug, refactor, investigation, maintenance or release task. It can have a description, status, assignee and comments and may never create an Attempt at all. That keeps the simple human-only case familiar.</p>
+<pre><code>Work #142  Improve repository error states
+  status: open
+  assignee: nick
+  comments: 3
 
-<h2>Pull Requests</h2>
-<p>
-	A PR proposes an attempt branch against a base. It carries a deterministic
-	check, structured review findings, and — critically — a preview of whether it
-	will integrate. Then it enters the <a href="@path('concepts/integration-queue')">Integration Queue</a>.
-</p>
+  # no Attempt is required until somebody chooses to execute it
+</code></pre>
 
-<div class="callout ok">
-	<span class="t">Demo</span>
-	<code>demo-agents</code> is one Work item with two concurrent attempts, both
-	executed and reviewed.
-</div>
+<h2>Attempts make concurrency explicit</h2>
+<p>When implementation begins, one Work item can have multiple Attempts. Each Attempt has isolated Git state and its own execution/provenance history. That makes competing approaches first-class instead of forcing every Agent onto one shared branch.</p>
+<table>
+	<tr><th>Attempt</th><th>Actor</th><th>Branch</th><th>Possible outcome</th></tr>
+	<tr><td>A</td><td>implementer Agent</td><td><code>attempt/a</code></td><td>passes review and opens the winning PR</td></tr>
+	<tr><td>B</td><td>human</td><td><code>attempt/b</code></td><td>abandoned after benchmark comparison</td></tr>
+	<tr><td>C</td><td>alternate Agent role</td><td><code>attempt/c</code></td><td>fails a contract check but remains useful provenance</td></tr>
+</table>
+<p>Failed and losing Attempts are not silently discarded. They explain what was tried, which can matter as much as the final diff when automated engineering becomes highly concurrent.</p>
+
+<h2>Pull Requests stay familiar</h2>
+<p>A PR proposes an Attempt branch against a base. The default surface is ordinary Git-host collaboration: conversation, commits, files changed and checks. Switchyard-specific state — Attempt, Agent execution, provenance, risk, queue state — appears progressively when it exists.</p>
+
+<h2>Lifecycle example</h2>
+<pre><code>Work: "Add repository search"
+  ├─ Attempt A (human)  ──┐
+  └─ Attempt B (agent)  ──┼─ compare/review
+                           └─ PR from B
+                               ├─ check
+                               ├─ Review Findings
+                               ├─ preview against current main
+                               └─ Integration Queue → main
+</code></pre>
+
+<div class="callout ok"><span class="t">Demo</span><code>demo-agents</code> is one Work item with concurrent Attempts so the distinction can be explored without reading implementation fixtures.</div>

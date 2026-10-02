@@ -1,48 +1,62 @@
 <section class="hero">
 	<div class="kicker">Concepts · Durable workflows</div>
-	<h1>JS you can crash on.</h1>
-	<p class="lede">
-		Workflows are authored in JavaScript, but their state is not the lifetime
-		of a process. Durable steps, replay, and bounded autonomy.
-	</p>
+	<h1>JavaScript authoring. Durable execution.</h1>
+	<p class="lede">Switchyard workflows look like ordinary JavaScript orchestration, but durability belongs to recorded Switchyard operations rather than the lifetime of a Node/JS process.</p>
 </section>
 
 <h2>The authoring model</h2>
-<p>
-	A workflow is a function <code>run(ctx)</code> that calls Switchyard
-	operations. Ordinary local computation between the calls runs normally; only
-	the operations are durable boundaries.
-</p>
-<pre><code>function run(ctx) {
-  await ctx.agent({ repo, branch, file, append });
-  await ctx.check({ repo, branch });
-  await ctx.review({ repo, branch });
-  await ctx.parallel([
-    () => ctx.agent({ ... }),
-    () => ctx.review({ ... }),
-  ]);
-  await ctx.wait_approval({ reason });
-  await ctx.integrate({ repo, branch, base });
-}</code></pre>
+<p>A workflow defines <code>run(ctx)</code>. Normal local computation can happen between operations. Calls on <code>ctx</code> are the durable boundaries that Switchyard records and can replay.</p>
+<pre><code class="language-javascript">function run(ctx) {
+  const implementation = ctx.agent({
+    repo: ctx.params.repo,
+    branch: ctx.params.branch,
+    file: "src/router.go",
+    append: "// bounded implementation step"
+  });
 
-<h2>Durability by replay</h2>
-<ul>
-	<li>Every operation is a durable step keyed by <code>(run_id, step_key, args_hash)</code>.</li>
-	<li>On restart the script re-runs from the top; completed steps <em>replay</em> their recorded result.</li>
-	<li>In-flight steps retry (at-least-once); later steps run exactly once.</li>
-	<li>External effects are never duplicated.</li>
-</ul>
-<p>
-	This is proven by killing the control plane during a running durable step:
-	the completed agent step replayed with <code>attempts=1</code>, the in-flight
-	sleep retried, later steps ran once, and the execution count was exactly
-	right.
-</p>
+  const check = ctx.check({ repo: ctx.params.repo, branch: ctx.params.branch });
+  const review = ctx.review({ repo: ctx.params.repo, branch: ctx.params.branch });
 
-<h2>Governance</h2>
+  if (!review.approved) {
+    ctx.wait_approval({ reason: "review requires direction" });
+  }
+
+  return { implementation, check, review };
+}
+</code></pre>
+
+<h2>Durable operations</h2>
+<table>
+	<tr><th>Operation</th><th>Purpose</th><th>Durability implication</th></tr>
+	<tr><td><code>ctx.agent(...)</code></td><td>Run a role-scoped executor against isolated repository state.</td><td>Execution/result are recorded so a completed Agent effect is not repeated after replay.</td></tr>
+	<tr><td><code>ctx.check(...)</code></td><td>Run deterministic validation.</td><td>Result becomes a reusable durable step.</td></tr>
+	<tr><td><code>ctx.review(...)</code></td><td>Produce structured review state/findings.</td><td>Findings remain attached to the engineering history.</td></tr>
+	<tr><td><code>ctx.parallel(...)</code></td><td>Express independent durable branches.</td><td>Each child operation keeps an explicit durable identity.</td></tr>
+	<tr><td><code>ctx.wait_approval(...)</code></td><td>Pause for policy/human direction.</td><td>The run can remain waiting across process restarts.</td></tr>
+	<tr><td><code>ctx.integrate(...)</code></td><td>Request canonical integration.</td><td>Still subject to queue freshness/policy rather than direct Agent canonical writes.</td></tr>
+</table>
+
+<h2>Replay-from-top, not serialized JavaScript stacks</h2>
+<pre><code>step identity = (run_id, step_key, op, args_hash)
+
+process restarts
+  └─ workflow function starts again
+       ├─ completed step → return recorded result
+       ├─ in-flight step → bounded retry
+       └─ new step       → record intent, execute, record result
+</code></pre>
+<p>Switchyard deliberately does not attempt to serialize arbitrary JS closures or VM stack frames. Durability is explicit at Switchyard operations, which keeps the execution model inspectable and testable.</p>
+
+<h2>What the crash gate proved</h2>
+<p>During CP7 the control plane was killed during a running durable workflow and restarted. The already-completed Agent step replayed its recorded result instead of creating another repository effect; the in-flight sleep retried; later Agent/check steps executed once. Earlier false-positive crash tests were rejected before this final gate, which is useful evidence that the final claim is real rather than ceremonial.</p>
+
+<h2>Governance and bounds</h2>
 <ul>
-	<li>Step budgets and bounded recursion are enforced.</li>
-	<li>Workflows can spawn children and wait on human approval.</li>
-	<li>Determinism is enforced: no wall-clock in control flow, seeded
-	<code>ctx.random(seed)</code>.</li>
+	<li>Step budgets cap how much a workflow may execute.</li>
+	<li>Child spawning/recursion is bounded rather than allowing an unbounded Agent tree.</li>
+	<li>Cancellation is durable state, not merely killing one process.</li>
+	<li>Organisation policy can constrain workflow budgets and Agent file access.</li>
+	<li>Human approval is a policy option, not a universal mandatory bottleneck.</li>
 </ul>
+
+<div class="callout"><span class="t">Why JavaScript?</span>The useful primitive is programmable composition: implementation → review → repair → test → integrate. YAML can describe simple pipelines; JavaScript can express the decision logic around them without making Switchyard's durable state depend on a long-lived JS process.</div>

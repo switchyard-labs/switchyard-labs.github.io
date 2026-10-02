@@ -1,44 +1,41 @@
 <section class="hero">
 	<div class="kicker">Docs · Status</div>
-	<h1>Where the product actually stands.</h1>
-	<p class="lede">
-		Honest, evidence-based status — including the two bounded conditions
-		that remain.
-	</p>
+	<h1>What is proven, what is conditional, what is next.</h1>
+	<p class="lede">Switchyard has moved well beyond the original CP13 prototype: the Git-host product layer, profiles/organisations, Warden-style editor workbench, Pull Requests, settings and read-only demo model now exist. This page distinguishes implemented capability from the remaining live/release certification work.</p>
 </section>
 
-<h2>Proven end-to-end</h2>
-<p>
-	The deterministic loop is complete and exercised against the live system,
-	including running Switchyard's own source through it:
-</p>
+<h2>Implemented product surface</h2>
+<table>
+	<tr><th>Area</th><th>Status</th><th>Evidence/meaning</th></tr>
+	<tr><td>Git hosting UX</td><td>Implemented</td><td>owner/repo identity, Code clone menu, source viewer, README, branches/tags, commit history/compare, PRs and repo settings.</td></tr>
+	<tr><td>Human task model</td><td>Implemented</td><td>Work is a human-first issue/task model with body, assignee, status and comments; Attempts are optional.</td></tr>
+	<tr><td>Editor</td><td>Implemented</td><td>Warden-inspired Files/Search/Source workbench, tabs, syntax highlighting, draft CAS, diff/findings and interactive Agent-to-draft proposals.</td></tr>
+	<tr><td>Identity</td><td>Implemented</td><td>User/org profiles, large avatars, profile READMEs, pinned repos, invitations, teams and settings surfaces.</td></tr>
+	<tr><td>Agent-native coordination</td><td>Implemented</td><td>Attempts, durable workflows, structured findings, Integration Queue, semantic contracts, Needs Attention and provenance.</td></tr>
+	<tr><td>Public demo model</td><td>Implemented contract</td><td>Anonymous browsing is restricted to public canonical repos/identities; mutation remains authenticated.</td></tr>
+</table>
+
+<h2>Core engineering gates already proven</h2>
 <div class="grid">
-	<div class="card"><div class="tag">PASS</div><h3>Deterministic loop</h3><p class="muted">Work → Attempt → agent → PR → review → preview → Integration Queue → canonical, with full provenance.</p></div>
-	<div class="card"><div class="tag">PASS</div><h3>Durable workflows</h3><p class="muted">True process-death replay proven; completed steps replay, never re-execute.</p></div>
-	<div class="card"><div class="tag">PASS</div><h3>Editor concurrency</h3><p class="muted">Draft revision CAS: stale saves rejected, external movement detected. No last-writer-wins.</p></div>
-	<div class="card"><div class="tag">PASS</div><h3>Conflict honesty</h3><p class="muted">Textual conflicts + repair loop proven; semantic conflicts proven on a clean Git merge via contract validation.</p></div>
+	<div class="card"><div class="tag">PASS</div><h3>Deterministic loop</h3><p class="muted">Work → Attempt → execution → PR → review → preview → Integration Queue → canonical, including Switchyard-on-Switchyard dogfood.</p></div>
+	<div class="card"><div class="tag">PASS</div><h3>Durable workflows</h3><p class="muted">True process-death replay: completed steps replay recorded results and external effects are not duplicated.</p></div>
+	<div class="card"><div class="tag">PASS</div><h3>Editor concurrency</h3><p class="muted">Draft revision CAS, Agent-vs-human stale protection and external branch movement detection.</p></div>
+	<div class="card"><div class="tag">PASS</div><h3>Conflict honesty</h3><p class="muted">Textual merge conflicts and deterministic repair plus semantic conflicts where Git merges cleanly but a repository contract fails.</p></div>
 </div>
 
-<h2>Bounded conditions (not failures)</h2>
-<div class="callout warn">
-	<span class="t">Real coding-agent leg</span>
-	The runner adapter for a real provider-backed coding-agent CLI is implemented
-	and wired, but has not yet executed a real LLM edit. It requires a provider
-	credential and a coding-agent CLI on the control-plane host. The deterministic
-	adapter runs on the identical substrate.
-</div>
-<div class="callout warn">
-	<span class="t">Upstream event delivery</span>
-	Cloudflare's event-subscription → Queue delivery for pushed events was proven
-	in CP0 but is currently not flowing account-wide. The Switchyard fast path is
-	implemented and gated from the Queue onward; reconciliation covers
-	correctness. Re-certified when the upstream leg resumes.
-</div>
+<h2>Still conditional</h2>
+<div class="callout warn"><span class="t">Real provider-backed coding Agent</span>The runner abstraction and coding-agent adapter path exist, but the original campaign did not execute a real provider-backed coding Agent on the control-plane host. The deterministic adapter certified the substrate. Closing this condition requires a suitable CLI/provider credential and one meaningful end-to-end Agent task.</div>
+<div class="callout warn"><span class="t">Cloudflare pushed-event source leg</span>The Queue→Switchyard→Trestle→SSE fast path is implemented and tested, and CP0 previously proved Artifacts event delivery. During later certification the upstream Artifacts event-subscription→Queue delivery stopped flowing account-wide, so reconciliation remains the correctness safety net until that source leg is re-certified.</div>
 
-<h2>Roadmap</h2>
-<p>
-	Next milestone (hardening, not yet begun): recovery/restart campaign, schema
-	migrations, security review, cached-mirror performance work, interactive
-	Agent-to-draft editing, a safe public demo deployment, and the independent
-	review of the four architecture contracts.
-</p>
+<h2>Release/hardening work</h2>
+<table>
+	<tr><th>Area</th><th>Remaining work</th></tr>
+	<tr><td>Live PX certification</td><td>Run the full Go 1.26 + live Trestle/Artifacts + fresh Chromium/Firefox matrix against the integrated PX0–PX25 product.</td></tr>
+	<tr><td>Security</td><td>Full authorization matrix, CSRF/session review, prompt/tool boundaries, path traversal, capability escalation and credential leak scan.</td></tr>
+	<tr><td>Git hardening</td><td>Protected-ref enforcement breadth, tag/delete/force movement edge cases, queue crash immediately around canonical merge.</td></tr>
+	<tr><td>Performance</td><td>Benchmark cached bare mirror/worktrees against the measured scratch-clone baseline.</td></tr>
+	<tr><td>Operations</td><td>Schema migration strategy, service lifecycle, backup/restore automation, structured metrics/logging and disaster recovery.</td></tr>
+	<tr><td>Public staging</td><td>Deploy behind a reverse proxy/TLS and certify anonymous demo boundaries against direct API calls.</td></tr>
+</table>
+
+<div class="callout"><span class="t">Status principle</span>Implemented does not mean release-certified. The product surface is broad; CP14 remains the deliberate hardening/certification phase.</div>

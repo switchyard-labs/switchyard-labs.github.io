@@ -1,42 +1,57 @@
 <section class="hero">
 	<div class="kicker">Concepts · Integration Queue</div>
-	<h1>Canonical only moves through the queue.</h1>
-	<p class="lede">
-		Strict ordering, policy gates, compare-and-swap, and a repair loop — so
-		concurrent work lands predictably, never as a last-writer-wins race.
-	</p>
+	<h1>Canonical only moves through a fresh, ordered decision.</h1>
+	<p class="lede">The Integration Queue is not merely a FIFO list. It is the place where Switchyard re-validates a Pull Request against the current canonical repository, applies policy, detects conflicts, and performs the final CAS-guarded Git operation.</p>
 </section>
 
-<h2>The rules</h2>
+<h2>What the queue is responsible for</h2>
 <table>
-	<tr><th>Property</th><th>Behaviour</th></tr>
-	<tr><td>Ordering</td><td>Strict FIFO — at most one integration in flight. A later PR that edits the same file previews against the earlier PR's result.</td></tr>
-	<tr><td>Policy</td><td>Integrates only when the check passed AND preview is clean AND (for high-risk work) approval has been given.</td></tr>
-	<tr><td>Freshness</td><td>Integration is CAS-guarded; a moved base is re-queued with bounded attempts.</td></tr>
-	<tr><td>Repair loop</td><td>Preview conflicts block the item and route the attempt to the conflict-resolver; a fix re-queues it.</td></tr>
-	<tr><td>Risk classes</td><td>Low / medium / high from change scope; risk drives policy escalation.</td></tr>
+	<tr><th>Property</th><th>Behaviour</th><th>Why it matters</th></tr>
+	<tr><td>Ordering</td><td>Strict FIFO; at most one canonical integration in flight.</td><td>Later PRs preview against the repository state produced by earlier successful integrations.</td></tr>
+	<tr><td>Freshness</td><td>Preview/check state is evaluated against the current base before the final Git mutation.</td><td>A PR that was valid ten seconds ago cannot silently integrate against stale assumptions.</td></tr>
+	<tr><td>Policy</td><td>Checks, review state, risk class and repository/org policy are evaluated before canonical moves.</td><td>Autonomy can vary by repository/risk without changing the Git substrate.</td></tr>
+	<tr><td>Conflict handling</td><td>Textual or semantic conflicts park/block the item rather than failing at the last line of a merge.</td><td>Repair can happen on the Attempt branch and be re-previewed deterministically.</td></tr>
+	<tr><td>Idempotency</td><td>Queue state is durable and canonical ref changes are provenance-bearing.</td><td>Restarts/retries do not imply “try the merge again and hope.”</td></tr>
 </table>
 
-<h2>Why strict FIFO matters</h2>
-<p>
-	Without ordering, two items that edit the same file would both preview
-	against the old canonical and one would conflict at merge time. With strict
-	FIFO, the second item previews against the first item's integration — so
-	conflicts are detected and routed to the repair loop instead of surfacing as
-	a merge failure. This was demonstrated with same-file contention: the first
-	PR integrated, the second was blocked by preview, resolved by the repair
-	loop, re-queued, and integrated.
-</p>
+<h2>Lifecycle</h2>
+<pre><code>queued
+  │
+  ├─ required check missing/failed ───────────────► reject/block
+  │
+  ├─ preview has textual conflict ────────────────► blocked → repair → requeue
+  │
+  ├─ merged tree violates semantic contract ─────► blocked → fix contract mismatch
+  │
+  ├─ policy requires human approval ─────────────► Needs Attention → approve/reject
+  │
+  ├─ canonical moved during final operation ─────► stale → bounded requeue/re-preview
+  │
+  └─ fresh + clean + policy satisfied ───────────► Git merge/push → done
+</code></pre>
 
-<h2>Measured, not guessed</h2>
-<p>
-	The queue was exercised under churn and measured:
-</p>
-<ul>
-	<li>3 clean PRs integrate in order (~18–22 s wall).</li>
-	<li>10 PRs, full queue-to-done ~42 s (~4.2 s/item).</li>
-</ul>
-<p class="muted">
-	The dominant cost is a scratch clone per operation (preview + merge). A
-	cached bare-mirror + worktree model is the next optimization target.
-</p>
+<h2>Why strict FIFO matters</h2>
+<p>Suppose PR A and PR B both start from the same <code>main</code>. A and B may each be perfectly valid in isolation. If they were integrated concurrently, both could preview against the same old base and one would discover the incompatibility only while trying to move canonical. FIFO changes the question: A integrates first, then B is previewed against <em>A's result</em>.</p>
+<table>
+	<tr><th>Moment</th><th>PR A</th><th>PR B</th></tr>
+	<tr><td>Initial state</td><td>preview against <code>main@X</code></td><td>preview against <code>main@X</code></td></tr>
+	<tr><td>A reaches queue head</td><td>fresh → integrates → <code>main@Y</code></td><td>still queued</td></tr>
+	<tr><td>B reaches queue head</td><td>done</td><td>re-preview against <code>main@Y</code></td></tr>
+	<tr><td>If incompatible</td><td>unchanged</td><td>blocked before canonical mutation; repair/requeue path begins</td></tr>
+</table>
+
+<h2>Textual conflict repair</h2>
+<p>The CP9 gate exercised same-file contention. The first PR integrated. The second became blocked during preview, its Attempt was routed to conflict state, the conflict-resolver repaired the Attempt branch, and the item was explicitly re-queued. Only after the repaired branch previewed cleanly did it become canonical.</p>
+
+<h2>Semantic conflict blocking</h2>
+<p>The queue also validates deterministic repository contracts against the preview-merged tree. This catches the more subtle case where Git itself reports a clean merge but the combined repository violates an invariant. A semantic conflict becomes a structured finding and blocks integration exactly like any other unresolved correctness problem.</p>
+
+<h2>Observed performance</h2>
+<table>
+	<tr><th>Scenario</th><th>Observed</th><th>Interpretation</th></tr>
+	<tr><td>3 clean PRs</td><td>18–22 s total</td><td>Ordering/correctness proven; scratch-clone preparation is visible.</td></tr>
+	<tr><td>10 clean PRs</td><td>~42 s total (~4.2 s/item)</td><td>Queue mechanics are not the dominant conceptual bottleneck; repeated Git setup is.</td></tr>
+</table>
+<p class="muted">The next optimization target is a cached bare mirror plus isolated worktrees, not removing serialization from the final canonical decision.</p>
+
+<div class="callout"><span class="t">Invariant</span>The queue may become faster, but it should never become last-writer-wins. Every item integrates against the canonical state that actually exists when it reaches the head.</div>

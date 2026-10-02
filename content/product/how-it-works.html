@@ -31,3 +31,19 @@
 <p>If somebody pushes from a terminal or CI system, Artifacts changes immediately because it is the remote Git server. Switchyard then observes that Git movement through events and reconciliation and updates its durable coordination/provenance view.</p>
 
 <div class="callout"><span class="t">Useful mental model</span><strong>Artifacts answers “what is in Git?”</strong> Trestle answers “what is Switchyard doing about it?”</div>
+
+<h2>A concrete change, end to end</h2>
+<table>
+  <tr><th>Moment</th><th>Switchyard state</th><th>Git/Artifacts state</th></tr>
+  <tr><td>1. Someone opens Work</td><td>Work records intent, owner and discussion.</td><td>No Git change is required yet.</td></tr>
+  <tr><td>2. Implementation starts</td><td>An Attempt records the candidate and actor/executions.</td><td>A real isolated branch exists in the Artifacts repository.</td></tr>
+  <tr><td>3. Files change</td><td>Draft/execution provenance is recorded as appropriate.</td><td>When committed, ordinary Git commits appear on the Attempt branch.</td></tr>
+  <tr><td>4. PR opens</td><td>Checks, findings and review state become visible.</td><td>The PR still references normal source/base Git refs.</td></tr>
+  <tr><td>5. Queue evaluates</td><td>Freshness, policy, conflict state and risk determine whether it may integrate.</td><td>Preview reads the actual current base tree.</td></tr>
+  <tr><td>6. Integration succeeds</td><td>Queue/provenance records the decision and outcome.</td><td>A real non-force Git operation moves canonical in Artifacts.</td></tr>
+</table>
+
+<h2>What happens when somebody bypasses the UI?</h2>
+<p>Nothing breaks conceptually. If a developer pushes directly from a terminal, Cloudflare Artifacts changes immediately because it is the Git server. Switchyard observes that ref movement through the event/reconciliation paths and updates its coordination view. This is an important design property: the browser UI is a collaboration surface, not a mandatory proprietary transport layer.</p>
+
+<div class="callout ok"><span class="t">Simple case</span>One human with zero Agents can still clone, branch, push, browse history, create Work, open a Pull Request and integrate under repository policy. Agent-native concepts remain additive.</div>

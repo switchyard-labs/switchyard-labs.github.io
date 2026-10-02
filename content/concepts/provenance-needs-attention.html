@@ -1,41 +1,53 @@
 <section class="hero">
 	<div class="kicker">Concepts · Provenance &amp; Needs Attention</div>
-	<h1>Explainable changes. Surfaceable decisions.</h1>
-	<p class="lede">
-		Every canonical change has a full chain. Everything that needs a human is
-		in one place, with the information to decide.
-	</p>
+	<h1>Explainable changes. Actionable decisions.</h1>
+	<p class="lede">Provenance answers “how did this change get here?” Needs Attention answers “what, exactly, do you need me to decide?” They are two views over the same durable engineering history.</p>
 </section>
 
-<h2>Provenance</h2>
-<p>
-	Work → Attempt → runs → PR → ref updates → normalized events: a durable,
-	queryable chain for any change. Nothing on canonical is anonymous.
-</p>
+<h2>A canonical change is a chain, not a mystery commit</h2>
+<pre><code>Work
+  └─ Attempt
+      ├─ Agent / human executions
+      ├─ checks + Review Findings
+      └─ Pull Request
+          ├─ preview / semantic validation
+          └─ Integration Queue
+              └─ canonical ref update
+</code></pre>
+<p>Git remains authoritative for the actual commit/ref history in Cloudflare Artifacts. Trestle records the surrounding coordination facts: why the work existed, which Attempt produced it, what ran, which findings were raised, what policy applied and which integration action moved canonical.</p>
 
-<h2>Needs Attention</h2>
-<p>
-	One list aggregates everything that needs a decision:
-</p>
+<h2>What provenance records are useful for</h2>
+<table>
+	<tr><th>Question</th><th>Evidence Switchyard can connect</th></tr>
+	<tr><td>Why was this change made?</td><td>The originating Work item and its description/comments.</td></tr>
+	<tr><td>Which candidate produced it?</td><td>Attempt branch and execution records.</td></tr>
+	<tr><td>Was it reviewed?</td><td>Review execution plus structured Review Findings.</td></tr>
+	<tr><td>What validation ran?</td><td>Check results, preview result and repository contract findings.</td></tr>
+	<tr><td>Why did it integrate?</td><td>Queue state, risk/policy decision and final ref-update provenance.</td></tr>
+	<tr><td>What failed before the winning path?</td><td>Losing/failed Attempts remain durable history instead of being erased.</td></tr>
+</table>
+
+<h2>Needs Attention is a decision inbox</h2>
+<p>Automation should not escalate merely because an internal operation returned an error. It escalates when the system has reached a point where a human choice is actually required. The consolidated list includes:</p>
 <ul>
-	<li>attempts parked in conflict;</li>
-	<li>blocked integration-queue items;</li>
-	<li>workflow runs waiting for approval;</li>
-	<li>open error findings.</li>
+	<li>Attempts parked in unresolved conflict;</li>
+	<li>Integration Queue items blocked by conflict or policy;</li>
+	<li>workflow runs waiting for explicit approval;</li>
+	<li>open error-severity findings that require direction.</li>
 </ul>
 
-<h2>Escalation decision packets</h2>
-<p>
-	When a change is blocked, it can be escalated into a <strong>self-contained
-	decision packet</strong>: target, repository, branch, base, the conflicting
-	files with base and source versions, the findings, and the suggested
-	resolutions. You decide without reconstructing history.
-</p>
+<h2>Decision packets</h2>
+<p>An escalation snapshots the information needed to decide rather than forcing the operator to reconstruct logs. For a content conflict the packet can include repository, branch/base, conflicting paths, base/source versions, findings and suggested resolution actions.</p>
 <table>
-	<tr><th>Decision</th><th>Effect</th></tr>
-	<tr><td><code>take_ours</code></td><td>Canonical's version wins; the attempt resolves and can be re-queued.</td></tr>
-	<tr><td><code>take_theirs</code></td><td>The attempt's version is kept (recorded).</td></tr>
-	<tr><td><code>three_way</code></td><td>A real three-way merge resolves the files.</td></tr>
-	<tr><td><code>approve</code></td><td>Unblocks a workflow waiting for approval.</td></tr>
-	<tr><td><code>requeue</code></td><td>Re-runs a blocked integration item.</td></tr>
+	<tr><th>Decision</th><th>Effect</th><th>When it makes sense</th></tr>
+	<tr><td><code>take_ours</code></td><td>Apply canonical/base-side content to the Attempt, resolve, then allow re-preview/requeue.</td><td>The canonical version should win this contested content.</td></tr>
+	<tr><td><code>take_theirs</code></td><td>Keep source-side content and record the choice.</td><td>The Attempt's version is known to be the desired one.</td></tr>
+	<tr><td><code>three_way</code></td><td>Run a real three-way merge and write the result onto the Attempt branch.</td><td>The changes can be reconciled mechanically.</td></tr>
+	<tr><td><code>approve</code></td><td>Release a workflow/policy gate waiting on human approval.</td><td>The evidence is sufficient but policy requires a person.</td></tr>
+	<tr><td><code>requeue</code></td><td>Run the blocked integration item through preview/freshness again.</td><td>The underlying cause has been repaired.</td></tr>
 </table>
+
+<h2>Example</h2>
+<p>Suppose PR A integrates first and PR B now conflicts. Switchyard does not ask “merge failed, what now?” It can show that B was valid against the old base, A moved canonical, B now conflicts in two named files, the conflict-resolver attempted a repair, and the remaining choices are ours/theirs/three-way. The human decision then becomes another attributable event in the same provenance chain.</p>
+
+<div class="callout"><span class="t">Design goal</span>Human intervention is the final escalation path, not the default execution model. When Switchyard asks for attention, it should arrive with evidence and bounded choices.</div>

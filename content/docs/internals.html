@@ -1,47 +1,55 @@
 <section class="hero">
 	<div class="kicker">Docs · Internals</div>
-	<h1>Notes for the curious.</h1>
-	<p class="lede">
-		Implementation-level detail that didn't belong in the product story, but
-		is honest and useful.
-	</p>
+	<h1>The mechanics behind the product model.</h1>
+	<p class="lede">Implementation details that matter when debugging or extending Switchyard: dual-path events, durable workflow steps, Git ref safety, credential boundaries and where each source of truth begins and ends.</p>
 </section>
 
-<h2>The dual-path event identity</h2>
-<p>
-	The event fast path and reconciliation both write normalized domain events
-	keyed by the transition identity <code>(repo, ref, before, after)</code> —
-	deliberately free of delivery metadata (message id, seen time). Both paths
-	converge on one durable domain event and one broadcast. Trestle's
-	Idempotency-Key returns <code>replayed=true</code> only for byte-identical
-	content; the same identity with different metadata yields
-	<code>409 idempotency_conflict</code>, which Switchyard treats as
-	convergence (the fact already exists once) and acknowledges — no retry
-	churn, no duplicate broadcast.
-</p>
+<h2>Authority split</h2>
+<table>
+	<tr><th>System</th><th>Authoritative for</th><th>Not authoritative for</th></tr>
+	<tr><td>Cloudflare Artifacts</td><td>Git objects, commits, branches, tags and canonical refs.</td><td>Work status, workflow progress, review findings or policy.</td></tr>
+	<tr><td>Trestle</td><td>Coordination/application truth: Work, Attempts, PR metadata, workflow steps, findings, queue, policy, audit.</td><td>The actual contents/history of a Git branch.</td></tr>
+	<tr><td>Switchyard control plane</td><td>Rules that connect the two: orchestration, auth, policy, reconciliation and UX.</td><td>Long-term truth that exists only in process memory.</td></tr>
+</table>
 
-<h2>Queue mechanics</h2>
-<ul>
-	<li>Cloudflare queue message bodies arrive as JSON-encoded strings; the
-	consumer decodes the string, then the envelope.</li>
-	<li>Pull + ack semantics with visibility timeouts give at-least-once delivery.</li>
-	<li>Failed ingests are returned to the queue (retried), not acked.</li>
-</ul>
+<h2>The dual-path event identity</h2>
+<p>The event fast path and reconciliation both write normalized domain events keyed by the Git transition identity <code>(repo, ref, before, after)</code>. Delivery metadata such as queue message id or “seen at” time is deliberately excluded from the logical identity so two observers of the same Git movement converge.</p>
+<pre><code>Artifacts push event ──► Cloudflare Queue ──► ingest ──┐
+                                                       ├─► one normalized ref transition
+periodic git reconciliation ───────────────────────────┘
+</code></pre>
+<p>Trestle's idempotency behavior also matters here: the same Idempotency-Key with byte-identical content replays, while the same key with different content returns <code>409 idempotency_conflict</code>. Switchyard treats the latter as convergence when the underlying Git fact is already durably represented rather than retrying forever.</p>
+
+<h2>Git/ref mutation safety</h2>
+<p>Canonical/ref movement uses ordinary Git as the final stale-write authority. Switchyard reads the expected SHA, creates the desired commit/merge, then performs a normal <strong>non-force</strong> push. If another actor moved the ref first, Git rejects the stale update. Force-push is therefore a policy-sensitive escape hatch rather than part of the normal integration substrate.</p>
+<pre><code>expected main = abc123
+build candidate commit = def456
+
+git push origin def456:main
+# succeeds only while main is still compatible with the expected state
+</code></pre>
 
 <h2>Workflow durability</h2>
 <pre><code>step = (run_id, step_key, op, args_hash, status, result, attempts)
 
 run script from top
-  for each operation:
-    completed step?  → REPLAY recorded result
-    in-flight step?  → re-execute (bounded retries)
-    new step?        → record intent, execute, record result, count against budget</code></pre>
+  for each durable operation:
+    completed step?  → replay recorded result
+    in-flight step?  → re-execute with bounded retry
+    new step?        → record intent, execute, record result
+</code></pre>
+<p>This intentionally avoids serializing arbitrary JavaScript VM state. The workflow function is reproducible control logic; durable Switchyard operations are the persistence boundaries.</p>
 
 <h2>Credential store</h2>
-<ul>
-	<li>AES-256-GCM ciphertext at rest; metadata-only API; plaintext only during
-	execution resolution (scoped 0600 file).</li>
-	<li>Key from <code>SWITCHYARD_SECRET_KEY</code> or <code>data/secret.key</code>.</li>
-	<li>Threat model: co-located key ⇒ protects against database-only compromise,
-	not full host compromise.</li>
-</ul>
+<table>
+	<tr><th>Layer</th><th>Rule</th></tr>
+	<tr><td>Provider credential</td><td>Encrypted at rest (AES-256-GCM), metadata-only API, resolved only for execution.</td></tr>
+	<tr><td>Agent role</td><td>Defines allowed intent/capabilities independently of a provider secret.</td></tr>
+	<tr><td>Repository authority</td><td>Granted by Switchyard access/policy and short-lived Git credentials, never by “having an API key.”</td></tr>
+	<tr><td>Fallback encryption key</td><td>May live under the local data directory; protects against database-only compromise, not full-host compromise.</td></tr>
+</table>
+
+<h2>Why scratch Git exists</h2>
+<p>Preview, conflict analysis, semantic validation and integration need actual Git trees. The first implementation uses scratch clones because the correctness model is extremely clear: each operation gets isolated repository state. The measured performance cost is real and documented; a cached bare mirror/worktree design is the intended optimization once it passes equivalent isolation and credential-safety gates.</p>
+
+<div class="callout"><span class="t">Internals principle</span>Where possible, Switchyard composes existing strong primitives — Git non-force pushes, Trestle CAS/idempotency, durable records — rather than inventing a second source-control or transaction model.</div>

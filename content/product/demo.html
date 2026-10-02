@@ -52,3 +52,15 @@
 	Everything in the screenshots is reproducible — <a href="@path('docs/getting-started')">Getting started</a>
 	walks through building and running the control plane.
 </div>
+<h2>What to look for in each demo</h2>
+<table>
+  <tr><th>Repository</th><th>Open this surface</th><th>What it demonstrates</th></tr>
+  <tr><td><code>demo-basic</code></td><td>Repository → history → Pull Request</td><td>The ordinary Git-host experience without requiring any Agent concepts.</td></tr>
+  <tr><td><code>demo-agents</code></td><td>Work → Attempts → review</td><td>One intent producing multiple isolated candidates with durable execution evidence.</td></tr>
+  <tr><td><code>demo-conflict</code></td><td>Pull Request / Needs Attention</td><td>A real textual Git conflict discovered during preview and routed through repair.</td></tr>
+  <tr><td><code>demo-semantic</code></td><td>Findings / Integration Queue</td><td>A clean Git merge blocked because the merged repository violates a deterministic contract.</td></tr>
+  <tr><td><code>demo-workflow</code></td><td>Operations → Workflows</td><td>Durable programmable orchestration moving through implementation/check/integration steps.</td></tr>
+</table>
+
+<h2>The screenshots are product evidence, not mockups</h2>
+<p>The images on this page were captured from the real Switchyard application against the development control plane. That matters because the UI has been driven by the same live APIs, repository state and concurrency semantics used in the checkpoint gates. As the product evolves, these screenshots should be refreshed from the deployed demo rather than replaced with idealized mockups.</p>
