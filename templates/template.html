@@ -17,48 +17,31 @@
 			</div>
 		</header>
 
-		<nav class="fullscreen-nav" id="fs-nav" aria-label="Site">
+		<nav class="fullscreen-nav" id="fs-nav" aria-label="Site" aria-hidden="true">
 			<div class="fs-head">
-				<span class="brand"><img src="@path('public/assets/images/favicon.webp')" alt="Switchyard mark" width="24" height="24"><span>Switchyard</span></span>
-				<button class="hamburger" id="menu-close" aria-label="Close menu">×</button>
+				<span class="brand"><img src="@path('public/assets/images/favicon.webp')" alt="" width="24" height="24"><span>Switchyard</span></span>
+				<button class="hamburger" id="menu-close" type="button" aria-label="Close menu">×</button>
 			</div>
 			<div class="fs-groups">
-				<div class="fs-group">
-					<h4>Product</h4>
-					<a href="@path('/')">Overview</a>
-					<a href="@path('product/overview')">How it works</a>
-					<a href="@path('product/human-ai')">Human + AI collaboration</a>
-					<a href="@path('product/demo')">Demo</a>
-				</div>
-				<div class="fs-group">
-					<h4>Concepts</h4>
-					<a href="@path('concepts/architecture')">Architecture</a>
-					<a href="@path('concepts/repositories')">Repositories &amp; Git truth</a>
-					<a href="@path('concepts/work-attempts')">Work, Attempts &amp; Pull Requests</a>
-					<a href="@path('concepts/integration-queue')">Integration Queue</a>
-					<a href="@path('concepts/reviews-conflicts')">Reviews &amp; Conflicts</a>
-					<a href="@path('concepts/workflows')">Durable workflows</a>
-					<a href="@path('concepts/provenance-needs-attention')">Provenance &amp; Needs Attention</a>
-				</div>
-				<div class="fs-group">
-					<h4>Documentation</h4>
-					<a href="@path('docs/getting-started')">Getting started</a>
-					<a href="@path('docs/configuration')">Configuration</a>
-					<a href="@path('docs/api')">API</a>
-					<a href="@path('docs/operations')">Operations</a>
-					<a href="@path('docs/status')">Status</a>
-					<a href="@path('docs/internals')">Internals</a>
-					<a href="@path('docs/performance')">Performance</a>
-				</div>
-				<div class="fs-group">
-					<h4>Project</h4>
-					<a href="https://github.com/switchyard-labs/switchyard" rel="noopener">GitHub <span class="d">source</span></a>
-					<a href="@path('docs/status')">Architecture status</a>
-					<a href="https://github.com/switchyard-labs/switchyard-labs.github.io" rel="noopener">This site <span class="d">source</span></a>
-				</div>
+				<details class="fs-group" open><summary>Product</summary><div class="fs-links">
+					<a href="@path('/')">Overview</a><a href="@path('product/overview')">How it works</a><a href="@path('product/human-ai')">Human + AI collaboration</a><a href="@path('product/demo')">Demo</a>
+				</div></details>
+				<details class="fs-group" open><summary>Concepts</summary><div class="fs-links">
+					<a href="@path('concepts/architecture')">Architecture</a><a href="@path('concepts/repositories')">Repositories &amp; Git truth</a><a href="@path('concepts/work-attempts')">Work, Attempts &amp; Pull Requests</a><a href="@path('concepts/integration-queue')">Integration Queue</a><a href="@path('concepts/reviews-conflicts')">Reviews &amp; Conflicts</a><a href="@path('concepts/workflows')">Durable workflows</a><a href="@path('concepts/provenance-needs-attention')">Provenance &amp; Needs Attention</a>
+				</div></details>
+				<details class="fs-group" open><summary>Documentation</summary><div class="fs-links">
+					<a href="@path('docs/getting-started')">Getting started</a><a href="@path('docs/configuration')">Configuration</a><a href="@path('docs/api')">API</a><a href="@path('docs/operations')">Operations</a><a href="@path('docs/status')">Status</a><a href="@path('docs/internals')">Internals</a><a href="@path('docs/performance')">Performance</a>
+				</div></details>
+				<details class="fs-group"><summary>Project</summary><div class="fs-links"><a href="https://github.com/switchyard-labs/switchyard" rel="noopener">GitHub</a><a href="https://github.com/switchyard-labs/switchyard-labs.github.io" rel="noopener">Website source</a></div></details>
 			</div>
-			<div class="fs-foot">Switchyard — agent-native Git collaboration. Dark-first, rail-signal palette, real favicon mark.</div>
+			<div class="fs-foot">Switchyard — agent-native Git collaboration.</div>
 		</nav>
+
+		<aside class="docs-drawer" id="docs-drawer" hidden aria-label="Documentation navigation">
+			<details open><summary>Start</summary><a href="@path('docs/getting-started')">Getting started</a><a href="@path('docs/configuration')">Configuration</a></details>
+			<details open><summary>Reference</summary><a href="@path('docs/api')">API</a><a href="@path('docs/operations')">Operations</a></details>
+			<details><summary>Project</summary><a href="@path('docs/status')">Status</a><a href="@path('docs/internals')">Internals</a><a href="@path('docs/performance')">Performance</a></details>
+		</aside>
 
 		<main class="site-main">
 			@content
