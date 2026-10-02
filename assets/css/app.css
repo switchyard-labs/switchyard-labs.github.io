@@ -191,3 +191,6 @@ body.menu-open { overflow: hidden; }
 .docs-drawer a[aria-current="page"] { color: var(--accent-2); }
 @media (max-width: 1320px) { .docs-drawer { position: static; width: auto; max-width: 1080px; margin: 18px auto 0; border-left: 0; border-right: 0; border-radius: 0; display: grid; grid-template-columns: repeat(3,1fr); gap: 14px; } }
 @media (max-width: 760px) { .docs-drawer { grid-template-columns: 1fr; margin: 8px 20px 0; } }
+
+/* PX22 editorial completion */
+.product-proof-strip{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin:28px 0}.product-proof-strip>div{border-top:1px solid var(--border);padding-top:14px}.product-proof-strip strong{display:block;font-size:20px}.product-proof-strip span{color:var(--muted);font-size:13px}@media(max-width:760px){.product-proof-strip{grid-template-columns:1fr}}
