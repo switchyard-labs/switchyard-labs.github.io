@@ -3,132 +3,187 @@
 	<head>
 		<meta charset="utf-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1">
-		<title>Switchyard — Overview</title>
+		<title>Switchyard</title>
 		<link rel="icon" type="image/webp" href="assets/images/favicon.webp">
+		<meta name="description" content="Git collaboration built for humans and concurrent agents. Agents work in isolated Git state; integration into canonical flows through deterministic, policy-controlled serialized integration.">
 		<link rel="stylesheet" href="assets/css/app.css">
 	</head>
 	<body>
 		<header class="site-header">
 			<div class="header-inner">
-				<a class="brand" href="./"><span class="brand-mark">S</span><span class="brand-name">Switchyard</span></a>
-				<nav class="site-nav" id="site-nav">
-					<a href="./">Overview</a>
-					<a href="./stack.html">Stack</a>
-					<a href="./architecture.html">Architecture</a>
-					<a href="./how-it-works.html">How it works</a>
-					<a href="./human-dx.html">Human DX</a>
-					<a href="./ai-dx.html">AI DX</a>
-					<a href="./docs.html">Docs</a>
-				</nav>
-				<button class="hamburger" id="hamburger" aria-label="Menu" aria-expanded="false" aria-controls="mobile-menu">☰</button>
+				<a class="brand" href="./">
+					<img src="assets/images/favicon.webp" alt="Switchyard mark" width="26" height="26">
+					<span>Switchyard</span>
+				</a>
+				<div class="header-right">
+					<a class="gh" href="https://github.com/switchyard-labs/switchyard" rel="noopener">GitHub</a>
+					<button class="hamburger" id="menu-open" aria-label="Open menu" aria-expanded="false" aria-controls="fs-nav">☰</button>
+				</div>
 			</div>
 		</header>
-		<nav class="mobile-menu" id="mobile-menu" hidden>
-			<div class="mobile-menu-head"><span class="brand-name">Switchyard</span><button class="hamburger" id="mobile-close" aria-label="Close menu">×</button></div>
-			<a href="./">Overview</a>
-			<a href="./stack.html">Stack</a>
-			<a href="./architecture.html">Architecture</a>
-			<a href="./how-it-works.html">How it works</a>
-			<a href="./human-dx.html">Human DX</a>
-			<a href="./ai-dx.html">AI DX</a>
-			<a href="./docs.html">Docs</a>
+
+		<nav class="fullscreen-nav" id="fs-nav" aria-label="Site">
+			<div class="fs-head">
+				<span class="brand"><img src="assets/images/favicon.webp" alt="Switchyard mark" width="24" height="24"><span>Switchyard</span></span>
+				<button class="hamburger" id="menu-close" aria-label="Close menu">×</button>
+			</div>
+			<div class="fs-groups">
+				<div class="fs-group">
+					<h4>Product</h4>
+					<a href="./">Overview</a>
+					<a href="product/overview.html">How it works</a>
+					<a href="product/human-ai.html">Human + AI collaboration</a>
+					<a href="product/demo.html">Demo</a>
+				</div>
+				<div class="fs-group">
+					<h4>Concepts</h4>
+					<a href="concepts/architecture.html">Architecture</a>
+					<a href="concepts/repositories.html">Repositories &amp; Git truth</a>
+					<a href="concepts/work-attempts.html">Work, Attempts &amp; Pull Requests</a>
+					<a href="concepts/integration-queue.html">Integration Queue</a>
+					<a href="concepts/reviews-conflicts.html">Reviews &amp; Conflicts</a>
+					<a href="concepts/workflows.html">Durable workflows</a>
+					<a href="concepts/provenance-needs-attention.html">Provenance &amp; Needs Attention</a>
+				</div>
+				<div class="fs-group">
+					<h4>Documentation</h4>
+					<a href="docs/getting-started.html">Getting started</a>
+					<a href="docs/configuration.html">Configuration</a>
+					<a href="docs/api.html">API</a>
+					<a href="docs/operations.html">Operations</a>
+					<a href="docs/status.html">Status</a>
+					<a href="docs/internals.html">Internals</a>
+					<a href="docs/performance.html">Performance</a>
+				</div>
+				<div class="fs-group">
+					<h4>Project</h4>
+					<a href="https://github.com/switchyard-labs/switchyard" rel="noopener">GitHub <span class="d">source</span></a>
+					<a href="docs/status.html">Architecture status</a>
+					<a href="https://github.com/switchyard-labs/switchyard-labs.github.io" rel="noopener">This site <span class="d">source</span></a>
+				</div>
+			</div>
+			<div class="fs-foot">Switchyard — agent-native Git collaboration. Dark-first, rail-signal palette, real favicon mark.</div>
 		</nav>
+
 		<main class="site-main">
-			<section class="hero">
-				<h1>Agent-native Git collaboration, built for real.</h1>
+			<section class="hero rail">
+				<div class="kicker">Agent-native Git collaboration</div>
+				<h1>Git collaboration built for humans <span class="amp">and</span> concurrent agents.</h1>
 				<p class="lede">
-					Switchyard is a self-hosted Git collaboration platform where concurrent
-					autonomous agents and humans work in <strong>isolated Git state</strong>.
-					Integration into canonical repositories flows through deterministic,
-					policy-controlled serialized integration — not last-writer-wins.
+					Agents and people work in parallel on isolated Git branches. Canonical
+					only moves through a deterministic, policy-controlled Integration Queue —
+					no last-writer-wins, no force-push, no lost work.
 				</p>
-				<p>
-					<span class="pill pass">13 checkpoints, end-to-end</span>
-					<span class="pill pass">Real Git hosting on Cloudflare Artifacts</span>
-					<span class="pill pass">Durable programmable workflows</span>
-					<span class="pill pass">Browser editor with draft CAS</span>
-					<span class="pill bound">Real-LLM agent leg pending a provider credential</span>
-				</p>
+				<div class="cta-row">
+					<a class="btn primary" href="/product/demo.html">Explore the demo</a>
+					<a class="btn ghost" href="/product/how-it-works.html">How Switchyard works</a>
+				</div>
 			</section>
 			
-			<h2>The core idea</h2>
-			<p>
-				Ordinary Git hosting lets humans push to a branch and merge. Switchyard
-				generalizes that to <strong>agents</strong>: every actor — human or AI —
-				works on an isolated branch, and the canonical branch only moves through a
-				deterministic, policy-controlled pipeline.
-			</p>
-			<div class="flow">
-				<ol>
-					<li><strong>Work</strong> — an intent (feature, fix, task) is recorded.</li>
-					<li><strong>Attempt</strong> — an isolated branch is created from the intent.</li>
-					<li><strong>Agent</strong> — an implementer edits files on that branch (deterministic substrate today; a real coding-agent CLI adapter is wired).</li>
-					<li><strong>Commit</strong> — the change lands on the attempt branch via a compare-and-swap ref substrate.</li>
-					<li><strong>PR + check</strong> — a pull request is opened; deterministic validation runs.</li>
-					<li><strong>Review + preview</strong> — findings are produced; preview integration checks whether the branch merges cleanly and whether the merged tree satisfies repo contracts.</li>
-					<li><strong>Integration Queue</strong> — strictly FIFO, policy-gated, CAS-guarded integration into canonical.</li>
-				</ol>
-			</div>
-			<p>
-				Everything is recorded in a durable provenance chain (Work → Attempt → PR →
-				ref updates → events), so every canonical change is attributable.
-			</p>
+			<div class="converge" role="img" aria-label="Three attempts converge through an integration queue into canonical Git">
+			<svg viewBox="0 0 900 320" xmlns="http://www.w3.org/2000/svg">
+				<defs>
+					<marker id="arr" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="#f0a43a"/></marker>
+				</defs>
+				<text x="30" y="40" fill="#9aa1b2" font-family="monospace" font-size="13">work</text>
+				<rect x="20" y="52" width="120" height="30" rx="6" fill="#1a1d25" stroke="#262b37"/>
+				<text x="32" y="72" fill="#e9e7e2" font-family="sans-serif" font-size="13">Work</text>
 			
-			<h2>Why this matters for AI developers</h2>
+				<path d="M140,67 L250,67" stroke="#f0a43a" stroke-width="2" marker-end="url(#arr)"/>
+				<path d="M250,67 L250,120 L310,120" stroke="#f0a43a" stroke-width="2" marker-end="url(#arr)"/>
+				<path d="M250,67 L250,170 L310,170" stroke="#f0a43a" stroke-width="2" marker-end="url(#arr)"/>
+				<path d="M250,67 L250,220 L310,220" stroke="#f0a43a" stroke-width="2" marker-end="url(#arr)"/>
+			
+				<text x="270" y="106" fill="#9aa1b2" font-family="monospace" font-size="12">attempt</text>
+				<rect x="310" y="105" width="150" height="30" rx="6" fill="#1a1d25" stroke="#262b37"/>
+				<text x="322" y="125" fill="#e9e7e2" font-size="13">Attempt A · agent</text>
+				<rect x="310" y="155" width="150" height="30" rx="6" fill="#1a1d25" stroke="#262b37"/>
+				<text x="322" y="175" fill="#e9e7e2" font-size="13">Attempt B · human</text>
+				<rect x="310" y="205" width="150" height="30" rx="6" fill="#1a1d25" stroke="#262b37"/>
+				<text x="322" y="225" fill="#e9e7e2" font-size="13">Attempt C · agent</text>
+			
+				<path d="M460,120 L540,120" stroke="#f0a43a" stroke-width="2" marker-end="url(#arr)"/>
+				<path d="M460,170 L540,170" stroke="#f0a43a" stroke-width="2" marker-end="url(#arr)"/>
+				<path d="M460,220 L540,220" stroke="#f0a43a" stroke-width="2" marker-end="url(#arr)"/>
+			
+				<text x="492" y="60" fill="#9aa1b2" font-family="monospace" font-size="12">review · check · preview</text>
+				<rect x="540" y="120" width="190" height="100" rx="8" fill="#13151b" stroke="#f0a43a" stroke-width="1.5"/>
+				<text x="554" y="146" fill="#f0a43a" font-family="monospace" font-size="12">integration queue</text>
+				<text x="554" y="170" fill="#e9e7e2" font-size="13">strict FIFO</text>
+				<text x="554" y="190" fill="#e9e7e2" font-size="13">policy + risk gate</text>
+				<text x="554" y="210" fill="#e9e7e2" font-size="13">compare-and-swap</text>
+			
+				<path d="M730,170 L800,170" stroke="#f0a43a" stroke-width="2" marker-end="url(#arr)"/>
+				<text x="790" y="150" fill="#9aa1b2" font-family="monospace" font-size="12">canonical</text>
+				<rect x="800" y="152" width="90" height="36" rx="6" fill="#0f0f14" stroke="#3fd0a8"/>
+				<text x="812" y="175" fill="#3fd0a8" font-family="monospace" font-size="13">git main</text>
+			</svg>
+			</div>
+			
+			<h2><span class="sec-no">01</span>Git stays Git</h2>
 			<p>
-				An LLM coding agent editing a shared branch and force-pushing is a liability.
-				Switchyard gives agents:
+				Switchyard is ordinary Git hosting first. Nothing about the repository is a
+				copy or a façade:
 			</p>
 			<div class="grid">
-				<div class="card">
-					<div class="tag">Isolation</div>
-					<h3>No canonical write access</h3>
-					<p>Agents hold scoped repo tokens for their attempt branch only. Canonical is unreachable by an agent.</p>
-				</div>
-				<div class="card">
-					<div class="tag">Concurrency</div>
-					<h3>No last-writer-wins</h3>
-					<p>Ref mutations are compare-and-swap; stale writers are rejected. Drafts use revision CAS too.</p>
-				</div>
-				<div class="card">
-					<div class="tag">Durability</div>
-					<h3>Durable workflows</h3>
-					<p>JS-authored workflows replay after process death; completed steps are never re-executed.</p>
-				</div>
-				<div class="card">
-					<div class="tag">Governance</div>
-					<h3>Policy + risk</h3>
-					<p>Org policies gate what agents may touch, which integrations need approval, and how much they may run.</p>
-				</div>
+				<div class="card"><div class="tag">Git truth</div><h3>Normal commits, branches, PRs</h3><p class="muted">Repositories live on a real Git server. Your history and diffs are real Git history and diffs.</p></div>
+				<div class="card"><div class="tag">Git truth</div><h3>clone / fetch / push</h3><p class="muted">Ordinary <code>git</code> clients work unchanged, with short-lived repo-scoped tokens.</p></div>
+				<div class="card"><div class="tag">Isolation</div><h3>Agents cannot reach canonical</h3><p class="muted">Agents hold scoped tokens for their attempt branch only. Canonical moves only through the queue.</p></div>
+				<div class="card"><div class="tag">Concurrency</div><h3>No last-writer-wins</h3><p class="muted">Ref mutations are compare-and-swap; stale writers are rejected by Git itself.</p></div>
 			</div>
 			
-			<h2>Honest status</h2>
+			<h2><span class="sec-no">02</span>Humans and agents</h2>
+			<p>
+				The same loop serves both. Humans use the browser editor and ordinary Git;
+				agents use a durable, programmable workflow substrate. Both converge on the
+				Integration Queue, and every canonical change is attributable.
+			</p>
+			<div class="grid">
+				<div class="card"><div class="tag">Humans</div><h3>Editor with draft CAS</h3><p class="muted">CodeMirror editing, Save ≠ Commit, stale-save rejection, diff, findings, Agent panel.</p></div>
+				<div class="card"><div class="tag">Agents</div><h3>Roles + scoped credentials</h3><p class="muted">Implementer / reviewer / conflict-resolver with explicit capabilities; secrets resolve only at execution.</p></div>
+				<div class="card"><div class="tag">Agents</div><h3>Durable workflows</h3><p class="muted">JS-authored steps that survive process death; completed steps replay, never re-execute.</p></div>
+				<div class="card"><div class="tag">Oversight</div><h3>Needs Attention</h3><p class="muted">Conflicts, blocked integrations and approval gates surface in one list — with self-contained decision packets.</p></div>
+			</div>
+			
+			<h2><span class="sec-no">03</span>A durable, programmable workflow</h2>
+			<pre><code>function run(ctx) {
+  await ctx.agent({ repo, branch, file, append });
+  await ctx.check({ repo, branch });
+  await ctx.review({ repo, branch });
+  await ctx.wait_approval({ reason: "merge to main" });
+  await ctx.integrate({ repo, branch, base: "main" });
+}</code></pre>
+			<p class="muted">Every Switchyard operation is a durable step. Executor dies mid-run? The workflow resumes, replays what it already did, and never duplicates an external effect.</p>
+			
+			<h2><span class="sec-no">04</span>What it looks like</h2>
+			<p>Real screenshots from the running product (demo repositories in the Switchyard environment).</p>
+			<div class="shot-grid">
+				<div class="shot-card"><img src="/assets/images/screenshots/dashboard.png" alt="Switchyard dashboard"><div class="cap">Dashboard — repositories, work and live activity over SSE.</div></div>
+				<div class="shot-card"><img src="/assets/images/screenshots/repo.png" alt="Switchyard repository browser"><div class="cap">Repository browser — ordinary files, refs and the Edit-in-editor path.</div></div>
+				<div class="shot-card"><img src="/assets/images/screenshots/work.png" alt="Switchyard work items"><div class="cap">Work — intents that become attempts, PRs and integrations.</div></div>
+				<div class="shot-card"><img src="/assets/images/screenshots/editor.png" alt="Switchyard browser editor"><div class="cap">Editor — Save ≠ Commit, draft CAS, diff, findings and the Agent panel.</div></div>
+			</div>
+			
+			<h2><span class="sec-no">05</span>Evidence, not diagrams</h2>
+			<p>
+				Every claim on this site was exercised against the live system — including
+				the semantic-conflict case where <em>Git merges cleanly but Switchyard knows
+				the two pieces of work are incompatible</em>. See <a href="/docs/status.html">Status</a>
+				and <a href="/concepts/integration-queue.html">the Integration Queue</a> for the detail.
+			</p>
+			
 			<div class="callout ok">
-				<strong>Proven end-to-end:</strong> the deterministic loop — Work → Attempt →
-				agent → edit → PR → review → preview → Integration Queue → canonical — runs
-				against a repository seeded with Switchyard's own source.
+				<span class="t">Try it</span>
+				The demo environment is a self-hosted control plane. Run it yourself in a
+				few minutes — <a href="/docs/getting-started.html">Getting started</a> — or
+				browse <a href="/product/demo.html">the demo</a>.
 			</div>
-			<div class="callout warn">
-				<strong>Bounded:</strong> the real LLM coding-agent leg (CLI adapter) is
-				implemented and wired but not yet exercised, because no provider credential
-				and no coding-agent CLI exist on the control-plane host. The deterministic
-				adapter runs on the identical substrate.
-			</div>
-			
-			<h2>Explore</h2>
-			<ul>
-				<li><a href="./stack.html">The stack and why each piece exists</a></li>
-				<li><a href="./architecture.html">How it all fits together</a></li>
-				<li><a href="./how-it-works.html">The engineering loop in detail</a></li>
-				<li><a href="./human-dx.html">Human developer experience</a></li>
-				<li><a href="./ai-dx.html">AI developer experience</a></li>
-				<li><a href="./docs.html">Setup, configuration and running Switchyard</a></li>
-			</ul>
 		</main>
+
 		<footer class="site-footer">
 			<div class="footer-inner">
-				<span>Switchyard — agent-native Git collaboration.</span>
-				<span class="muted">Deterministic loop proven end-to-end; real-LLM agent leg pending a provider credential.</span>
+				<span>© Switchyard Labs · <a href="https://github.com/switchyard-labs/switchyard" rel="noopener">GitHub</a></span>
+				<span class="muted">Deterministic loop proven end-to-end. Real-LLM agent leg pending a provider credential.</span>
 			</div>
 		</footer>
 		<script src="assets/js/app.js"></script>

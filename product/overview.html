@@ -1,0 +1,128 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<title>Switchyard</title>
+		<link rel="icon" type="image/webp" href="../assets/images/favicon.webp">
+		<meta name="description" content="Git collaboration built for humans and concurrent agents. Agents work in isolated Git state; integration into canonical flows through deterministic, policy-controlled serialized integration.">
+		<link rel="stylesheet" href="../assets/css/app.css">
+	</head>
+	<body>
+		<header class="site-header">
+			<div class="header-inner">
+				<a class="brand" href="../">
+					<img src="../assets/images/favicon.webp" alt="Switchyard mark" width="26" height="26">
+					<span>Switchyard</span>
+				</a>
+				<div class="header-right">
+					<a class="gh" href="https://github.com/switchyard-labs/switchyard" rel="noopener">GitHub</a>
+					<button class="hamburger" id="menu-open" aria-label="Open menu" aria-expanded="false" aria-controls="fs-nav">☰</button>
+				</div>
+			</div>
+		</header>
+
+		<nav class="fullscreen-nav" id="fs-nav" aria-label="Site">
+			<div class="fs-head">
+				<span class="brand"><img src="../assets/images/favicon.webp" alt="Switchyard mark" width="24" height="24"><span>Switchyard</span></span>
+				<button class="hamburger" id="menu-close" aria-label="Close menu">×</button>
+			</div>
+			<div class="fs-groups">
+				<div class="fs-group">
+					<h4>Product</h4>
+					<a href="../">Overview</a>
+					<a href="./overview.html">How it works</a>
+					<a href="./human-ai.html">Human + AI collaboration</a>
+					<a href="./demo.html">Demo</a>
+				</div>
+				<div class="fs-group">
+					<h4>Concepts</h4>
+					<a href="../concepts/architecture.html">Architecture</a>
+					<a href="../concepts/repositories.html">Repositories &amp; Git truth</a>
+					<a href="../concepts/work-attempts.html">Work, Attempts &amp; Pull Requests</a>
+					<a href="../concepts/integration-queue.html">Integration Queue</a>
+					<a href="../concepts/reviews-conflicts.html">Reviews &amp; Conflicts</a>
+					<a href="../concepts/workflows.html">Durable workflows</a>
+					<a href="../concepts/provenance-needs-attention.html">Provenance &amp; Needs Attention</a>
+				</div>
+				<div class="fs-group">
+					<h4>Documentation</h4>
+					<a href="../docs/getting-started.html">Getting started</a>
+					<a href="../docs/configuration.html">Configuration</a>
+					<a href="../docs/api.html">API</a>
+					<a href="../docs/operations.html">Operations</a>
+					<a href="../docs/status.html">Status</a>
+					<a href="../docs/internals.html">Internals</a>
+					<a href="../docs/performance.html">Performance</a>
+				</div>
+				<div class="fs-group">
+					<h4>Project</h4>
+					<a href="https://github.com/switchyard-labs/switchyard" rel="noopener">GitHub <span class="d">source</span></a>
+					<a href="../docs/status.html">Architecture status</a>
+					<a href="https://github.com/switchyard-labs/switchyard-labs.github.io" rel="noopener">This site <span class="d">source</span></a>
+				</div>
+			</div>
+			<div class="fs-foot">Switchyard — agent-native Git collaboration. Dark-first, rail-signal palette, real favicon mark.</div>
+		</nav>
+
+		<main class="site-main">
+			<section class="hero">
+				<div class="kicker">Product · Overview</div>
+				<h1>One loop for humans and agents.</h1>
+				<p class="lede">
+					Switchyard turns a normal Git repository into a place where concurrent
+					agents and people can work without stepping on each other — and where
+					every canonical change is explainable.
+				</p>
+			</section>
+			
+			<h2>The core model</h2>
+			<div class="flow">
+				<ol>
+					<li><strong>Work</strong> — an intent is recorded (feature, fix, task).</li>
+					<li><strong>Attempt</strong> — an isolated branch is created from the intent.</li>
+					<li><strong>Agent or human</strong> — edits files on that branch.</li>
+					<li><strong>Commit</strong> — lands via a compare-and-swap ref substrate on the attempt branch only.</li>
+					<li><strong>PR + check + review</strong> — a pull request, validation, and structured findings.</li>
+					<li><strong>Preview</strong> — does it merge cleanly, and does the merged tree satisfy the repo contract?</li>
+					<li><strong>Integration Queue</strong> — strictly FIFO, policy-gated, CAS-guarded into canonical.</li>
+				</ol>
+			</div>
+			<p>
+				Nothing on canonical happens outside that pipeline. Agents are incapable of
+				writing canonical by themselves, because they never hold a credential for it.
+			</p>
+			
+			<h2>Why isolation is the point</h2>
+			<div class="grid">
+				<div class="card"><div class="tag">Concurrency</div><h3>Parallel, safe</h3><p class="muted">Two agents editing the same file produce a conflict the repair loop handles — they never clobber each other on canonical.</p></div>
+				<div class="card"><div class="tag">Attribution</div><h3>Provenance</h3><p class="muted">Work → Attempt → PR → ref updates → events: a full, queryable chain for every canonical change.</p></div>
+				<div class="card"><div class="tag">Control</div><h3>Policy</h3><p class="muted">Which files agents may write, which integrations need approval, how much a workflow may run — all audited.</p></div>
+			</div>
+			
+			<h2>Deterministic by default</h2>
+			<p>
+				The loop is fully deterministic today: the implementer, checker, reviewer and
+				conflict-resolver are deterministic adapters behind one runner interface. A
+				real coding-agent CLI adapter is wired and ready; it is the same substrate,
+				with a provider credential as the only missing input. This is what lets the
+				system be certified, isolated, and debuggable before LLM variance is
+				introduced.
+			</p>
+			
+			<div class="callout">
+				<span class="t">Next</span>
+				<a href="/product/how-it-works.html">See the loop in detail</a> with the live
+				evidence behind each step.
+			</div>
+		</main>
+
+		<footer class="site-footer">
+			<div class="footer-inner">
+				<span>© Switchyard Labs · <a href="https://github.com/switchyard-labs/switchyard" rel="noopener">GitHub</a></span>
+				<span class="muted">Deterministic loop proven end-to-end. Real-LLM agent leg pending a provider credential.</span>
+			</div>
+		</footer>
+		<script src="../assets/js/app.js"></script>
+	</body>
+</html>

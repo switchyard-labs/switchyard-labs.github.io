@@ -1,0 +1,124 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<title>Switchyard</title>
+		<link rel="icon" type="image/webp" href="../assets/images/favicon.webp">
+		<meta name="description" content="Git collaboration built for humans and concurrent agents. Agents work in isolated Git state; integration into canonical flows through deterministic, policy-controlled serialized integration.">
+		<link rel="stylesheet" href="../assets/css/app.css">
+	</head>
+	<body>
+		<header class="site-header">
+			<div class="header-inner">
+				<a class="brand" href="../">
+					<img src="../assets/images/favicon.webp" alt="Switchyard mark" width="26" height="26">
+					<span>Switchyard</span>
+				</a>
+				<div class="header-right">
+					<a class="gh" href="https://github.com/switchyard-labs/switchyard" rel="noopener">GitHub</a>
+					<button class="hamburger" id="menu-open" aria-label="Open menu" aria-expanded="false" aria-controls="fs-nav">☰</button>
+				</div>
+			</div>
+		</header>
+
+		<nav class="fullscreen-nav" id="fs-nav" aria-label="Site">
+			<div class="fs-head">
+				<span class="brand"><img src="../assets/images/favicon.webp" alt="Switchyard mark" width="24" height="24"><span>Switchyard</span></span>
+				<button class="hamburger" id="menu-close" aria-label="Close menu">×</button>
+			</div>
+			<div class="fs-groups">
+				<div class="fs-group">
+					<h4>Product</h4>
+					<a href="../">Overview</a>
+					<a href="./overview.html">How it works</a>
+					<a href="./human-ai.html">Human + AI collaboration</a>
+					<a href="./demo.html">Demo</a>
+				</div>
+				<div class="fs-group">
+					<h4>Concepts</h4>
+					<a href="../concepts/architecture.html">Architecture</a>
+					<a href="../concepts/repositories.html">Repositories &amp; Git truth</a>
+					<a href="../concepts/work-attempts.html">Work, Attempts &amp; Pull Requests</a>
+					<a href="../concepts/integration-queue.html">Integration Queue</a>
+					<a href="../concepts/reviews-conflicts.html">Reviews &amp; Conflicts</a>
+					<a href="../concepts/workflows.html">Durable workflows</a>
+					<a href="../concepts/provenance-needs-attention.html">Provenance &amp; Needs Attention</a>
+				</div>
+				<div class="fs-group">
+					<h4>Documentation</h4>
+					<a href="../docs/getting-started.html">Getting started</a>
+					<a href="../docs/configuration.html">Configuration</a>
+					<a href="../docs/api.html">API</a>
+					<a href="../docs/operations.html">Operations</a>
+					<a href="../docs/status.html">Status</a>
+					<a href="../docs/internals.html">Internals</a>
+					<a href="../docs/performance.html">Performance</a>
+				</div>
+				<div class="fs-group">
+					<h4>Project</h4>
+					<a href="https://github.com/switchyard-labs/switchyard" rel="noopener">GitHub <span class="d">source</span></a>
+					<a href="../docs/status.html">Architecture status</a>
+					<a href="https://github.com/switchyard-labs/switchyard-labs.github.io" rel="noopener">This site <span class="d">source</span></a>
+				</div>
+			</div>
+			<div class="fs-foot">Switchyard — agent-native Git collaboration. Dark-first, rail-signal palette, real favicon mark.</div>
+		</nav>
+
+		<main class="site-main">
+			<section class="hero">
+				<div class="kicker">Product · Human + AI collaboration</div>
+				<h1>One pipeline, two ways to drive it.</h1>
+				<p class="lede">
+					Humans get ordinary Git and a careful editor. Agents get roles, scoped
+					credentials, and a durable workflow substrate. They converge on the same
+					Integration Queue.
+				</p>
+			</section>
+			
+			<h2>For humans</h2>
+			<div class="grid">
+				<div class="card"><div class="tag">Git</div><h3>Nothing to relearn</h3><p class="muted"><code>git clone / fetch / push</code> work unchanged. Branches, PRs and history are real Git.</p></div>
+				<div class="card"><div class="tag">Editor</div><h3>Save ≠ Commit</h3><p class="muted">A durable draft survives reload; only an explicit Commit changes the repository.</p></div>
+				<div class="card"><div class="tag">Concurrency</div><h3>Draft CAS</h3><p class="muted">A stale save is rejected, never silently overwritten. If the branch moved, you get reconcile guidance.</p></div>
+				<div class="card"><div class="tag">Oversight</div><h3>Needs Attention</h3><p class="muted">Conflicts, blocked integrations and approvals in one list, with self-contained decision packets.</p></div>
+			</div>
+			
+			<h2>For agents</h2>
+			<div class="grid">
+				<div class="card"><div class="tag">Roles</div><h3>Explicit capabilities</h3><p class="muted">Implementer, reviewer, conflict-resolver. A provider secret never grants Switchyard authority.</p></div>
+				<div class="card"><div class="tag">Credentials</div><h3>Scoped and encrypted</h3><p class="muted">Encrypted at rest; plaintext only at execution resolution; metadata-only API.</p></div>
+				<div class="card"><div class="tag">Workflows</div><h3>Durable by design</h3><p class="muted">JS steps that survive crashes; external effects never duplicated.</p></div>
+				<div class="card"><div class="tag">Autonomy</div><h3>Policy-bounded</h3><p class="muted">Org policies gate file writes, budgets and integration risk — audited end to end.</p></div>
+			</div>
+			
+			<h2>The editor + agent boundary (honest)</h2>
+			<p>
+				The Agent panel in the editor runs the <strong>formal Attempt path</strong>:
+				it executes the implementer against the attempt branch and refreshes the
+				committed state. That is legitimate autonomous execution with its own
+				provenance.
+			</p>
+			<p>
+				The <em>interactive draft-assistance</em> flow — you ask the Agent to edit
+				your <em>draft</em>, it proposes a change at your revision, you inspect the
+				diff, then you commit — is a targeted product task for the next milestone.
+				The draft revision/CAS machinery it builds on already exists and is proven.
+			</p>
+			
+			<div class="callout">
+				<span class="t">Guarantee</span>
+				Neither mode can overwrite your work: ref mutations are compare-and-swap, and
+				draft saves reject stale revisions.
+			</div>
+		</main>
+
+		<footer class="site-footer">
+			<div class="footer-inner">
+				<span>© Switchyard Labs · <a href="https://github.com/switchyard-labs/switchyard" rel="noopener">GitHub</a></span>
+				<span class="muted">Deterministic loop proven end-to-end. Real-LLM agent leg pending a provider credential.</span>
+			</div>
+		</footer>
+		<script src="../assets/js/app.js"></script>
+	</body>
+</html>

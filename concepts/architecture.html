@@ -1,0 +1,160 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<title>Switchyard</title>
+		<link rel="icon" type="image/webp" href="../assets/images/favicon.webp">
+		<meta name="description" content="Git collaboration built for humans and concurrent agents. Agents work in isolated Git state; integration into canonical flows through deterministic, policy-controlled serialized integration.">
+		<link rel="stylesheet" href="../assets/css/app.css">
+	</head>
+	<body>
+		<header class="site-header">
+			<div class="header-inner">
+				<a class="brand" href="../">
+					<img src="../assets/images/favicon.webp" alt="Switchyard mark" width="26" height="26">
+					<span>Switchyard</span>
+				</a>
+				<div class="header-right">
+					<a class="gh" href="https://github.com/switchyard-labs/switchyard" rel="noopener">GitHub</a>
+					<button class="hamburger" id="menu-open" aria-label="Open menu" aria-expanded="false" aria-controls="fs-nav">☰</button>
+				</div>
+			</div>
+		</header>
+
+		<nav class="fullscreen-nav" id="fs-nav" aria-label="Site">
+			<div class="fs-head">
+				<span class="brand"><img src="../assets/images/favicon.webp" alt="Switchyard mark" width="24" height="24"><span>Switchyard</span></span>
+				<button class="hamburger" id="menu-close" aria-label="Close menu">×</button>
+			</div>
+			<div class="fs-groups">
+				<div class="fs-group">
+					<h4>Product</h4>
+					<a href="../">Overview</a>
+					<a href="../product/overview.html">How it works</a>
+					<a href="../product/human-ai.html">Human + AI collaboration</a>
+					<a href="../product/demo.html">Demo</a>
+				</div>
+				<div class="fs-group">
+					<h4>Concepts</h4>
+					<a href="./architecture.html">Architecture</a>
+					<a href="./repositories.html">Repositories &amp; Git truth</a>
+					<a href="./work-attempts.html">Work, Attempts &amp; Pull Requests</a>
+					<a href="./integration-queue.html">Integration Queue</a>
+					<a href="./reviews-conflicts.html">Reviews &amp; Conflicts</a>
+					<a href="./workflows.html">Durable workflows</a>
+					<a href="./provenance-needs-attention.html">Provenance &amp; Needs Attention</a>
+				</div>
+				<div class="fs-group">
+					<h4>Documentation</h4>
+					<a href="../docs/getting-started.html">Getting started</a>
+					<a href="../docs/configuration.html">Configuration</a>
+					<a href="../docs/api.html">API</a>
+					<a href="../docs/operations.html">Operations</a>
+					<a href="../docs/status.html">Status</a>
+					<a href="../docs/internals.html">Internals</a>
+					<a href="../docs/performance.html">Performance</a>
+				</div>
+				<div class="fs-group">
+					<h4>Project</h4>
+					<a href="https://github.com/switchyard-labs/switchyard" rel="noopener">GitHub <span class="d">source</span></a>
+					<a href="../docs/status.html">Architecture status</a>
+					<a href="https://github.com/switchyard-labs/switchyard-labs.github.io" rel="noopener">This site <span class="d">source</span></a>
+				</div>
+			</div>
+			<div class="fs-foot">Switchyard — agent-native Git collaboration. Dark-first, rail-signal palette, real favicon mark.</div>
+		</nav>
+
+		<main class="site-main">
+			<section class="hero">
+				<div class="kicker">Concepts · Architecture</div>
+				<h1>Two truths, one substrate.</h1>
+				<p class="lede">
+					Git is the truth for content. A coordination store is the truth for
+					state. The control plane is the only place that can move canonical.
+				</p>
+			</section>
+			
+			<div class="converge" role="img" aria-label="Switchyard architecture diagram">
+			<svg viewBox="0 0 900 380" xmlns="http://www.w3.org/2000/svg">
+				<rect x="40" y="20" width="820" height="60" rx="8" fill="#13151b" stroke="#262b37"/>
+				<text x="60" y="48" fill="#f0a43a" font-family="monospace" font-size="13">switchyard control plane</text>
+				<text x="60" y="68" fill="#9aa1b2" font-size="12">work · attempts · PRs · workflow engine · review/conflict · integration queue · policy/attention</text>
+			
+				<path d="M60,110 L60,150" stroke="#f0a43a" stroke-width="2" marker-end="url(#arr)"/>
+				<rect x="20" y="150" width="80" height="34" rx="6" fill="#1a1d25" stroke="#262b37"/>
+				<text x="34" y="172" fill="#e9e7e2" font-size="12">browser</text>
+			
+				<path d="M300,110 L300,150" stroke="#f0a43a" stroke-width="2" marker-end="url(#arr)"/>
+				<rect x="240" y="150" width="120" height="34" rx="6" fill="#1a1d25" stroke="#262b37"/>
+				<text x="254" y="172" fill="#e9e7e2" font-size="12">trestle</text>
+				<text x="254" y="190" fill="#9aa1b2" font-size="10">coordination truth</text>
+			
+				<path d="M540,110 L540,150" stroke="#f0a43a" stroke-width="2" marker-end="url(#arr)"/>
+				<rect x="470" y="150" width="140" height="34" rx="6" fill="#1a1d25" stroke="#262b37"/>
+				<text x="484" y="172" fill="#e9e7e2" font-size="12">artifacts (git)</text>
+				<text x="484" y="190" fill="#9aa1b2" font-size="10">git truth · clone/push</text>
+			
+				<path d="M780,110 L780,150" stroke="#f0a43a" stroke-width="2" marker-end="url(#arr)"/>
+				<rect x="720" y="150" width="120" height="34" rx="6" fill="#1a1d25" stroke="#262b37"/>
+				<text x="734" y="172" fill="#e9e7e2" font-size="12">strut</text>
+				<text x="734" y="190" fill="#9aa1b2" font-size="10">bounded execution</text>
+			
+				<text x="60" y="240" fill="#9aa1b2" font-family="monospace" font-size="12">event fast path</text>
+				<path d="M60,250 L140,250" stroke="#3fd0a8" stroke-width="2"/>
+				<path d="M250,250 L330,250" stroke="#3fd0a8" stroke-width="2"/>
+				<rect x="140" y="236" width="110" height="28" rx="6" fill="#0f0f14" stroke="#3fd0a8"/>
+				<text x="150" y="255" fill="#3fd0a8" font-size="11">queue → consumer</text>
+			
+				<text x="60" y="300" fill="#9aa1b2" font-family="monospace" font-size="12">safety net</text>
+				<path d="M60,310 L330,310" stroke="#f0a43a" stroke-width="2" stroke-dasharray="4 4"/>
+				<text x="340" y="313" fill="#9aa1b2" font-size="11">reconciliation → same idempotent ingest</text>
+				<text x="640" y="313" fill="#9aa1b2" font-size="11">identity: (repo, ref, before, after)</text>
+			</svg>
+			</div>
+			
+			<h2>The layers</h2>
+			<div class="grid">
+				<div class="card"><div class="tag">Presentation</div><h3>Nift-built static app</h3><p class="muted">Dark UI served directly by the control plane; a CodeMirror editor; SSE realtime.</p></div>
+				<div class="card"><div class="tag">Control plane</div><h3>One Go binary</h3><p class="muted">API, ref substrate, event consumer, reconciler, workflow runner, queue worker, policy engine.</p></div>
+				<div class="card"><div class="tag">Coordination</div><h3>Trestle</h3><p class="muted">HTTP record store: idempotent writes, If-Match CAS, strict schema. All coordination state.</p></div>
+				<div class="card"><div class="tag">Git truth</div><h3>Cloudflare Artifacts</h3><p class="muted">A real Git server. Objects/refs are exactly what git wrote.</p></div>
+				<div class="card"><div class="tag">Execution</div><h3>Strut / deterministic worker</h3><p class="muted">Bounded executor behind the runner adapter; a coding-agent CLI adapter is wired.</p></div>
+			</div>
+			
+			<h2>The ref substrate</h2>
+			<p>
+				Every canonical mutation goes through <code>Update(repo, ref, expected, changes, message, provenance)</code>:
+				read the current SHA, build a commit, <strong>push non-force</strong> — Git
+				itself rejects stale writers. Force-push is policy-gated and never used by
+				the integration path. Agents never hold a canonical-write credential.
+			</p>
+			
+			<h2>Events: fast path + safety net</h2>
+			<p>
+				External Git movement is observed twice. The fast path pulls
+				<code>cf.artifacts.repo.pushed</code> events from a Cloudflare Queue. The
+				safety net periodically reconciles with <code>git ls-remote</code>. Both feed
+				one idempotent ingest keyed by the transition identity, so the same movement
+				converges to one domain event and one broadcast. <em>Events accelerate
+				convergence; reconciliation guarantees it.</em>
+			</p>
+			
+			<div class="callout warn">
+				<span class="t">Upstream note</span>
+				Cloudflare's event-subscription → Queue delivery for pushed events is
+				currently not flowing account-wide (it was proven in CP0). The fast path is
+				implemented and gated from the Queue onward; reconciliation covers
+				correctness meanwhile.
+			</div>
+		</main>
+
+		<footer class="site-footer">
+			<div class="footer-inner">
+				<span>© Switchyard Labs · <a href="https://github.com/switchyard-labs/switchyard" rel="noopener">GitHub</a></span>
+				<span class="muted">Deterministic loop proven end-to-end. Real-LLM agent leg pending a provider credential.</span>
+			</div>
+		</footer>
+		<script src="../assets/js/app.js"></script>
+	</body>
+</html>

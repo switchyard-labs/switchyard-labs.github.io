@@ -1,0 +1,123 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<title>Switchyard</title>
+		<link rel="icon" type="image/webp" href="../assets/images/favicon.webp">
+		<meta name="description" content="Git collaboration built for humans and concurrent agents. Agents work in isolated Git state; integration into canonical flows through deterministic, policy-controlled serialized integration.">
+		<link rel="stylesheet" href="../assets/css/app.css">
+	</head>
+	<body>
+		<header class="site-header">
+			<div class="header-inner">
+				<a class="brand" href="../">
+					<img src="../assets/images/favicon.webp" alt="Switchyard mark" width="26" height="26">
+					<span>Switchyard</span>
+				</a>
+				<div class="header-right">
+					<a class="gh" href="https://github.com/switchyard-labs/switchyard" rel="noopener">GitHub</a>
+					<button class="hamburger" id="menu-open" aria-label="Open menu" aria-expanded="false" aria-controls="fs-nav">☰</button>
+				</div>
+			</div>
+		</header>
+
+		<nav class="fullscreen-nav" id="fs-nav" aria-label="Site">
+			<div class="fs-head">
+				<span class="brand"><img src="../assets/images/favicon.webp" alt="Switchyard mark" width="24" height="24"><span>Switchyard</span></span>
+				<button class="hamburger" id="menu-close" aria-label="Close menu">×</button>
+			</div>
+			<div class="fs-groups">
+				<div class="fs-group">
+					<h4>Product</h4>
+					<a href="../">Overview</a>
+					<a href="../product/overview.html">How it works</a>
+					<a href="../product/human-ai.html">Human + AI collaboration</a>
+					<a href="../product/demo.html">Demo</a>
+				</div>
+				<div class="fs-group">
+					<h4>Concepts</h4>
+					<a href="../concepts/architecture.html">Architecture</a>
+					<a href="../concepts/repositories.html">Repositories &amp; Git truth</a>
+					<a href="../concepts/work-attempts.html">Work, Attempts &amp; Pull Requests</a>
+					<a href="../concepts/integration-queue.html">Integration Queue</a>
+					<a href="../concepts/reviews-conflicts.html">Reviews &amp; Conflicts</a>
+					<a href="../concepts/workflows.html">Durable workflows</a>
+					<a href="../concepts/provenance-needs-attention.html">Provenance &amp; Needs Attention</a>
+				</div>
+				<div class="fs-group">
+					<h4>Documentation</h4>
+					<a href="./getting-started.html">Getting started</a>
+					<a href="./configuration.html">Configuration</a>
+					<a href="./api.html">API</a>
+					<a href="./operations.html">Operations</a>
+					<a href="./status.html">Status</a>
+					<a href="./internals.html">Internals</a>
+					<a href="./performance.html">Performance</a>
+				</div>
+				<div class="fs-group">
+					<h4>Project</h4>
+					<a href="https://github.com/switchyard-labs/switchyard" rel="noopener">GitHub <span class="d">source</span></a>
+					<a href="./status.html">Architecture status</a>
+					<a href="https://github.com/switchyard-labs/switchyard-labs.github.io" rel="noopener">This site <span class="d">source</span></a>
+				</div>
+			</div>
+			<div class="fs-foot">Switchyard — agent-native Git collaboration. Dark-first, rail-signal palette, real favicon mark.</div>
+		</nav>
+
+		<main class="site-main">
+			<section class="hero">
+				<div class="kicker">Docs · Configuration</div>
+				<h1>Environment variables.</h1>
+				<p class="lede">
+					The control plane is configured entirely through environment variables —
+					one process, no config files.
+				</p>
+			</section>
+			
+			<table>
+				<tr><th>Variable</th><th>Purpose</th></tr>
+				<tr><td><code>SWITCHYARD_TRESTLE_URL</code></td><td>Trestle base URL (default <code>http://127.0.0.1:7350</code>).</td></tr>
+				<tr><td><code>SWITCHYARD_TRESTLE_USER</code> / <code>SWITCHYARD_TRESTLE_PASS</code></td><td>Trestle admin credentials (required).</td></tr>
+				<tr><td><code>SWITCHYARD_ARTIFACTS_ACCOUNT</code></td><td>Cloudflare account id (required).</td></tr>
+				<tr><td><code>SWITCHYARD_ARTIFACTS_NAMESPACE</code></td><td>Artifacts namespace.</td></tr>
+				<tr><td><code>SWITCHYARD_ARTIFACTS_TOKEN_CMD</code></td><td>Token helper path.</td></tr>
+				<tr><td><code>SWITCHYARD_STATIC_DIR</code></td><td>Built web app directory.</td></tr>
+				<tr><td><code>SWITCHYARD_LISTEN</code></td><td>Listen address (default <code>127.0.0.1:8080</code>).</td></tr>
+				<tr><td><code>SWITCHYARD_DATA_DIR</code></td><td>Data dir (scratch clones, secret key).</td></tr>
+				<tr><td><code>SWITCHYARD_STRUT_BIN</code></td><td>Strut worker binary.</td></tr>
+				<tr><td><code>SWITCHYARD_RECONCILE_INTERVAL</code></td><td>Reconciliation period (default <code>15s</code>).</td></tr>
+				<tr><td><code>SWITCHYARD_QUEUE_ID</code></td><td>Cloudflare Queue id for the event fast path (optional).</td></tr>
+				<tr><td><code>SWITCHYARD_QUEUE_PULL_INTERVAL</code></td><td>Queue pull period (default <code>5s</code>).</td></tr>
+				<tr><td><code>SWITCHYARD_WORKFLOW_INTERVAL</code></td><td>Workflow runner period (default <code>2s</code>).</td></tr>
+				<tr><td><code>SWITCHYARD_QUEUE_INTEGRATE_INTERVAL</code></td><td>Integration queue worker period (default <code>3s</code>).</td></tr>
+				<tr><td><code>SWITCHYARD_SECRET_KEY</code></td><td>Optional 32-byte key for credential encryption; otherwise persisted to <code>data/secret.key</code>.</td></tr>
+			</table>
+			
+			<h2>Example</h2>
+			<pre><code>SWITCHYARD_TRESTLE_URL=http://127.0.0.1:7350
+SWITCHYARD_TRESTLE_USER=admin
+SWITCHYARD_TRESTLE_PASS=CHANGE_ME
+SWITCHYARD_ARTIFACTS_ACCOUNT=YOUR_ACCOUNT_ID
+SWITCHYARD_ARTIFACTS_NAMESPACE=switchyard-cp0
+SWITCHYARD_ARTIFACTS_TOKEN_CMD=/opt/switchyard/token.sh
+SWITCHYARD_STATIC_DIR=/opt/switchyard/public
+SWITCHYARD_LISTEN=127.0.0.1:8080
+SWITCHYARD_DATA_DIR=/opt/switchyard/data
+SWITCHYARD_STRUT_BIN=/opt/switchyard/deterministic-worker
+SWITCHYARD_RECONCILE_INTERVAL=15s
+SWITCHYARD_QUEUE_ID=YOUR_QUEUE_ID          # optional
+SWITCHYARD_QUEUE_PULL_INTERVAL=5s
+SWITCHYARD_WORKFLOW_INTERVAL=2s
+SWITCHYARD_QUEUE_INTEGRATE_INTERVAL=3s</code></pre>
+		</main>
+
+		<footer class="site-footer">
+			<div class="footer-inner">
+				<span>© Switchyard Labs · <a href="https://github.com/switchyard-labs/switchyard" rel="noopener">GitHub</a></span>
+				<span class="muted">Deterministic loop proven end-to-end. Real-LLM agent leg pending a provider credential.</span>
+			</div>
+		</footer>
+		<script src="../assets/js/app.js"></script>
+	</body>
+</html>

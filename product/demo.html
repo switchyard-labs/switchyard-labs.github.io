@@ -1,0 +1,126 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<title>Switchyard</title>
+		<link rel="icon" type="image/webp" href="../assets/images/favicon.webp">
+		<meta name="description" content="Git collaboration built for humans and concurrent agents. Agents work in isolated Git state; integration into canonical flows through deterministic, policy-controlled serialized integration.">
+		<link rel="stylesheet" href="../assets/css/app.css">
+	</head>
+	<body>
+		<header class="site-header">
+			<div class="header-inner">
+				<a class="brand" href="../">
+					<img src="../assets/images/favicon.webp" alt="Switchyard mark" width="26" height="26">
+					<span>Switchyard</span>
+				</a>
+				<div class="header-right">
+					<a class="gh" href="https://github.com/switchyard-labs/switchyard" rel="noopener">GitHub</a>
+					<button class="hamburger" id="menu-open" aria-label="Open menu" aria-expanded="false" aria-controls="fs-nav">☰</button>
+				</div>
+			</div>
+		</header>
+
+		<nav class="fullscreen-nav" id="fs-nav" aria-label="Site">
+			<div class="fs-head">
+				<span class="brand"><img src="../assets/images/favicon.webp" alt="Switchyard mark" width="24" height="24"><span>Switchyard</span></span>
+				<button class="hamburger" id="menu-close" aria-label="Close menu">×</button>
+			</div>
+			<div class="fs-groups">
+				<div class="fs-group">
+					<h4>Product</h4>
+					<a href="../">Overview</a>
+					<a href="./overview.html">How it works</a>
+					<a href="./human-ai.html">Human + AI collaboration</a>
+					<a href="./demo.html">Demo</a>
+				</div>
+				<div class="fs-group">
+					<h4>Concepts</h4>
+					<a href="../concepts/architecture.html">Architecture</a>
+					<a href="../concepts/repositories.html">Repositories &amp; Git truth</a>
+					<a href="../concepts/work-attempts.html">Work, Attempts &amp; Pull Requests</a>
+					<a href="../concepts/integration-queue.html">Integration Queue</a>
+					<a href="../concepts/reviews-conflicts.html">Reviews &amp; Conflicts</a>
+					<a href="../concepts/workflows.html">Durable workflows</a>
+					<a href="../concepts/provenance-needs-attention.html">Provenance &amp; Needs Attention</a>
+				</div>
+				<div class="fs-group">
+					<h4>Documentation</h4>
+					<a href="../docs/getting-started.html">Getting started</a>
+					<a href="../docs/configuration.html">Configuration</a>
+					<a href="../docs/api.html">API</a>
+					<a href="../docs/operations.html">Operations</a>
+					<a href="../docs/status.html">Status</a>
+					<a href="../docs/internals.html">Internals</a>
+					<a href="../docs/performance.html">Performance</a>
+				</div>
+				<div class="fs-group">
+					<h4>Project</h4>
+					<a href="https://github.com/switchyard-labs/switchyard" rel="noopener">GitHub <span class="d">source</span></a>
+					<a href="../docs/status.html">Architecture status</a>
+					<a href="https://github.com/switchyard-labs/switchyard-labs.github.io" rel="noopener">This site <span class="d">source</span></a>
+				</div>
+			</div>
+			<div class="fs-foot">Switchyard — agent-native Git collaboration. Dark-first, rail-signal palette, real favicon mark.</div>
+		</nav>
+
+		<main class="site-main">
+			<section class="hero">
+				<div class="kicker">Product · Demo</div>
+				<h1>See Switchyard running.</h1>
+				<p class="lede">
+					Real screenshots from the working product, driven by curated demo
+					repositories (ordinary Git, concurrent agent attempts, conflicts, and a
+					durable workflow).
+				</p>
+			</section>
+			
+			<div class="shot-grid">
+				<div class="shot-card"><img src="/assets/images/screenshots/dashboard.png" alt="Switchyard dashboard"><div class="cap">Dashboard — repositories, work, and live activity over SSE.</div></div>
+				<div class="shot-card"><img src="/assets/images/screenshots/repo.png" alt="Switchyard repository browser"><div class="cap">Repository browser — a real file tree and file view, with the Edit-in-editor path.</div></div>
+				<div class="shot-card"><img src="/assets/images/screenshots/work.png" alt="Switchyard work items"><div class="cap">Work — the intents that become attempts, PRs and integrations.</div></div>
+				<div class="shot-card"><img src="/assets/images/screenshots/editor.png" alt="Switchyard browser editor"><div class="cap">Editor — CodeMirror, Save ≠ Commit, draft CAS, diff, findings, Agent panel.</div></div>
+			</div>
+			
+			<h2>Demo repositories</h2>
+			<p>The demo environment ships five curated repositories, themed around a small
+			<code>railctl</code> project:</p>
+			<ul>
+				<li><strong>demo-basic</strong> — ordinary human Git usage: history, a feature branch, an open PR.</li>
+				<li><strong>demo-agents</strong> — one Work item, two concurrent agent attempts, a review.</li>
+				<li><strong>demo-conflict</strong> — two attempts editing the same line: preview finds the textual conflict, the repair loop resolves it.</li>
+				<li><strong>demo-semantic</strong> — Git merges cleanly, but a repo contract is violated: Switchyard detects the semantic conflict and blocks the queue.</li>
+				<li><strong>demo-workflow</strong> — a durable JS workflow that implemented, checked, and integrated a change.</li>
+			</ul>
+			
+			<h2>How to view it yourself</h2>
+			<p>
+				The application is a self-hosted control plane currently bound to
+				<code>127.0.0.1:8080</code> on the CP0 development host. The cleanest way to
+				see it today is an SSH tunnel:
+			</p>
+			<pre><code>ssh -L 8080:127.0.0.1:8080 switchyard-cp0
+# then open http://127.0.0.1:8080/</code></pre>
+			<p class="muted">
+				There is not yet a public demo URL. A safe public staging deployment is a
+				planned next step (see Status), rather than exposing an administrative
+				service directly.
+			</p>
+			
+			<div class="callout">
+				<span class="t">Run it yourself</span>
+				Everything in the screenshots is reproducible — <a href="/docs/getting-started.html">Getting started</a>
+				walks through building and running the control plane.
+			</div>
+		</main>
+
+		<footer class="site-footer">
+			<div class="footer-inner">
+				<span>© Switchyard Labs · <a href="https://github.com/switchyard-labs/switchyard" rel="noopener">GitHub</a></span>
+				<span class="muted">Deterministic loop proven end-to-end. Real-LLM agent leg pending a provider credential.</span>
+			</div>
+		</footer>
+		<script src="../assets/js/app.js"></script>
+	</body>
+</html>

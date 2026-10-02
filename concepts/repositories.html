@@ -1,0 +1,125 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<title>Switchyard</title>
+		<link rel="icon" type="image/webp" href="../assets/images/favicon.webp">
+		<meta name="description" content="Git collaboration built for humans and concurrent agents. Agents work in isolated Git state; integration into canonical flows through deterministic, policy-controlled serialized integration.">
+		<link rel="stylesheet" href="../assets/css/app.css">
+	</head>
+	<body>
+		<header class="site-header">
+			<div class="header-inner">
+				<a class="brand" href="../">
+					<img src="../assets/images/favicon.webp" alt="Switchyard mark" width="26" height="26">
+					<span>Switchyard</span>
+				</a>
+				<div class="header-right">
+					<a class="gh" href="https://github.com/switchyard-labs/switchyard" rel="noopener">GitHub</a>
+					<button class="hamburger" id="menu-open" aria-label="Open menu" aria-expanded="false" aria-controls="fs-nav">☰</button>
+				</div>
+			</div>
+		</header>
+
+		<nav class="fullscreen-nav" id="fs-nav" aria-label="Site">
+			<div class="fs-head">
+				<span class="brand"><img src="../assets/images/favicon.webp" alt="Switchyard mark" width="24" height="24"><span>Switchyard</span></span>
+				<button class="hamburger" id="menu-close" aria-label="Close menu">×</button>
+			</div>
+			<div class="fs-groups">
+				<div class="fs-group">
+					<h4>Product</h4>
+					<a href="../">Overview</a>
+					<a href="../product/overview.html">How it works</a>
+					<a href="../product/human-ai.html">Human + AI collaboration</a>
+					<a href="../product/demo.html">Demo</a>
+				</div>
+				<div class="fs-group">
+					<h4>Concepts</h4>
+					<a href="./architecture.html">Architecture</a>
+					<a href="./repositories.html">Repositories &amp; Git truth</a>
+					<a href="./work-attempts.html">Work, Attempts &amp; Pull Requests</a>
+					<a href="./integration-queue.html">Integration Queue</a>
+					<a href="./reviews-conflicts.html">Reviews &amp; Conflicts</a>
+					<a href="./workflows.html">Durable workflows</a>
+					<a href="./provenance-needs-attention.html">Provenance &amp; Needs Attention</a>
+				</div>
+				<div class="fs-group">
+					<h4>Documentation</h4>
+					<a href="../docs/getting-started.html">Getting started</a>
+					<a href="../docs/configuration.html">Configuration</a>
+					<a href="../docs/api.html">API</a>
+					<a href="../docs/operations.html">Operations</a>
+					<a href="../docs/status.html">Status</a>
+					<a href="../docs/internals.html">Internals</a>
+					<a href="../docs/performance.html">Performance</a>
+				</div>
+				<div class="fs-group">
+					<h4>Project</h4>
+					<a href="https://github.com/switchyard-labs/switchyard" rel="noopener">GitHub <span class="d">source</span></a>
+					<a href="../docs/status.html">Architecture status</a>
+					<a href="https://github.com/switchyard-labs/switchyard-labs.github.io" rel="noopener">This site <span class="d">source</span></a>
+				</div>
+			</div>
+			<div class="fs-foot">Switchyard — agent-native Git collaboration. Dark-first, rail-signal palette, real favicon mark.</div>
+		</nav>
+
+		<main class="site-main">
+			<section class="hero">
+				<div class="kicker">Concepts · Repositories &amp; Git truth</div>
+				<h1>Git stays Git.</h1>
+				<p class="lede">
+					The repository is a real Git repository. Switchyard adds the coordination
+					layer around it, never a copy of it.
+				</p>
+			</section>
+			
+			<h2>What you get</h2>
+			<ul>
+				<li>Repositories on a real Git server; ordinary <code>git</code> clients work unchanged.</li>
+				<li>Repo-scoped, short-lived tokens: read tokens clone, write tokens push.</li>
+				<li>A repository browser with a file tree, raw file view, and refs.</li>
+				<li>An <em>Edit in editor</em> path into the CodeMirror editor.</li>
+			</ul>
+			
+			<h2>Compare-and-swap substrate</h2>
+			<p>
+				The safety property that makes concurrent agents possible:
+			</p>
+			<pre><code>Update(repo, ref, expected_sha, changes, message, provenance)
+  current = ls-remote(ref)
+  build commit from changes
+  git push --force=false        # non-force
+  if rejected: STALE            # Git said "fetch first"
+      reconcile or re-queue (bounded)</code></pre>
+			<p>
+				Stale writers are rejected by Git itself, not by Switchyard policy. This was
+				demonstrated with three concurrent writers to one ref: exactly one success,
+				clean stale handling, and the tree reflecting only successful writers.
+			</p>
+			
+			<h2>Direct Git still works</h2>
+			<p>
+				A human (or an external CI) can <code>git push</code> straight to a branch.
+				The control plane observes it via the event fast path and reconciliation, and
+				it appears live in the UI. Nothing requires the UI as a gate for ordinary Git
+				use.
+			</p>
+			
+			<div class="callout">
+				<span class="t">Canonical is protected</span>
+				Agents hold tokens scoped to their attempt branch. The only path that moves
+				canonical is the Integration Queue — policy-gated and CAS-guarded.
+			</div>
+		</main>
+
+		<footer class="site-footer">
+			<div class="footer-inner">
+				<span>© Switchyard Labs · <a href="https://github.com/switchyard-labs/switchyard" rel="noopener">GitHub</a></span>
+				<span class="muted">Deterministic loop proven end-to-end. Real-LLM agent leg pending a provider credential.</span>
+			</div>
+		</footer>
+		<script src="../assets/js/app.js"></script>
+	</body>
+</html>

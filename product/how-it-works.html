@@ -1,0 +1,134 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<title>Switchyard</title>
+		<link rel="icon" type="image/webp" href="../assets/images/favicon.webp">
+		<meta name="description" content="Git collaboration built for humans and concurrent agents. Agents work in isolated Git state; integration into canonical flows through deterministic, policy-controlled serialized integration.">
+		<link rel="stylesheet" href="../assets/css/app.css">
+	</head>
+	<body>
+		<header class="site-header">
+			<div class="header-inner">
+				<a class="brand" href="../">
+					<img src="../assets/images/favicon.webp" alt="Switchyard mark" width="26" height="26">
+					<span>Switchyard</span>
+				</a>
+				<div class="header-right">
+					<a class="gh" href="https://github.com/switchyard-labs/switchyard" rel="noopener">GitHub</a>
+					<button class="hamburger" id="menu-open" aria-label="Open menu" aria-expanded="false" aria-controls="fs-nav">☰</button>
+				</div>
+			</div>
+		</header>
+
+		<nav class="fullscreen-nav" id="fs-nav" aria-label="Site">
+			<div class="fs-head">
+				<span class="brand"><img src="../assets/images/favicon.webp" alt="Switchyard mark" width="24" height="24"><span>Switchyard</span></span>
+				<button class="hamburger" id="menu-close" aria-label="Close menu">×</button>
+			</div>
+			<div class="fs-groups">
+				<div class="fs-group">
+					<h4>Product</h4>
+					<a href="../">Overview</a>
+					<a href="./overview.html">How it works</a>
+					<a href="./human-ai.html">Human + AI collaboration</a>
+					<a href="./demo.html">Demo</a>
+				</div>
+				<div class="fs-group">
+					<h4>Concepts</h4>
+					<a href="../concepts/architecture.html">Architecture</a>
+					<a href="../concepts/repositories.html">Repositories &amp; Git truth</a>
+					<a href="../concepts/work-attempts.html">Work, Attempts &amp; Pull Requests</a>
+					<a href="../concepts/integration-queue.html">Integration Queue</a>
+					<a href="../concepts/reviews-conflicts.html">Reviews &amp; Conflicts</a>
+					<a href="../concepts/workflows.html">Durable workflows</a>
+					<a href="../concepts/provenance-needs-attention.html">Provenance &amp; Needs Attention</a>
+				</div>
+				<div class="fs-group">
+					<h4>Documentation</h4>
+					<a href="../docs/getting-started.html">Getting started</a>
+					<a href="../docs/configuration.html">Configuration</a>
+					<a href="../docs/api.html">API</a>
+					<a href="../docs/operations.html">Operations</a>
+					<a href="../docs/status.html">Status</a>
+					<a href="../docs/internals.html">Internals</a>
+					<a href="../docs/performance.html">Performance</a>
+				</div>
+				<div class="fs-group">
+					<h4>Project</h4>
+					<a href="https://github.com/switchyard-labs/switchyard" rel="noopener">GitHub <span class="d">source</span></a>
+					<a href="../docs/status.html">Architecture status</a>
+					<a href="https://github.com/switchyard-labs/switchyard-labs.github.io" rel="noopener">This site <span class="d">source</span></a>
+				</div>
+			</div>
+			<div class="fs-foot">Switchyard — agent-native Git collaboration. Dark-first, rail-signal palette, real favicon mark.</div>
+		</nav>
+
+		<main class="site-main">
+			<section class="hero">
+				<div class="kicker">Product · How it works</div>
+				<h1>The loop, and the evidence it works.</h1>
+				<p class="lede">
+					Every step here was exercised against the live system — not drawn on a
+					whiteboard.
+				</p>
+			</section>
+			
+			<h2>Step by step</h2>
+			<table>
+				<tr><th>Step</th><th>What happens</th><th>Live evidence</th></tr>
+				<tr><td>Work</td><td>An intent is recorded with an owner.</td><td>Work items created and listed throughout the campaign.</td></tr>
+				<tr><td>Attempt</td><td>An isolated branch with a marker file.</td><td>Real branches on a real Git server.</td></tr>
+				<tr><td>Agent</td><td>An implementer edits a bounded file; every run is an execution record.</td><td>Deterministic adapter exercised across CP1–CP13; a real coding-agent CLI adapter is wired.</td></tr>
+				<tr><td>Check</td><td>Deterministic validation of the change.</td><td>Gate-passing checks on real PRs.</td></tr>
+				<tr><td>Review</td><td>Structured findings (severity, message, file).</td><td>Findings produced on Switchyard's own source.</td></tr>
+				<tr><td>Preview</td><td>Does it merge? Is the merged tree valid?</td><td>Textual conflicts detected; semantic conflicts detected on a clean merge.</td></tr>
+				<tr><td>Integration Queue</td><td>Strict FIFO, policy-gated, CAS-guarded integration.</td><td>3-PR churn integrates in order; same-file contention blocks and repairs; 10-PR scenario measured.</td></tr>
+			</table>
+			
+			<h2>Durability</h2>
+			<p>
+				The workflow substrate is <strong>replay-from-top</strong>. A workflow is a
+				JS function calling Switchyard operations; each operation is a durable step
+				keyed by <code>(run_id, step_key, args_hash)</code>. If the control plane
+				dies mid-run:
+			</p>
+			<ul>
+				<li>completed steps replay their recorded result instead of re-executing;</li>
+				<li>the in-flight step retries (at-least-once);</li>
+				<li>later steps run exactly once;</li>
+				<li>no external effect is duplicated.</li>
+			</ul>
+			<p>
+				This was proven by killing the control plane during a running durable step
+				and observing a completed agent step replay with <code>attempts=1</code>
+				and exactly the right number of executions.
+			</p>
+			
+			<h2>Realtime</h2>
+			<p>
+				External <code>git push</code>es are observed two ways: an event fast path
+				(Cloudflare Queue → Switchyard consumer) and a reconciliation safety net.
+				Both feed the same idempotent ingest, keyed by the transition identity
+				<code>(repo, ref, before, after)</code>, so the same movement converges to
+				one domain event. Browsers see it live over SSE.
+			</p>
+			
+			<div class="callout">
+				<span class="t">Deeper</span>
+				See <a href="/concepts/architecture.html">the architecture</a>,
+				<a href="/concepts/workflows.html">durable workflows</a>, and
+				<a href="/concepts/reviews-conflicts.html">reviews &amp; conflicts</a>.
+			</div>
+		</main>
+
+		<footer class="site-footer">
+			<div class="footer-inner">
+				<span>© Switchyard Labs · <a href="https://github.com/switchyard-labs/switchyard" rel="noopener">GitHub</a></span>
+				<span class="muted">Deterministic loop proven end-to-end. Real-LLM agent leg pending a provider credential.</span>
+			</div>
+		</footer>
+		<script src="../assets/js/app.js"></script>
+	</body>
+</html>
