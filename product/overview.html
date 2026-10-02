@@ -2,13 +2,14 @@
 <html lang="en" data-theme="dark">
 	<head>
 		<meta charset="utf-8">
-		<meta name="viewport" content="width=device-width, initial-scale=1">
-		<title>Switchyard</title>
-		<link rel="icon" type="image/webp" href="../assets/images/favicon.webp">
-		<meta name="description" content="Git collaboration built for humans and concurrent agents. Agents work in isolated Git state; integration into canonical flows through deterministic, policy-controlled serialized integration.">
-		<link rel="stylesheet" href="../assets/css/app.css">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Switchyard</title>
+<link rel="icon" type="image/webp" href="../assets/images/favicon.webp">
+<meta name="description" content="Git collaboration built for humans and concurrent agents. Agents work in isolated Git state; integration into canonical flows through deterministic, policy-controlled serialized integration.">
+<link rel="stylesheet" href="../assets/css/app.css">
 	</head>
-	<body><a class="skip-link" href="#main-content">Skip to content</a>
+	<body>
+		<a class="skip-link" href="#main-content">Skip to content</a>
 		<header class="site-header">
 			<div class="header-inner">
 				<a class="brand" href="../">
@@ -23,65 +24,81 @@
 		</header>
 
 		<nav class="fullscreen-nav" id="fs-nav" aria-label="Site" aria-hidden="true">
-			<div class="fs-head"><span class="brand"><img src="../assets/images/favicon.webp" alt="" width="24" height="24"><span>Switchyard</span></span><button class="hamburger" id="menu-close" type="button" aria-label="Close menu">×</button></div>
+			<div class="fs-head">
+				<span class="brand"><img src="../assets/images/favicon.webp" alt="" width="24" height="24"><span>Switchyard</span></span>
+				<button class="hamburger" id="menu-close" type="button" aria-label="Close menu">×</button>
+			</div>
 			<div class="fs-groups">
-			<details class="fs-group" open><summary>Product</summary><div class="fs-links"><a href="../index.html">Overview</a><a href="../product/overview.html">How it works</a><a href="../product/human-ai.html">Human + AI collaboration</a><a href="../product/demo.html">Demo</a></div></details>
-			<details class="fs-group" open><summary>Concepts</summary><div class="fs-links"><a href="../concepts/architecture.html">Architecture</a><a href="../concepts/repositories.html">Repositories &amp; Git truth</a><a href="../concepts/work-attempts.html">Work, Attempts &amp; Pull Requests</a><a href="../concepts/integration-queue.html">Integration Queue</a><a href="../concepts/reviews-conflicts.html">Reviews &amp; Conflicts</a><a href="../concepts/workflows.html">Durable workflows</a><a href="../concepts/provenance-needs-attention.html">Provenance &amp; Needs Attention</a></div></details>
-			<details class="fs-group" open><summary>Documentation</summary><div class="fs-links"><a href="../docs/getting-started.html">Getting started</a><a href="../docs/configuration.html">Configuration</a><a href="../docs/api.html">API</a><a href="../docs/operations.html">Operations</a><a href="../docs/status.html">Status</a><a href="../docs/internals.html">Internals</a><a href="../docs/performance.html">Performance</a></div></details>
-			<details class="fs-group"><summary>Project</summary><div class="fs-links"><a href="https://github.com/switchyard-labs/switchyard">GitHub</a><a href="https://github.com/switchyard-labs/switchyard-labs.github.io">Website source</a></div></details>
-			</div><div class="fs-foot">Switchyard — agent-native Git collaboration.</div>
+				<details class="fs-group" open><summary>Product</summary><div class="fs-links">
+					<a href="../">Overview</a><a href="overview.html">How it works</a><a href="human-ai.html">Human + AI collaboration</a><a href="demo.html">Demo</a>
+				</div></details>
+				<details class="fs-group" open><summary>Concepts</summary><div class="fs-links">
+					<a href="../concepts/architecture.html">Architecture</a><a href="../concepts/repositories.html">Repositories &amp; Git truth</a><a href="../concepts/work-attempts.html">Work, Attempts &amp; Pull Requests</a><a href="../concepts/integration-queue.html">Integration Queue</a><a href="../concepts/reviews-conflicts.html">Reviews &amp; Conflicts</a><a href="../concepts/workflows.html">Durable workflows</a><a href="../concepts/provenance-needs-attention.html">Provenance &amp; Needs Attention</a>
+				</div></details>
+				<details class="fs-group" open><summary>Documentation</summary><div class="fs-links">
+					<a href="../docs/getting-started.html">Getting started</a><a href="../docs/configuration.html">Configuration</a><a href="../docs/api.html">API</a><a href="../docs/operations.html">Operations</a><a href="../docs/status.html">Status</a><a href="../docs/internals.html">Internals</a><a href="../docs/performance.html">Performance</a>
+				</div></details>
+				<details class="fs-group"><summary>Project</summary><div class="fs-links"><a href="https://github.com/switchyard-labs/switchyard" rel="noopener">GitHub</a><a href="https://github.com/switchyard-labs/switchyard-labs.github.io" rel="noopener">Website source</a></div></details>
+			</div>
+			<div class="fs-foot">Switchyard — agent-native Git collaboration.</div>
 		</nav>
+
+		<aside class="docs-drawer" id="docs-drawer" hidden aria-label="Documentation navigation">
+			<details open><summary>Start</summary><a href="../docs/getting-started.html">Getting started</a><a href="../docs/configuration.html">Configuration</a></details>
+			<details open><summary>Reference</summary><a href="../docs/api.html">API</a><a href="../docs/operations.html">Operations</a></details>
+			<details><summary>Project</summary><a href="../docs/status.html">Status</a><a href="../docs/internals.html">Internals</a><a href="../docs/performance.html">Performance</a></details>
+		</aside>
 
 		<main class="site-main" id="main-content">
 			<section class="hero">
-				<div class="kicker">Product · Overview</div>
-				<h1>One loop for humans and agents.</h1>
-				<p class="lede">
-					Switchyard turns a normal Git repository into a place where concurrent
-					agents and people can work without stepping on each other — and where
-					every canonical change is explainable.
-				</p>
-			</section>
-			
-			<h2>The core model</h2>
-			<div class="flow">
-				<ol>
-					<li><strong>Work</strong> — an intent is recorded (feature, fix, task).</li>
-					<li><strong>Attempt</strong> — an isolated branch is created from the intent.</li>
-					<li><strong>Agent or human</strong> — edits files on that branch.</li>
-					<li><strong>Commit</strong> — lands via a compare-and-swap ref substrate on the attempt branch only.</li>
-					<li><strong>PR + check + review</strong> — a pull request, validation, and structured findings.</li>
-					<li><strong>Preview</strong> — does it merge cleanly, and does the merged tree satisfy the repo contract?</li>
-					<li><strong>Integration Queue</strong> — strictly FIFO, policy-gated, CAS-guarded into canonical.</li>
-				</ol>
-			</div>
-			<p>
-				Nothing on canonical happens outside that pipeline. Agents are incapable of
-				writing canonical by themselves, because they never hold a credential for it.
-			</p>
-			
-			<h2>Why isolation is the point</h2>
-			<div class="grid">
-				<div class="card"><div class="tag">Concurrency</div><h3>Parallel, safe</h3><p class="muted">Two agents editing the same file produce a conflict the repair loop handles — they never clobber each other on canonical.</p></div>
-				<div class="card"><div class="tag">Attribution</div><h3>Provenance</h3><p class="muted">Work → Attempt → PR → ref updates → events: a full, queryable chain for every canonical change.</p></div>
-				<div class="card"><div class="tag">Control</div><h3>Policy</h3><p class="muted">Which files agents may write, which integrations need approval, how much a workflow may run — all audited.</p></div>
-			</div>
-			
-			<h2>Deterministic by default</h2>
-			<p>
-				The loop is fully deterministic today: the implementer, checker, reviewer and
-				conflict-resolver are deterministic adapters behind one runner interface. A
-				real coding-agent CLI adapter is wired and ready; it is the same substrate,
-				with a provider credential as the only missing input. This is what lets the
-				system be certified, isolated, and debuggable before LLM variance is
-				introduced.
-			</p>
-			
-			<div class="callout">
-				<span class="t">Next</span>
-				<a href="./how-it-works.html">See the loop in detail</a> with the live
-				evidence behind each step.
-			</div>
+	<div class="kicker">Product · Overview</div>
+	<h1>One loop for humans and agents.</h1>
+	<p class="lede">
+		Switchyard turns a normal Git repository into a place where concurrent
+		agents and people can work without stepping on each other — and where
+		every canonical change is explainable.
+	</p>
+</section>
+
+<h2>The core model</h2>
+<div class="flow">
+	<ol>
+		<li><strong>Work</strong> — an intent is recorded (feature, fix, task).</li>
+		<li><strong>Attempt</strong> — an isolated branch is created from the intent.</li>
+		<li><strong>Agent or human</strong> — edits files on that branch.</li>
+		<li><strong>Commit</strong> — lands via a compare-and-swap ref substrate on the attempt branch only.</li>
+		<li><strong>PR + check + review</strong> — a pull request, validation, and structured findings.</li>
+		<li><strong>Preview</strong> — does it merge cleanly, and does the merged tree satisfy the repo contract?</li>
+		<li><strong>Integration Queue</strong> — strictly FIFO, policy-gated, CAS-guarded into canonical.</li>
+	</ol>
+</div>
+<p>
+	Nothing on canonical happens outside that pipeline. Agents are incapable of
+	writing canonical by themselves, because they never hold a credential for it.
+</p>
+
+<h2>Why isolation is the point</h2>
+<div class="grid">
+	<div class="card"><div class="tag">Concurrency</div><h3>Parallel, safe</h3><p class="muted">Two agents editing the same file produce a conflict the repair loop handles — they never clobber each other on canonical.</p></div>
+	<div class="card"><div class="tag">Attribution</div><h3>Provenance</h3><p class="muted">Work → Attempt → PR → ref updates → events: a full, queryable chain for every canonical change.</p></div>
+	<div class="card"><div class="tag">Control</div><h3>Policy</h3><p class="muted">Which files agents may write, which integrations need approval, how much a workflow may run — all audited.</p></div>
+</div>
+
+<h2>Deterministic by default</h2>
+<p>
+	The loop is fully deterministic today: the implementer, checker, reviewer and
+	conflict-resolver are deterministic adapters behind one runner interface. A
+	real coding-agent CLI adapter is wired and ready; it is the same substrate,
+	with a provider credential as the only missing input. This is what lets the
+	system be certified, isolated, and debuggable before LLM variance is
+	introduced.
+</p>
+
+<div class="callout">
+	<span class="t">Next</span>
+	<a href="how-it-works.html">See the loop in detail</a> with the live
+	evidence behind each step.
+</div>
 		</main>
 
 		<footer class="site-footer">

@@ -4,7 +4,7 @@
   const closeBtn = document.getElementById("menu-close");
   const nav = document.getElementById("fs-nav");
   const docs = document.getElementById("docs-drawer");
-  if (docs && location.pathname.includes("/docs/")) docs.hidden = false;
+  if (docs && location.pathname.includes("/docs/")) { docs.hidden = false; document.body.classList.add("docs-page"); }
   function markActive(root) {
     if (!root) return;
     const here = location.pathname.replace(/\/index\.html$/, "/");

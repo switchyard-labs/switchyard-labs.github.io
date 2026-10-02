@@ -2,13 +2,14 @@
 <html lang="en" data-theme="dark">
 	<head>
 		<meta charset="utf-8">
-		<meta name="viewport" content="width=device-width, initial-scale=1">
-		<title>Switchyard</title>
-		<link rel="icon" type="image/webp" href="../assets/images/favicon.webp">
-		<meta name="description" content="Git collaboration built for humans and concurrent agents. Agents work in isolated Git state; integration into canonical flows through deterministic, policy-controlled serialized integration.">
-		<link rel="stylesheet" href="../assets/css/app.css">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Switchyard</title>
+<link rel="icon" type="image/webp" href="../assets/images/favicon.webp">
+<meta name="description" content="Git collaboration built for humans and concurrent agents. Agents work in isolated Git state; integration into canonical flows through deterministic, policy-controlled serialized integration.">
+<link rel="stylesheet" href="../assets/css/app.css">
 	</head>
-	<body><a class="skip-link" href="#main-content">Skip to content</a>
+	<body>
+		<a class="skip-link" href="#main-content">Skip to content</a>
 		<header class="site-header">
 			<div class="header-inner">
 				<a class="brand" href="../">
@@ -23,58 +24,74 @@
 		</header>
 
 		<nav class="fullscreen-nav" id="fs-nav" aria-label="Site" aria-hidden="true">
-			<div class="fs-head"><span class="brand"><img src="../assets/images/favicon.webp" alt="" width="24" height="24"><span>Switchyard</span></span><button class="hamburger" id="menu-close" type="button" aria-label="Close menu">×</button></div>
+			<div class="fs-head">
+				<span class="brand"><img src="../assets/images/favicon.webp" alt="" width="24" height="24"><span>Switchyard</span></span>
+				<button class="hamburger" id="menu-close" type="button" aria-label="Close menu">×</button>
+			</div>
 			<div class="fs-groups">
-			<details class="fs-group" open><summary>Product</summary><div class="fs-links"><a href="../index.html">Overview</a><a href="../product/overview.html">How it works</a><a href="../product/human-ai.html">Human + AI collaboration</a><a href="../product/demo.html">Demo</a></div></details>
-			<details class="fs-group" open><summary>Concepts</summary><div class="fs-links"><a href="../concepts/architecture.html">Architecture</a><a href="../concepts/repositories.html">Repositories &amp; Git truth</a><a href="../concepts/work-attempts.html">Work, Attempts &amp; Pull Requests</a><a href="../concepts/integration-queue.html">Integration Queue</a><a href="../concepts/reviews-conflicts.html">Reviews &amp; Conflicts</a><a href="../concepts/workflows.html">Durable workflows</a><a href="../concepts/provenance-needs-attention.html">Provenance &amp; Needs Attention</a></div></details>
-			<details class="fs-group" open><summary>Documentation</summary><div class="fs-links"><a href="../docs/getting-started.html">Getting started</a><a href="../docs/configuration.html">Configuration</a><a href="../docs/api.html">API</a><a href="../docs/operations.html">Operations</a><a href="../docs/status.html">Status</a><a href="../docs/internals.html">Internals</a><a href="../docs/performance.html">Performance</a></div></details>
-			<details class="fs-group"><summary>Project</summary><div class="fs-links"><a href="https://github.com/switchyard-labs/switchyard">GitHub</a><a href="https://github.com/switchyard-labs/switchyard-labs.github.io">Website source</a></div></details>
-			</div><div class="fs-foot">Switchyard — agent-native Git collaboration.</div>
+				<details class="fs-group" open><summary>Product</summary><div class="fs-links">
+					<a href="../">Overview</a><a href="../product/overview.html">How it works</a><a href="../product/human-ai.html">Human + AI collaboration</a><a href="../product/demo.html">Demo</a>
+				</div></details>
+				<details class="fs-group" open><summary>Concepts</summary><div class="fs-links">
+					<a href="architecture.html">Architecture</a><a href="repositories.html">Repositories &amp; Git truth</a><a href="work-attempts.html">Work, Attempts &amp; Pull Requests</a><a href="integration-queue.html">Integration Queue</a><a href="reviews-conflicts.html">Reviews &amp; Conflicts</a><a href="workflows.html">Durable workflows</a><a href="provenance-needs-attention.html">Provenance &amp; Needs Attention</a>
+				</div></details>
+				<details class="fs-group" open><summary>Documentation</summary><div class="fs-links">
+					<a href="../docs/getting-started.html">Getting started</a><a href="../docs/configuration.html">Configuration</a><a href="../docs/api.html">API</a><a href="../docs/operations.html">Operations</a><a href="../docs/status.html">Status</a><a href="../docs/internals.html">Internals</a><a href="../docs/performance.html">Performance</a>
+				</div></details>
+				<details class="fs-group"><summary>Project</summary><div class="fs-links"><a href="https://github.com/switchyard-labs/switchyard" rel="noopener">GitHub</a><a href="https://github.com/switchyard-labs/switchyard-labs.github.io" rel="noopener">Website source</a></div></details>
+			</div>
+			<div class="fs-foot">Switchyard — agent-native Git collaboration.</div>
 		</nav>
+
+		<aside class="docs-drawer" id="docs-drawer" hidden aria-label="Documentation navigation">
+			<details open><summary>Start</summary><a href="../docs/getting-started.html">Getting started</a><a href="../docs/configuration.html">Configuration</a></details>
+			<details open><summary>Reference</summary><a href="../docs/api.html">API</a><a href="../docs/operations.html">Operations</a></details>
+			<details><summary>Project</summary><a href="../docs/status.html">Status</a><a href="../docs/internals.html">Internals</a><a href="../docs/performance.html">Performance</a></details>
+		</aside>
 
 		<main class="site-main" id="main-content">
 			<section class="hero">
-				<div class="kicker">Concepts · Integration Queue</div>
-				<h1>Canonical only moves through the queue.</h1>
-				<p class="lede">
-					Strict ordering, policy gates, compare-and-swap, and a repair loop — so
-					concurrent work lands predictably, never as a last-writer-wins race.
-				</p>
-			</section>
-			
-			<h2>The rules</h2>
-			<table>
-				<tr><th>Property</th><th>Behaviour</th></tr>
-				<tr><td>Ordering</td><td>Strict FIFO — at most one integration in flight. A later PR that edits the same file previews against the earlier PR's result.</td></tr>
-				<tr><td>Policy</td><td>Integrates only when the check passed AND preview is clean AND (for high-risk work) approval has been given.</td></tr>
-				<tr><td>Freshness</td><td>Integration is CAS-guarded; a moved base is re-queued with bounded attempts.</td></tr>
-				<tr><td>Repair loop</td><td>Preview conflicts block the item and route the attempt to the conflict-resolver; a fix re-queues it.</td></tr>
-				<tr><td>Risk classes</td><td>Low / medium / high from change scope; risk drives policy escalation.</td></tr>
-			</table>
-			
-			<h2>Why strict FIFO matters</h2>
-			<p>
-				Without ordering, two items that edit the same file would both preview
-				against the old canonical and one would conflict at merge time. With strict
-				FIFO, the second item previews against the first item's integration — so
-				conflicts are detected and routed to the repair loop instead of surfacing as
-				a merge failure. This was demonstrated with same-file contention: the first
-				PR integrated, the second was blocked by preview, resolved by the repair
-				loop, re-queued, and integrated.
-			</p>
-			
-			<h2>Measured, not guessed</h2>
-			<p>
-				The queue was exercised under churn and measured:
-			</p>
-			<ul>
-				<li>3 clean PRs integrate in order (~18–22 s wall).</li>
-				<li>10 PRs, full queue-to-done ~42 s (~4.2 s/item).</li>
-			</ul>
-			<p class="muted">
-				The dominant cost is a scratch clone per operation (preview + merge). A
-				cached bare-mirror + worktree model is the next optimization target.
-			</p>
+	<div class="kicker">Concepts · Integration Queue</div>
+	<h1>Canonical only moves through the queue.</h1>
+	<p class="lede">
+		Strict ordering, policy gates, compare-and-swap, and a repair loop — so
+		concurrent work lands predictably, never as a last-writer-wins race.
+	</p>
+</section>
+
+<h2>The rules</h2>
+<table>
+	<tr><th>Property</th><th>Behaviour</th></tr>
+	<tr><td>Ordering</td><td>Strict FIFO — at most one integration in flight. A later PR that edits the same file previews against the earlier PR's result.</td></tr>
+	<tr><td>Policy</td><td>Integrates only when the check passed AND preview is clean AND (for high-risk work) approval has been given.</td></tr>
+	<tr><td>Freshness</td><td>Integration is CAS-guarded; a moved base is re-queued with bounded attempts.</td></tr>
+	<tr><td>Repair loop</td><td>Preview conflicts block the item and route the attempt to the conflict-resolver; a fix re-queues it.</td></tr>
+	<tr><td>Risk classes</td><td>Low / medium / high from change scope; risk drives policy escalation.</td></tr>
+</table>
+
+<h2>Why strict FIFO matters</h2>
+<p>
+	Without ordering, two items that edit the same file would both preview
+	against the old canonical and one would conflict at merge time. With strict
+	FIFO, the second item previews against the first item's integration — so
+	conflicts are detected and routed to the repair loop instead of surfacing as
+	a merge failure. This was demonstrated with same-file contention: the first
+	PR integrated, the second was blocked by preview, resolved by the repair
+	loop, re-queued, and integrated.
+</p>
+
+<h2>Measured, not guessed</h2>
+<p>
+	The queue was exercised under churn and measured:
+</p>
+<ul>
+	<li>3 clean PRs integrate in order (~18–22 s wall).</li>
+	<li>10 PRs, full queue-to-done ~42 s (~4.2 s/item).</li>
+</ul>
+<p class="muted">
+	The dominant cost is a scratch clone per operation (preview + merge). A
+	cached bare-mirror + worktree model is the next optimization target.
+</p>
 		</main>
 
 		<footer class="site-footer">

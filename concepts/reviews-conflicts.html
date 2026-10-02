@@ -2,13 +2,14 @@
 <html lang="en" data-theme="dark">
 	<head>
 		<meta charset="utf-8">
-		<meta name="viewport" content="width=device-width, initial-scale=1">
-		<title>Switchyard</title>
-		<link rel="icon" type="image/webp" href="../assets/images/favicon.webp">
-		<meta name="description" content="Git collaboration built for humans and concurrent agents. Agents work in isolated Git state; integration into canonical flows through deterministic, policy-controlled serialized integration.">
-		<link rel="stylesheet" href="../assets/css/app.css">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Switchyard</title>
+<link rel="icon" type="image/webp" href="../assets/images/favicon.webp">
+<meta name="description" content="Git collaboration built for humans and concurrent agents. Agents work in isolated Git state; integration into canonical flows through deterministic, policy-controlled serialized integration.">
+<link rel="stylesheet" href="../assets/css/app.css">
 	</head>
-	<body><a class="skip-link" href="#main-content">Skip to content</a>
+	<body>
+		<a class="skip-link" href="#main-content">Skip to content</a>
 		<header class="site-header">
 			<div class="header-inner">
 				<a class="brand" href="../">
@@ -23,70 +24,86 @@
 		</header>
 
 		<nav class="fullscreen-nav" id="fs-nav" aria-label="Site" aria-hidden="true">
-			<div class="fs-head"><span class="brand"><img src="../assets/images/favicon.webp" alt="" width="24" height="24"><span>Switchyard</span></span><button class="hamburger" id="menu-close" type="button" aria-label="Close menu">×</button></div>
+			<div class="fs-head">
+				<span class="brand"><img src="../assets/images/favicon.webp" alt="" width="24" height="24"><span>Switchyard</span></span>
+				<button class="hamburger" id="menu-close" type="button" aria-label="Close menu">×</button>
+			</div>
 			<div class="fs-groups">
-			<details class="fs-group" open><summary>Product</summary><div class="fs-links"><a href="../index.html">Overview</a><a href="../product/overview.html">How it works</a><a href="../product/human-ai.html">Human + AI collaboration</a><a href="../product/demo.html">Demo</a></div></details>
-			<details class="fs-group" open><summary>Concepts</summary><div class="fs-links"><a href="../concepts/architecture.html">Architecture</a><a href="../concepts/repositories.html">Repositories &amp; Git truth</a><a href="../concepts/work-attempts.html">Work, Attempts &amp; Pull Requests</a><a href="../concepts/integration-queue.html">Integration Queue</a><a href="../concepts/reviews-conflicts.html">Reviews &amp; Conflicts</a><a href="../concepts/workflows.html">Durable workflows</a><a href="../concepts/provenance-needs-attention.html">Provenance &amp; Needs Attention</a></div></details>
-			<details class="fs-group" open><summary>Documentation</summary><div class="fs-links"><a href="../docs/getting-started.html">Getting started</a><a href="../docs/configuration.html">Configuration</a><a href="../docs/api.html">API</a><a href="../docs/operations.html">Operations</a><a href="../docs/status.html">Status</a><a href="../docs/internals.html">Internals</a><a href="../docs/performance.html">Performance</a></div></details>
-			<details class="fs-group"><summary>Project</summary><div class="fs-links"><a href="https://github.com/switchyard-labs/switchyard">GitHub</a><a href="https://github.com/switchyard-labs/switchyard-labs.github.io">Website source</a></div></details>
-			</div><div class="fs-foot">Switchyard — agent-native Git collaboration.</div>
+				<details class="fs-group" open><summary>Product</summary><div class="fs-links">
+					<a href="../">Overview</a><a href="../product/overview.html">How it works</a><a href="../product/human-ai.html">Human + AI collaboration</a><a href="../product/demo.html">Demo</a>
+				</div></details>
+				<details class="fs-group" open><summary>Concepts</summary><div class="fs-links">
+					<a href="architecture.html">Architecture</a><a href="repositories.html">Repositories &amp; Git truth</a><a href="work-attempts.html">Work, Attempts &amp; Pull Requests</a><a href="integration-queue.html">Integration Queue</a><a href="reviews-conflicts.html">Reviews &amp; Conflicts</a><a href="workflows.html">Durable workflows</a><a href="provenance-needs-attention.html">Provenance &amp; Needs Attention</a>
+				</div></details>
+				<details class="fs-group" open><summary>Documentation</summary><div class="fs-links">
+					<a href="../docs/getting-started.html">Getting started</a><a href="../docs/configuration.html">Configuration</a><a href="../docs/api.html">API</a><a href="../docs/operations.html">Operations</a><a href="../docs/status.html">Status</a><a href="../docs/internals.html">Internals</a><a href="../docs/performance.html">Performance</a>
+				</div></details>
+				<details class="fs-group"><summary>Project</summary><div class="fs-links"><a href="https://github.com/switchyard-labs/switchyard" rel="noopener">GitHub</a><a href="https://github.com/switchyard-labs/switchyard-labs.github.io" rel="noopener">Website source</a></div></details>
+			</div>
+			<div class="fs-foot">Switchyard — agent-native Git collaboration.</div>
 		</nav>
+
+		<aside class="docs-drawer" id="docs-drawer" hidden aria-label="Documentation navigation">
+			<details open><summary>Start</summary><a href="../docs/getting-started.html">Getting started</a><a href="../docs/configuration.html">Configuration</a></details>
+			<details open><summary>Reference</summary><a href="../docs/api.html">API</a><a href="../docs/operations.html">Operations</a></details>
+			<details><summary>Project</summary><a href="../docs/status.html">Status</a><a href="../docs/internals.html">Internals</a><a href="../docs/performance.html">Performance</a></details>
+		</aside>
 
 		<main class="site-main" id="main-content">
 			<section class="hero">
-				<div class="kicker">Concepts · Reviews &amp; Conflicts</div>
-				<h1>Findings, then a truthful conflict story.</h1>
-				<p class="lede">
-					Switchyard separates what Git can tell you from what Switchyard can tell
-					you — and it is careful not to conflate them.
-				</p>
-			</section>
-			
-			<h2>Review findings</h2>
-			<p>
-				Reviews produce structured, machine-actionable findings: severity, message,
-				and file. Findings are durable and drive the editor gutters and the Needs
-				Attention list.
-			</p>
-			
-			<h2>Textual conflicts</h2>
-			<p>
-				<strong>Textual / Git merge conflict</strong> — overlapping edits to the same
-				lines or files — is detected during preview integration (<code>git merge</code>
-				on a scratch clone). The conflict-resolver performs a real three-way merge
-				(<code>git merge-file</code>) onto the source branch; re-preview is then
-				clean; integration proceeds. This is ordinary merge-conflict handling, done
-				well.
-			</p>
-			
-			<h2>Semantic conflicts</h2>
-			<p>
-				The more interesting case: <strong>Git says the combined tree is fine, but
-				Switchyard knows the two pieces of work are incompatible.</strong> A
-				repository can declare a deterministic contract (<code>switchyard.contract.json</code>);
-				after a clean preview merge, Switchyard validates the contract against the
-				merged tree:
-			</p>
-			<pre><code>{ "rules": [
+	<div class="kicker">Concepts · Reviews &amp; Conflicts</div>
+	<h1>Findings, then a truthful conflict story.</h1>
+	<p class="lede">
+		Switchyard separates what Git can tell you from what Switchyard can tell
+		you — and it is careful not to conflate them.
+	</p>
+</section>
+
+<h2>Review findings</h2>
+<p>
+	Reviews produce structured, machine-actionable findings: severity, message,
+	and file. Findings are durable and drive the editor gutters and the Needs
+	Attention list.
+</p>
+
+<h2>Textual conflicts</h2>
+<p>
+	<strong>Textual / Git merge conflict</strong> — overlapping edits to the same
+	lines or files — is detected during preview integration (<code>git merge</code>
+	on a scratch clone). The conflict-resolver performs a real three-way merge
+	(<code>git merge-file</code>) onto the source branch; re-preview is then
+	clean; integration proceeds. This is ordinary merge-conflict handling, done
+	well.
+</p>
+
+<h2>Semantic conflicts</h2>
+<p>
+	The more interesting case: <strong>Git says the combined tree is fine, but
+	Switchyard knows the two pieces of work are incompatible.</strong> A
+	repository can declare a deterministic contract (<code>switchyard.contract.json</code>);
+	after a clean preview merge, Switchyard validates the contract against the
+	merged tree:
+</p>
+<pre><code>{ "rules": [
     { "kind": "field_equals",
       "a": "api/version.json:version",
       "b": "consumers/consumer.json:requires_version" }
 ] }</code></pre>
-			<p>
-				Attempt A moves the API and its consumer to v2 together (contract holds,
-				integrates). Attempt B adds a <em>new</em> consumer file requiring v3 — a
-				different file, so <code>git merge</code> is clean — but the merged tree
-				violates the contract. Switchyard reports a semantic error finding, parks the
-				attempt, and blocks the Integration Queue. No LLM is involved; it is
-				deterministic contract validation on the preview-merged tree.
-			</p>
-			
-			<div class="callout warn">
-				<span class="t">Precise language</span>
-				The two mechanisms are deliberately distinct. "Git reports a conflict" and
-				"Switchyard knows the pieces are incompatible" are different claims, and
-				both are proven separately.
-			</div>
+<p>
+	Attempt A moves the API and its consumer to v2 together (contract holds,
+	integrates). Attempt B adds a <em>new</em> consumer file requiring v3 — a
+	different file, so <code>git merge</code> is clean — but the merged tree
+	violates the contract. Switchyard reports a semantic error finding, parks the
+	attempt, and blocks the Integration Queue. No LLM is involved; it is
+	deterministic contract validation on the preview-merged tree.
+</p>
+
+<div class="callout warn">
+	<span class="t">Precise language</span>
+	The two mechanisms are deliberately distinct. "Git reports a conflict" and
+	"Switchyard knows the pieces are incompatible" are different claims, and
+	both are proven separately.
+</div>
 		</main>
 
 		<footer class="site-footer">

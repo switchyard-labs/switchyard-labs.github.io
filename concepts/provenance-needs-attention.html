@@ -2,13 +2,14 @@
 <html lang="en" data-theme="dark">
 	<head>
 		<meta charset="utf-8">
-		<meta name="viewport" content="width=device-width, initial-scale=1">
-		<title>Switchyard</title>
-		<link rel="icon" type="image/webp" href="../assets/images/favicon.webp">
-		<meta name="description" content="Git collaboration built for humans and concurrent agents. Agents work in isolated Git state; integration into canonical flows through deterministic, policy-controlled serialized integration.">
-		<link rel="stylesheet" href="../assets/css/app.css">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Switchyard</title>
+<link rel="icon" type="image/webp" href="../assets/images/favicon.webp">
+<meta name="description" content="Git collaboration built for humans and concurrent agents. Agents work in isolated Git state; integration into canonical flows through deterministic, policy-controlled serialized integration.">
+<link rel="stylesheet" href="../assets/css/app.css">
 	</head>
-	<body><a class="skip-link" href="#main-content">Skip to content</a>
+	<body>
+		<a class="skip-link" href="#main-content">Skip to content</a>
 		<header class="site-header">
 			<div class="header-inner">
 				<a class="brand" href="../">
@@ -23,57 +24,73 @@
 		</header>
 
 		<nav class="fullscreen-nav" id="fs-nav" aria-label="Site" aria-hidden="true">
-			<div class="fs-head"><span class="brand"><img src="../assets/images/favicon.webp" alt="" width="24" height="24"><span>Switchyard</span></span><button class="hamburger" id="menu-close" type="button" aria-label="Close menu">×</button></div>
+			<div class="fs-head">
+				<span class="brand"><img src="../assets/images/favicon.webp" alt="" width="24" height="24"><span>Switchyard</span></span>
+				<button class="hamburger" id="menu-close" type="button" aria-label="Close menu">×</button>
+			</div>
 			<div class="fs-groups">
-			<details class="fs-group" open><summary>Product</summary><div class="fs-links"><a href="../index.html">Overview</a><a href="../product/overview.html">How it works</a><a href="../product/human-ai.html">Human + AI collaboration</a><a href="../product/demo.html">Demo</a></div></details>
-			<details class="fs-group" open><summary>Concepts</summary><div class="fs-links"><a href="../concepts/architecture.html">Architecture</a><a href="../concepts/repositories.html">Repositories &amp; Git truth</a><a href="../concepts/work-attempts.html">Work, Attempts &amp; Pull Requests</a><a href="../concepts/integration-queue.html">Integration Queue</a><a href="../concepts/reviews-conflicts.html">Reviews &amp; Conflicts</a><a href="../concepts/workflows.html">Durable workflows</a><a href="../concepts/provenance-needs-attention.html">Provenance &amp; Needs Attention</a></div></details>
-			<details class="fs-group" open><summary>Documentation</summary><div class="fs-links"><a href="../docs/getting-started.html">Getting started</a><a href="../docs/configuration.html">Configuration</a><a href="../docs/api.html">API</a><a href="../docs/operations.html">Operations</a><a href="../docs/status.html">Status</a><a href="../docs/internals.html">Internals</a><a href="../docs/performance.html">Performance</a></div></details>
-			<details class="fs-group"><summary>Project</summary><div class="fs-links"><a href="https://github.com/switchyard-labs/switchyard">GitHub</a><a href="https://github.com/switchyard-labs/switchyard-labs.github.io">Website source</a></div></details>
-			</div><div class="fs-foot">Switchyard — agent-native Git collaboration.</div>
+				<details class="fs-group" open><summary>Product</summary><div class="fs-links">
+					<a href="../">Overview</a><a href="../product/overview.html">How it works</a><a href="../product/human-ai.html">Human + AI collaboration</a><a href="../product/demo.html">Demo</a>
+				</div></details>
+				<details class="fs-group" open><summary>Concepts</summary><div class="fs-links">
+					<a href="architecture.html">Architecture</a><a href="repositories.html">Repositories &amp; Git truth</a><a href="work-attempts.html">Work, Attempts &amp; Pull Requests</a><a href="integration-queue.html">Integration Queue</a><a href="reviews-conflicts.html">Reviews &amp; Conflicts</a><a href="workflows.html">Durable workflows</a><a href="provenance-needs-attention.html">Provenance &amp; Needs Attention</a>
+				</div></details>
+				<details class="fs-group" open><summary>Documentation</summary><div class="fs-links">
+					<a href="../docs/getting-started.html">Getting started</a><a href="../docs/configuration.html">Configuration</a><a href="../docs/api.html">API</a><a href="../docs/operations.html">Operations</a><a href="../docs/status.html">Status</a><a href="../docs/internals.html">Internals</a><a href="../docs/performance.html">Performance</a>
+				</div></details>
+				<details class="fs-group"><summary>Project</summary><div class="fs-links"><a href="https://github.com/switchyard-labs/switchyard" rel="noopener">GitHub</a><a href="https://github.com/switchyard-labs/switchyard-labs.github.io" rel="noopener">Website source</a></div></details>
+			</div>
+			<div class="fs-foot">Switchyard — agent-native Git collaboration.</div>
 		</nav>
+
+		<aside class="docs-drawer" id="docs-drawer" hidden aria-label="Documentation navigation">
+			<details open><summary>Start</summary><a href="../docs/getting-started.html">Getting started</a><a href="../docs/configuration.html">Configuration</a></details>
+			<details open><summary>Reference</summary><a href="../docs/api.html">API</a><a href="../docs/operations.html">Operations</a></details>
+			<details><summary>Project</summary><a href="../docs/status.html">Status</a><a href="../docs/internals.html">Internals</a><a href="../docs/performance.html">Performance</a></details>
+		</aside>
 
 		<main class="site-main" id="main-content">
 			<section class="hero">
-				<div class="kicker">Concepts · Provenance &amp; Needs Attention</div>
-				<h1>Explainable changes. Surfaceable decisions.</h1>
-				<p class="lede">
-					Every canonical change has a full chain. Everything that needs a human is
-					in one place, with the information to decide.
-				</p>
-			</section>
-			
-			<h2>Provenance</h2>
-			<p>
-				Work → Attempt → runs → PR → ref updates → normalized events: a durable,
-				queryable chain for any change. Nothing on canonical is anonymous.
-			</p>
-			
-			<h2>Needs Attention</h2>
-			<p>
-				One list aggregates everything that needs a decision:
-			</p>
-			<ul>
-				<li>attempts parked in conflict;</li>
-				<li>blocked integration-queue items;</li>
-				<li>workflow runs waiting for approval;</li>
-				<li>open error findings.</li>
-			</ul>
-			
-			<h2>Escalation decision packets</h2>
-			<p>
-				When a change is blocked, it can be escalated into a <strong>self-contained
-				decision packet</strong>: target, repository, branch, base, the conflicting
-				files with base and source versions, the findings, and the suggested
-				resolutions. You decide without reconstructing history.
-			</p>
-			<table>
-				<tr><th>Decision</th><th>Effect</th></tr>
-				<tr><td><code>take_ours</code></td><td>Canonical's version wins; the attempt resolves and can be re-queued.</td></tr>
-				<tr><td><code>take_theirs</code></td><td>The attempt's version is kept (recorded).</td></tr>
-				<tr><td><code>three_way</code></td><td>A real three-way merge resolves the files.</td></tr>
-				<tr><td><code>approve</code></td><td>Unblocks a workflow waiting for approval.</td></tr>
-				<tr><td><code>requeue</code></td><td>Re-runs a blocked integration item.</td></tr>
-			</table>
+	<div class="kicker">Concepts · Provenance &amp; Needs Attention</div>
+	<h1>Explainable changes. Surfaceable decisions.</h1>
+	<p class="lede">
+		Every canonical change has a full chain. Everything that needs a human is
+		in one place, with the information to decide.
+	</p>
+</section>
+
+<h2>Provenance</h2>
+<p>
+	Work → Attempt → runs → PR → ref updates → normalized events: a durable,
+	queryable chain for any change. Nothing on canonical is anonymous.
+</p>
+
+<h2>Needs Attention</h2>
+<p>
+	One list aggregates everything that needs a decision:
+</p>
+<ul>
+	<li>attempts parked in conflict;</li>
+	<li>blocked integration-queue items;</li>
+	<li>workflow runs waiting for approval;</li>
+	<li>open error findings.</li>
+</ul>
+
+<h2>Escalation decision packets</h2>
+<p>
+	When a change is blocked, it can be escalated into a <strong>self-contained
+	decision packet</strong>: target, repository, branch, base, the conflicting
+	files with base and source versions, the findings, and the suggested
+	resolutions. You decide without reconstructing history.
+</p>
+<table>
+	<tr><th>Decision</th><th>Effect</th></tr>
+	<tr><td><code>take_ours</code></td><td>Canonical's version wins; the attempt resolves and can be re-queued.</td></tr>
+	<tr><td><code>take_theirs</code></td><td>The attempt's version is kept (recorded).</td></tr>
+	<tr><td><code>three_way</code></td><td>A real three-way merge resolves the files.</td></tr>
+	<tr><td><code>approve</code></td><td>Unblocks a workflow waiting for approval.</td></tr>
+	<tr><td><code>requeue</code></td><td>Re-runs a blocked integration item.</td></tr>
+</table>
 		</main>
 
 		<footer class="site-footer">
