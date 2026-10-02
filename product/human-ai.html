@@ -12,7 +12,7 @@
 		<a class="skip-link" href="#main-content">Skip to content</a>
 		<header class="site-header">
 			<div class="header-inner">
-				<a class="brand" href="../">
+				<a class="brand" href="../index.html">
 					<img src="../assets/images/favicon.webp" alt="Switchyard mark" width="26" height="26">
 					<span>Switchyard</span>
 				</a>
@@ -30,7 +30,7 @@
 			</div>
 			<div class="fs-groups">
 				<details class="fs-group" open><summary>Product</summary><div class="fs-links">
-					<a href="../">Overview</a><a href="overview.html">How it works</a><a href="human-ai.html">Human + AI collaboration</a><a href="demo.html">Demo</a>
+					<a href="../index.html">Overview</a><a href="overview.html">How it works</a><a href="human-ai.html">Human + AI collaboration</a><a href="demo.html">Demo</a>
 				</div></details>
 				<details class="fs-group" open><summary>Concepts</summary><div class="fs-links">
 					<a href="../concepts/architecture.html">Architecture</a><a href="../concepts/repositories.html">Repositories &amp; Git truth</a><a href="../concepts/work-attempts.html">Work, Attempts &amp; Pull Requests</a><a href="../concepts/integration-queue.html">Integration Queue</a><a href="../concepts/reviews-conflicts.html">Reviews &amp; Conflicts</a><a href="../concepts/workflows.html">Durable workflows</a><a href="../concepts/provenance-needs-attention.html">Provenance &amp; Needs Attention</a>
@@ -52,49 +52,48 @@
 		<main class="site-main" id="main-content">
 			<section class="hero">
 	<div class="kicker">Product · Human + AI collaboration</div>
-	<h1>One pipeline, two ways to drive it.</h1>
-	<p class="lede">
-		Humans get ordinary Git and a careful editor. Agents get roles, scoped
-		credentials, and a durable workflow substrate. They converge on the same
-		Integration Queue.
-	</p>
+	<h1>One repository. Two ways to work.</h1>
+	<p class="lede">Humans get ordinary Git and an editor that never hides commits behind “AI magic.” Agents get isolated Attempts, explicit roles and durable workflows. Both converge on the same review and Integration Queue rules.</p>
 </section>
 
-<h2>For humans</h2>
+<h2>Same Git, different interaction</h2>
+<table>
+	<tr><th>Concern</th><th>Human path</th><th>Agent path</th></tr>
+	<tr><td>Repository access</td><td>Normal <code>git clone/fetch/push</code> or browser editor.</td><td>Role-scoped execution against an isolated Attempt branch.</td></tr>
+	<tr><td>Working state</td><td>Local working tree or recoverable browser draft.</td><td>Attempt branch plus execution/provenance records.</td></tr>
+	<tr><td>Review</td><td>Pull Request conversation/checks/files.</td><td>Same PR plus structured Review Findings and execution evidence when relevant.</td></tr>
+	<tr><td>Canonical write</td><td>Normal policy may permit direct human Git; queued PR integration is available.</td><td>Agents do not receive canonical-write authority; integration goes through policy/queue.</td></tr>
+	<tr><td>Conflicts</td><td>Familiar Git/textual resolution.</td><td>Deterministic repair, semantic contract checks and escalation can run before asking a human.</td></tr>
+</table>
+
+<h2>Interactive Agent assistance in the editor</h2>
+<p>The editor now has an interactive assistance mode distinct from autonomous Attempts. The Agent proposal is anchored to a draft revision, so it cannot silently replace newer human edits.</p>
+<pre><code>open src/router.go at draft revision 12
+   │
+   ├─ human asks Agent: "tighten this error path"
+   │
+   ├─ Agent proposes against revision 12
+   │      └─ if draft is now revision 13 → stale proposal is rejected
+   │
+   ├─ proposal applies to the draft
+   ├─ human inspects diff / edits / reverts
+   └─ human explicitly commits
+</code></pre>
+<p>This is intentionally different from a formal Attempt. Interactive assistance behaves like another editor participant; a formal Attempt is autonomous engineering work with its own branch, executions and PR.</p>
+
+<h2>Formal autonomous Attempts</h2>
 <div class="grid">
-	<div class="card"><div class="tag">Git</div><h3>Nothing to relearn</h3><p class="muted"><code>git clone / fetch / push</code> work unchanged. Branches, PRs and history are real Git.</p></div>
-	<div class="card"><div class="tag">Editor</div><h3>Save ≠ Commit</h3><p class="muted">A durable draft survives reload; only an explicit Commit changes the repository.</p></div>
-	<div class="card"><div class="tag">Concurrency</div><h3>Draft CAS</h3><p class="muted">A stale save is rejected, never silently overwritten. If the branch moved, you get reconcile guidance.</p></div>
-	<div class="card"><div class="tag">Oversight</div><h3>Needs Attention</h3><p class="muted">Conflicts, blocked integrations and approvals in one list, with self-contained decision packets.</p></div>
+	<div class="card"><div class="tag">Roles</div><h3>Explicit capabilities</h3><p class="muted">Implementer, reviewer and conflict-resolver roles describe intent/capabilities separately from provider credentials.</p></div>
+	<div class="card"><div class="tag">Credentials</div><h3>Secrets are not authority</h3><p class="muted">A provider secret lets a runner call a model; Switchyard role/policy decides which repository actions are permitted.</p></div>
+	<div class="card"><div class="tag">Workflows</div><h3>Durable by design</h3><p class="muted">Agent/check/review/integration steps survive process death and retain durable evidence.</p></div>
+	<div class="card"><div class="tag">Escalation</div><h3>Humans when necessary</h3><p class="muted">Needs Attention packages the unresolved choice instead of requiring somebody to reconstruct an Agent log.</p></div>
 </div>
 
-<h2>For agents</h2>
-<div class="grid">
-	<div class="card"><div class="tag">Roles</div><h3>Explicit capabilities</h3><p class="muted">Implementer, reviewer, conflict-resolver. A provider secret never grants Switchyard authority.</p></div>
-	<div class="card"><div class="tag">Credentials</div><h3>Scoped and encrypted</h3><p class="muted">Encrypted at rest; plaintext only at execution resolution; metadata-only API.</p></div>
-	<div class="card"><div class="tag">Workflows</div><h3>Durable by design</h3><p class="muted">JS steps that survive crashes; external effects never duplicated.</p></div>
-	<div class="card"><div class="tag">Autonomy</div><h3>Policy-bounded</h3><p class="muted">Org policies gate file writes, budgets and integration risk — audited end to end.</p></div>
-</div>
+<h2>Why the boundary matters</h2>
+<p>Many “AI editor” designs blur suggestion, workspace mutation and source-control commit into one action. Switchyard keeps those boundaries explicit. A draft is recoverable working state; a commit is Git history; an Attempt is isolated autonomous work; an integration is a policy/freshness decision. That makes concurrent humans and Agents easier to reason about because each layer has a clear authority model.</p>
 
-<h2>The editor + agent boundary (honest)</h2>
-<p>
-	The Agent panel in the editor runs the <strong>formal Attempt path</strong>:
-	it executes the implementer against the attempt branch and refreshes the
-	committed state. That is legitimate autonomous execution with its own
-	provenance.
-</p>
-<p>
-	The <em>interactive draft-assistance</em> flow — you ask the Agent to edit
-	your <em>draft</em>, it proposes a change at your revision, you inspect the
-	diff, then you commit — is a targeted product task for the next milestone.
-	The draft revision/CAS machinery it builds on already exists and is proven.
-</p>
+<div class="callout"><span class="t">Invariant</span>Neither interactive assistance nor autonomous Attempts are allowed to become last-writer-wins. Drafts use revision CAS; Git writes use expected state/non-force push semantics.</div>
 
-<div class="callout">
-	<span class="t">Guarantee</span>
-	Neither mode can overwrite your work: ref mutations are compare-and-swap, and
-	draft saves reject stale revisions.
-</div>
 		</main>
 
 		<footer class="site-footer">
@@ -103,6 +102,8 @@
 				<span class="muted">Git collaboration for humans and concurrent agents.</span>
 			</div>
 		</footer>
+		<script src="../assets/js/code-surface.js"></script>
+		<script src="../assets/js/code-blocks.js"></script>
 		<script src="../assets/js/app.js"></script>
 	</body>
 </html>

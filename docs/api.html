@@ -12,7 +12,7 @@
 		<a class="skip-link" href="#main-content">Skip to content</a>
 		<header class="site-header">
 			<div class="header-inner">
-				<a class="brand" href="../">
+				<a class="brand" href="../index.html">
 					<img src="../assets/images/favicon.webp" alt="Switchyard mark" width="26" height="26">
 					<span>Switchyard</span>
 				</a>
@@ -30,7 +30,7 @@
 			</div>
 			<div class="fs-groups">
 				<details class="fs-group" open><summary>Product</summary><div class="fs-links">
-					<a href="../">Overview</a><a href="../product/overview.html">How it works</a><a href="../product/human-ai.html">Human + AI collaboration</a><a href="../product/demo.html">Demo</a>
+					<a href="../index.html">Overview</a><a href="../product/overview.html">How it works</a><a href="../product/human-ai.html">Human + AI collaboration</a><a href="../product/demo.html">Demo</a>
 				</div></details>
 				<details class="fs-group" open><summary>Concepts</summary><div class="fs-links">
 					<a href="../concepts/architecture.html">Architecture</a><a href="../concepts/repositories.html">Repositories &amp; Git truth</a><a href="../concepts/work-attempts.html">Work, Attempts &amp; Pull Requests</a><a href="../concepts/integration-queue.html">Integration Queue</a><a href="../concepts/reviews-conflicts.html">Reviews &amp; Conflicts</a><a href="../concepts/workflows.html">Durable workflows</a><a href="../concepts/provenance-needs-attention.html">Provenance &amp; Needs Attention</a>
@@ -53,37 +53,69 @@
 			<section class="hero">
 	<div class="kicker">Docs · API</div>
 	<h1>The HTTP surface.</h1>
-	<p class="lede">
-		One authenticated JSON API. Sessions via bcrypt + HttpOnly cookies; refs,
-		work, attempts, PRs, the queue, workflows, policy, and the editor.
-	</p>
+	<p class="lede">Switchyard exposes one authenticated JSON API for Git-aware collaboration: identity, repositories, Work, Attempts, Pull Requests, editor drafts, workflows, the Integration Queue, policy, organisations and realtime events.</p>
 </section>
 
+<h2>Conventions first</h2>
 <table>
-	<tr><th>Area</th><th>Endpoints</th></tr>
-	<tr><td>Auth</td><td><code>POST /api/auth/register|login|logout</code> · <code>GET /api/auth/me</code></td></tr>
-	<tr><td>Repos</td><td><code>GET /api/repos</code> · <code>/api/repos/{name}</code> · <code>/tree</code> · <code>/content</code> · <code>/refs</code></td></tr>
-	<tr><td>Work / Attempts / PRs</td><td><code>/api/work…</code> · <code>/api/attempts/{id}/run|review|preview|resolve</code> · <code>/api/prs/{id}/check|integrate|enqueue</code></td></tr>
-	<tr><td>Events / realtime</td><td><code>POST /api/events/ingest</code> · <code>GET /api/events</code> · <code>GET /api/events/stream</code> (SSE)</td></tr>
-	<tr><td>Editor</td><td><code>POST /api/drafts</code> (revision CAS) · <code>GET /api/drafts/…</code> · <code>POST /api/drafts/{id}/commit</code> · <code>POST /api/diff</code></td></tr>
-	<tr><td>Workflows</td><td><code>/api/workflows…</code> · <code>/api/workflow_runs…</code> (run / cancel / approve / retry)</td></tr>
-	<tr><td>Queue / Attention / Escalation</td><td><code>GET /api/queue</code> · <code>GET /api/attention</code> · <code>/api/escalations…</code></td></tr>
-	<tr><td>Org / Policy / Audit</td><td><code>POST /api/orgs</code> · <code>POST /api/orgs/{id}/policies</code> · <code>GET /api/orgs/{id}/fleet</code> · <code>GET /api/audit</code></td></tr>
-	<tr><td>Agents / credentials</td><td><code>/api/credentials…</code> · <code>GET /api/roles</code></td></tr>
+	<tr><th>Concern</th><th>Contract</th></tr>
+	<tr><td>Browser authentication</td><td>Registration/login establish an HttpOnly session cookie. Mutating browser requests are authorized as the signed-in Switchyard principal.</td></tr>
+	<tr><td>Repository identity</td><td>Public-facing repository APIs use <code>owner/repo</code>. The backing Cloudflare Artifacts repository name remains an implementation/storage identity.</td></tr>
+	<tr><td>JSON errors</td><td>Application failures return structured JSON with an <code>error</code> value; concurrency failures use explicit conflict states rather than silent overwrite.</td></tr>
+	<tr><td>Optimistic concurrency</td><td>Drafts use revisions; repository writes use expected Git state. Stale writes are surfaced to the caller.</td></tr>
+	<tr><td>Realtime</td><td>Normalized domain events are available over authenticated Server-Sent Events.</td></tr>
 </table>
 
-<h2>Notable semantics</h2>
-<ul>
-	<li><strong>Draft CAS:</strong> saves carry <code>expected_revision</code>; a
-	stale save returns <code>409 draft_stale</code>. Commits compare
-	<code>base_sha</code> to the current head and return
-	<code>409 stale_base</code> on external movement.</li>
-	<li><strong>Queue:</strong> <code>POST /api/prs/{id}/enqueue</code> enqueues;
-	the worker integrates strictly FIFO under policy; blocked items expose
-	<code>preview_conflict</code> or <code>semantic_conflict</code>.</li>
-	<li><strong>Realtime:</strong> authenticated SSE at <code>/api/events/stream</code>
-	delivers normalized domain events.</li>
-</ul>
+<h2>Endpoint map</h2>
+<table>
+	<tr><th>Area</th><th>Representative endpoints</th><th>What they are for</th></tr>
+	<tr><td>Auth &amp; account</td><td><code>POST /api/auth/register</code>, <code>/login</code>, <code>/logout</code> · <code>GET /api/auth/me</code></td><td>Application identity and browser sessions.</td></tr>
+	<tr><td>Users &amp; settings</td><td><code>GET /api/users/{username}</code> · <code>PATCH /api/settings/profile</code> · avatar/password/session endpoints</td><td>Profiles, large avatars, account metadata, password/session management.</td></tr>
+	<tr><td>Owners &amp; organisations</td><td><code>GET /api/owners/{slug}</code> · <code>/api/orgs…</code> · members, teams, invitations, policies, audit</td><td>Git-host ownership, organisation profiles and server-enforced membership/access.</td></tr>
+	<tr><td>Repositories</td><td><code>GET /api/repositories</code> · <code>/api/repositories/{owner}/{repo}</code> · <code>/tree</code> · <code>/content</code> · <code>/refs</code></td><td>Canonical owner/repo browsing. Legacy flat-name <code>/api/repos…</code> routes remain for compatibility.</td></tr>
+	<tr><td>History &amp; compare</td><td><code>/commits</code> · <code>/commits/{sha}</code> · <code>/compare</code></td><td>Ordinary Git history, commit detail and ref comparisons.</td></tr>
+	<tr><td>Repository settings</td><td><code>GET/PATCH …/settings</code> · collaborators · protected refs</td><td>Metadata, access and integration policy.</td></tr>
+	<tr><td>Work</td><td><code>GET/POST /api/work</code> · <code>GET/PATCH /api/work/{id}</code> · comments · provenance</td><td>Human-first issues/tasks. Attempts are an optional execution layer beneath Work.</td></tr>
+	<tr><td>Attempts</td><td><code>POST /api/work/{id}/attempts</code> · <code>/api/attempts/{id}/run|review|preview|resolve</code></td><td>Isolated candidate branches, Agent execution, review and conflict repair.</td></tr>
+	<tr><td>Pull Requests</td><td><code>GET /api/prs</code> · <code>GET /api/prs/{id}</code> · check/enqueue/integrate</td><td>Reviewable integration proposals and their queue state.</td></tr>
+	<tr><td>Editor</td><td><code>POST /api/drafts</code> · <code>GET /api/drafts/…</code> · <code>/agent-propose</code> · <code>/commit</code> · <code>POST /api/diff</code></td><td>Recoverable drafts, interactive Agent proposals, diffing and explicit commit.</td></tr>
+	<tr><td>Workflows</td><td><code>/api/workflows…</code> · <code>/api/workflow_runs…</code></td><td>Create/run workflows; inspect, cancel, approve or retry durable runs.</td></tr>
+	<tr><td>Queue &amp; attention</td><td><code>GET /api/queue</code> · <code>POST /api/queue/{id}/requeue</code> · <code>GET /api/attention</code> · escalations</td><td>Canonical scheduling, blocked work and human decision packets.</td></tr>
+	<tr><td>Events</td><td><code>POST /api/events/ingest</code> · <code>GET /api/events</code> · <code>GET /api/events/stream</code></td><td>Normalized Git/domain event ingestion and SSE delivery.</td></tr>
+	<tr><td>Agents &amp; credentials</td><td><code>GET /api/roles</code> · <code>GET/POST /api/credentials</code> · rotate/delete</td><td>Role configuration and provider credential lifecycle. Provider secrets never imply repository authority.</td></tr>
+</table>
+
+<h2>Example: browse a repository</h2>
+<pre><code class="language-shell"># after authenticating in the browser/session
+curl -b cookies.txt \
+  http://127.0.0.1:8080/api/repositories/switchyard-labs/switchyard/overview
+
+curl -b cookies.txt \
+  'http://127.0.0.1:8080/api/repositories/switchyard-labs/switchyard/tree?ref=main'
+</code></pre>
+<p>The overview response is deliberately product-shaped: ownership, visibility, default branch and clone information are resolved there so the UI does not need to reconstruct repository identity from low-level Artifacts records.</p>
+
+<h2>Concurrency semantics you should design around</h2>
+<table>
+	<tr><th>Operation</th><th>Caller supplies</th><th>On stale state</th></tr>
+	<tr><td>Draft save</td><td><code>expected_revision</code></td><td><code>409 draft_stale</code>; newer draft content remains intact.</td></tr>
+	<tr><td>Draft commit</td><td>Draft <code>base_sha</code></td><td><code>409 stale_base</code>; the draft remains recoverable and the user reconciles.</td></tr>
+	<tr><td>Git/ref mutation</td><td>Expected prior SHA</td><td>Normal non-force Git push rejects stale movement; Switchyard reconciles instead of overwriting.</td></tr>
+	<tr><td>Integration Queue</td><td>Validated PR + current canonical state</td><td>Item is re-previewed/re-queued or blocked with an explicit reason.</td></tr>
+</table>
+
+<h2>Example: create Work and an Attempt</h2>
+<pre><code class="language-shell">work=$(curl -s -b cookies.txt \
+  -H 'Content-Type: application/json' \
+  -d '{"title":"Tighten repository browser errors","kind":"fix"}' \
+  http://127.0.0.1:8080/api/work)
+
+# Attempts are optional: ordinary human Work can remain just an issue/task.
+# When execution is needed, create an isolated candidate branch underneath it.
+</code></pre>
+
+<div class="callout"><span class="t">API principle</span>The API exposes familiar Git-host concepts where they are truthful, and Switchyard-specific concepts only where they add genuinely new coordination semantics.</div>
+
 		</main>
 
 		<footer class="site-footer">
@@ -92,6 +124,8 @@
 				<span class="muted">Git collaboration for humans and concurrent agents.</span>
 			</div>
 		</footer>
+		<script src="../assets/js/code-surface.js"></script>
+		<script src="../assets/js/code-blocks.js"></script>
 		<script src="../assets/js/app.js"></script>
 	</body>
 </html>

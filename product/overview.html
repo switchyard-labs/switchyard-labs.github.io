@@ -12,7 +12,7 @@
 		<a class="skip-link" href="#main-content">Skip to content</a>
 		<header class="site-header">
 			<div class="header-inner">
-				<a class="brand" href="../">
+				<a class="brand" href="../index.html">
 					<img src="../assets/images/favicon.webp" alt="Switchyard mark" width="26" height="26">
 					<span>Switchyard</span>
 				</a>
@@ -30,7 +30,7 @@
 			</div>
 			<div class="fs-groups">
 				<details class="fs-group" open><summary>Product</summary><div class="fs-links">
-					<a href="../">Overview</a><a href="overview.html">How it works</a><a href="human-ai.html">Human + AI collaboration</a><a href="demo.html">Demo</a>
+					<a href="../index.html">Overview</a><a href="overview.html">How it works</a><a href="human-ai.html">Human + AI collaboration</a><a href="demo.html">Demo</a>
 				</div></details>
 				<details class="fs-group" open><summary>Concepts</summary><div class="fs-links">
 					<a href="../concepts/architecture.html">Architecture</a><a href="../concepts/repositories.html">Repositories &amp; Git truth</a><a href="../concepts/work-attempts.html">Work, Attempts &amp; Pull Requests</a><a href="../concepts/integration-queue.html">Integration Queue</a><a href="../concepts/reviews-conflicts.html">Reviews &amp; Conflicts</a><a href="../concepts/workflows.html">Durable workflows</a><a href="../concepts/provenance-needs-attention.html">Provenance &amp; Needs Attention</a>
@@ -52,53 +52,68 @@
 		<main class="site-main" id="main-content">
 			<section class="hero">
 	<div class="kicker">Product · Overview</div>
-	<h1>One loop for humans and agents.</h1>
-	<p class="lede">
-		Switchyard turns a normal Git repository into a place where concurrent
-		agents and people can work without stepping on each other — and where
-		every canonical change is explainable.
-	</p>
+	<h1>Familiar Git collaboration, rebuilt for concurrency.</h1>
+	<p class="lede">Switchyard behaves like a Git host in the simple case and reveals Agent-native machinery only when concurrent work, automation, review complexity or risk actually require it.</p>
 </section>
 
-<h2>The core model</h2>
-<div class="flow">
-	<ol>
-		<li><strong>Work</strong> — an intent is recorded (feature, fix, task).</li>
-		<li><strong>Attempt</strong> — an isolated branch is created from the intent.</li>
-		<li><strong>Agent or human</strong> — edits files on that branch.</li>
-		<li><strong>Commit</strong> — lands via a compare-and-swap ref substrate on the attempt branch only.</li>
-		<li><strong>PR + check + review</strong> — a pull request, validation, and structured findings.</li>
-		<li><strong>Preview</strong> — does it merge cleanly, and does the merged tree satisfy the repo contract?</li>
-		<li><strong>Integration Queue</strong> — strictly FIFO, policy-gated, CAS-guarded into canonical.</li>
-	</ol>
-</div>
-<p>
-	Nothing on canonical happens outside that pipeline. Agents are incapable of
-	writing canonical by themselves, because they never hold a credential for it.
-</p>
+<h2>Start with ordinary Git</h2>
+<table>
+	<tr><th>You expect</th><th>Switchyard gives you</th></tr>
+	<tr><td>owner/repository identity</td><td>User and organisation namespaces, public/private repository metadata and familiar repository pages.</td></tr>
+	<tr><td>clone / fetch / push</td><td>Normal Git commands against the Cloudflare Artifacts remote shown under the repository <strong>Code</strong> menu.</td></tr>
+	<tr><td>source browsing</td><td>Branch selector, breadcrumbs, syntax highlighting, README rendering, images and line anchors.</td></tr>
+	<tr><td>history</td><td>Commits, branches, tags and compare/diff surfaces.</td></tr>
+	<tr><td>issues/tasks</td><td>Work items with body, status, assignee and comments.</td></tr>
+	<tr><td>Pull Requests</td><td>Conversation, commits, files, checks and progressive Switchyard details.</td></tr>
+	<tr><td>settings/access</td><td>User/org/repository settings, collaborators, teams and policy surfaces.</td></tr>
+</table>
+
+<h2>Then add concurrency explicitly</h2>
+<pre><code>Work: improve repository search
+  ├─ Attempt A · human
+  ├─ Attempt B · implementer Agent
+  └─ Attempt C · alternate approach
+          │
+          ├─ checks + Review Findings
+          ├─ preview against current canonical
+          └─ Integration Queue
+                 └─ Cloudflare Artifacts main
+</code></pre>
+<p>Attempts are isolated candidate executions under one Work item. Humans can ignore them entirely for simple tasks; Agent-heavy teams can run multiple approaches without sharing a branch or racing to overwrite canonical.</p>
+
+<h2>The collaboration model</h2>
+<table>
+	<tr><th>Layer</th><th>Purpose</th><th>Authority</th></tr>
+	<tr><td>Work</td><td>Human-facing intent/task/issue.</td><td>Trestle coordination state.</td></tr>
+	<tr><td>Attempt</td><td>Isolated candidate execution and provenance.</td><td>Coordination in Trestle + real branch/ref state in Artifacts.</td></tr>
+	<tr><td>Pull Request</td><td>Familiar review/integration proposal.</td><td>Switchyard metadata around real Git source/base refs.</td></tr>
+	<tr><td>Integration Queue</td><td>Fresh, ordered, policy-gated canonical movement.</td><td>Control plane decides; Git/Artifacts performs the actual ref update.</td></tr>
+</table>
 
 <h2>Why isolation is the point</h2>
 <div class="grid">
-	<div class="card"><div class="tag">Concurrency</div><h3>Parallel, safe</h3><p class="muted">Two agents editing the same file produce a conflict the repair loop handles — they never clobber each other on canonical.</p></div>
-	<div class="card"><div class="tag">Attribution</div><h3>Provenance</h3><p class="muted">Work → Attempt → PR → ref updates → events: a full, queryable chain for every canonical change.</p></div>
-	<div class="card"><div class="tag">Control</div><h3>Policy</h3><p class="muted">Which files agents may write, which integrations need approval, how much a workflow may run — all audited.</p></div>
+	<div class="card"><div class="tag">Concurrency</div><h3>Parallel without shared-branch races</h3><p class="muted">Two Agents can attempt the same Work independently. Their differences become reviewable candidates, not an accidental last-writer-wins sequence.</p></div>
+	<div class="card"><div class="tag">Attribution</div><h3>Provenance around real Git</h3><p class="muted">Work → Attempt → execution → PR → queue → ref update gives context around commits without replacing Git history.</p></div>
+	<div class="card"><div class="tag">Control</div><h3>Risk changes autonomy</h3><p class="muted">Policy can deny files, cap workflow budgets or require approval for higher-risk integration while leaving low-risk repositories simple.</p></div>
 </div>
 
-<h2>Deterministic by default</h2>
-<p>
-	The loop is fully deterministic today: the implementer, checker, reviewer and
-	conflict-resolver are deterministic adapters behind one runner interface. A
-	real coding-agent CLI adapter is wired and ready; it is the same substrate,
-	with a provider credential as the only missing input. This is what lets the
-	system be certified, isolated, and debuggable before LLM variance is
-	introduced.
-</p>
+<h2>Human and Agent editing are deliberately different</h2>
+<p>A human in the browser editor can save a recoverable draft without touching Git, ask an Agent to propose a change against that draft revision, inspect the diff and explicitly commit. A formal autonomous Attempt may create commits on its own isolated branch. Both paths are stale-safe and neither grants an Agent canonical-write authority.</p>
 
-<div class="callout">
-	<span class="t">Next</span>
-	<a href="how-it-works.html">See the loop in detail</a> with the live
-	evidence behind each step.
-</div>
+<h2>Where the data lives</h2>
+<pre><code>Cloudflare Artifacts             Trestle
+--------------------             -------
+Git objects                       Work / Attempts
+commits + branches                PR coordination
+canonical refs                    workflow steps
+clone / fetch / push              findings / queue / policy / audit
+
+             Switchyard control plane
+        connects the two under auth + policy
+</code></pre>
+
+<div class="callout"><span class="t">Mental model</span><strong>Git stays Git.</strong> Switchyard is the collaboration/orchestration layer around real Git, not a replacement source-control database.</div>
+
 		</main>
 
 		<footer class="site-footer">
@@ -107,6 +122,8 @@
 				<span class="muted">Git collaboration for humans and concurrent agents.</span>
 			</div>
 		</footer>
+		<script src="../assets/js/code-surface.js"></script>
+		<script src="../assets/js/code-blocks.js"></script>
 		<script src="../assets/js/app.js"></script>
 	</body>
 </html>

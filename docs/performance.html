@@ -12,7 +12,7 @@
 		<a class="skip-link" href="#main-content">Skip to content</a>
 		<header class="site-header">
 			<div class="header-inner">
-				<a class="brand" href="../">
+				<a class="brand" href="../index.html">
 					<img src="../assets/images/favicon.webp" alt="Switchyard mark" width="26" height="26">
 					<span>Switchyard</span>
 				</a>
@@ -30,7 +30,7 @@
 			</div>
 			<div class="fs-groups">
 				<details class="fs-group" open><summary>Product</summary><div class="fs-links">
-					<a href="../">Overview</a><a href="../product/overview.html">How it works</a><a href="../product/human-ai.html">Human + AI collaboration</a><a href="../product/demo.html">Demo</a>
+					<a href="../index.html">Overview</a><a href="../product/overview.html">How it works</a><a href="../product/human-ai.html">Human + AI collaboration</a><a href="../product/demo.html">Demo</a>
 				</div></details>
 				<details class="fs-group" open><summary>Concepts</summary><div class="fs-links">
 					<a href="../concepts/architecture.html">Architecture</a><a href="../concepts/repositories.html">Repositories &amp; Git truth</a><a href="../concepts/work-attempts.html">Work, Attempts &amp; Pull Requests</a><a href="../concepts/integration-queue.html">Integration Queue</a><a href="../concepts/reviews-conflicts.html">Reviews &amp; Conflicts</a><a href="../concepts/workflows.html">Durable workflows</a><a href="../concepts/provenance-needs-attention.html">Provenance &amp; Needs Attention</a>
@@ -53,39 +53,48 @@
 			<section class="hero">
 	<div class="kicker">Docs · Performance</div>
 	<h1>Measured, not guessed.</h1>
-	<p class="lede">
-		Numbers from the live integration queue, and the honest cost model behind
-		them.
-	</p>
+	<p class="lede">The early performance campaign focused on the canonical integration path because it is the most obviously serial part of the system. The numbers below are real measurements from the CP9 live gate, not synthetic targets.</p>
 </section>
 
-<h2>Integration Queue timings</h2>
+<h2>Integration Queue baseline</h2>
 <table>
-	<tr><th>Scenario</th><th>Wall time</th><th>Per item</th></tr>
-	<tr><td>3 clean PRs (churn)</td><td>18–22 s</td><td>~6–7 s</td></tr>
-	<tr><td>10 clean PRs</td><td>~42 s full queue→done</td><td>~4.2 s</td></tr>
+	<tr><th>Scenario</th><th>Observed wall time</th><th>Approx. per item</th><th>What it proved</th></tr>
+	<tr><td>3 clean PRs under churn</td><td>18–22 s</td><td>~6–7 s</td><td>FIFO ordering, successful canonical integration and predictable serialization.</td></tr>
+	<tr><td>10 clean PRs</td><td>~42 s queue→done</td><td>~4.2 s</td><td>The queue remains correct under a larger burst; setup/clone work dominates.</td></tr>
 </table>
-<p>
-	Each integration does a scratch clone for preview plus a scratch clone + push
-	for the merge — repeated full object transfer. At this scale it is
-	acceptable; the data justifies a <strong>cached bare-mirror + shared-object
-	worktree</strong> model as the next optimization target.
-</p>
 
-<h2>What dominates</h2>
-<ul>
-	<li>Clone preparation (full object transfer per operation).</li>
-	<li>Preview + merge each clone once.</li>
-	<li>Strict FIFO serializes integrations (by design).</li>
-</ul>
+<h2>Where the time goes</h2>
+<p>The current implementation intentionally chose the simple, isolation-friendly substrate first: preview and merge operations use scratch Git clones. That made the correctness gates easy to reason about, but it repeats object transfer and repository preparation.</p>
+<pre><code>queued PR
+   │
+   ├─ scratch clone → preview merge / contract validation
+   │
+   └─ scratch clone → canonical merge + non-force push
+                         │
+                         └─ Cloudflare Artifacts
+</code></pre>
+<table>
+	<tr><th>Cost</th><th>Why it exists</th><th>Likely optimization</th></tr>
+	<tr><td>Repeated clone/fetch setup</td><td>Strong isolation and a very simple correctness model.</td><td>Per-repository bare mirror refreshed with <code>git fetch</code>.</td></tr>
+	<tr><td>Repeated object transfer</td><td>Each scratch clone starts independently.</td><td>Shared object store/worktrees from the local mirror.</td></tr>
+	<tr><td>Strict FIFO integration</td><td>Canonical ordering must be deterministic.</td><td>Keep serialization; reduce work performed while the queue item owns the integration slot.</td></tr>
+</table>
 
-<h2>What is not yet measured</h2>
-<ul>
-	<li>Concurrent agent execution at scale (the deterministic adapter is
-	subprocess-fast; real LLM executors are bounded on the credential condition).</li>
-	<li>Repository-size effects (all tests used small repos).</li>
-	<li>SSE fan-out under many browsers (single-node).</li>
-</ul>
+<h2>Why strict FIFO is not the performance bug</h2>
+<p>Switchyard intentionally integrates one canonical change at a time. Parallelizing the final ref mutation would undermine the very freshness guarantee the queue provides. The optimization target is therefore the expensive preparation around each item, not making canonical last-writer-wins again.</p>
+
+<h2>What should be benchmarked next</h2>
+<table>
+	<tr><th>Experiment</th><th>Baseline</th><th>Question</th></tr>
+	<tr><td>Scratch clone vs bare mirror/worktree</td><td>~4.2 s/item in the 10-PR gate</td><td>How much latency/object transfer disappears while preserving isolation?</td></tr>
+	<tr><td>Repository size sweep</td><td>Current gates use small repositories</td><td>How do object count and history depth affect preview/integration?</td></tr>
+	<tr><td>1 / 3 / 10 / 25 queued PRs</td><td>3 and 10 measured</td><td>Queue wait distribution and throughput as the burst grows.</td></tr>
+	<tr><td>Concurrent Agent executions</td><td>Deterministic runner only</td><td>Executor saturation and coordination overhead independently of LLM latency.</td></tr>
+	<tr><td>SSE fan-out</td><td>Single-node development use</td><td>How many simultaneous browser streams are practical before a hosted fan-out layer is warranted?</td></tr>
+</table>
+
+<div class="callout"><span class="t">Performance principle</span>Measure the real bottleneck first. A cached mirror is justified by observed clone cost; redesigning the queue's correctness model is not.</div>
+
 		</main>
 
 		<footer class="site-footer">
@@ -94,6 +103,8 @@
 				<span class="muted">Git collaboration for humans and concurrent agents.</span>
 			</div>
 		</footer>
+		<script src="../assets/js/code-surface.js"></script>
+		<script src="../assets/js/code-blocks.js"></script>
 		<script src="../assets/js/app.js"></script>
 	</body>
 </html>
