@@ -2,7 +2,7 @@
   "tracked": [
     {
       "name": "/",
-      "title": "index",
+      "title": "Overview",
       "template": "templates/template.html"
     },
     {
