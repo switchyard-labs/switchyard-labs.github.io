@@ -4,6 +4,7 @@
 		@input("templates/head.html")
 	</head>
 	<body>
+		<a class="skip-link" href="#main-content">Skip to content</a>
 		<header class="site-header">
 			<div class="header-inner">
 				<a class="brand" href="@path('/')">
@@ -43,7 +44,7 @@
 			<details><summary>Project</summary><a href="@path('docs/status')">Status</a><a href="@path('docs/internals')">Internals</a><a href="@path('docs/performance')">Performance</a></details>
 		</aside>
 
-		<main class="site-main">
+		<main class="site-main" id="main-content">
 			@content
 		</main>
 
