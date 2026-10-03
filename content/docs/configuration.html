@@ -15,7 +15,7 @@
 	<tr><td><code>SWITCHYARD_STATIC_DIR</code></td><td>Yes</td><td>Nift-built web application directory served by the control plane.</td></tr>
 	<tr><td><code>SWITCHYARD_LISTEN</code></td><td>No</td><td>Listen address; keep this on localhost when a reverse proxy is in front (default <code>127.0.0.1:8080</code>).</td></tr>
 	<tr><td><code>SWITCHYARD_DATA_DIR</code></td><td>Yes</td><td>Local operational state such as scratch Git work and the fallback credential-encryption key.</td></tr>
-	<tr><td><code>SWITCHYARD_STRUT_BIN</code></td><td>Adapter-dependent</td><td>Path to the deterministic Strut worker used by the certified runner adapter.</td></tr>
+	<tr><td><code>SWITCHYARD_STRUT_BIN</code></td><td>Unused</td><td>Accepted for compatibility; the deterministic adapter is now an in-process Go function, so no worker binary is required.</td></tr>
 </table>
 
 <h2>Background workers</h2>
@@ -43,7 +43,7 @@ export SWITCHYARD_ARTIFACTS_TOKEN_CMD=/opt/switchyard/token.sh
 export SWITCHYARD_STATIC_DIR=/opt/switchyard/public
 export SWITCHYARD_LISTEN=127.0.0.1:8080
 export SWITCHYARD_DATA_DIR=/opt/switchyard/data
-export SWITCHYARD_STRUT_BIN=/opt/switchyard/deterministic-worker
+# SWITCHYARD_STRUT_BIN is no longer required (in-process deterministic adapter).
 
 export SWITCHYARD_RECONCILE_INTERVAL=15s
 export SWITCHYARD_QUEUE_ID=YOUR_QUEUE_ID       # optional fast path
