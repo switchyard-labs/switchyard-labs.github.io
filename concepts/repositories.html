@@ -2,18 +2,18 @@
 <html lang="en" data-theme="dark">
 	<head>
 		<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Switchyard</title>
-<link rel="icon" type="image/svg+xml" href="../assets/images/favicon.svg">
-<meta name="description" content="Git collaboration built for humans and concurrent agents. Agents work in isolated Git state; integration into canonical flows through deterministic, policy-controlled serialized integration.">
-<link rel="stylesheet" href="../assets/css/app.css">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<title>Switchyard</title>
+		<link rel="icon" type="image/webp" href="../assets/images/favicon.webp">
+		<meta name="description" content="Git collaboration built for humans and concurrent agents. Agents work in isolated Git state; integration into canonical flows through deterministic, policy-controlled serialized integration.">
+		<link rel="stylesheet" href="../assets/css/app.css">
 	</head>
 	<body>
 		<a class="skip-link" href="#main-content">Skip to content</a>
 		<header class="site-header">
 			<div class="header-inner">
-				<a class="brand" href="../index.html">
-					<img src="../assets/images/favicon.svg" alt="Switchyard mark" width="26" height="26">
+				<a class="brand" href="../">
+					<img src="../assets/images/favicon.webp" alt="Switchyard mark" width="26" height="26">
 					<span>Switchyard</span>
 				</a>
 				<div class="header-right">
@@ -26,15 +26,15 @@
 
 		<nav class="fullscreen-nav" id="fs-nav" aria-label="Site" aria-hidden="true">
 			<div class="fs-head">
-				<span class="brand"><img src="../assets/images/favicon.svg" alt="" width="24" height="24"><span>Switchyard</span></span>
+				<span class="brand"><img src="../assets/images/favicon.webp" alt="" width="24" height="24"><span>Switchyard</span></span>
 				<button class="hamburger" id="menu-close" type="button" aria-label="Close menu">×</button>
 			</div>
 			<div class="fs-groups">
 				<details class="fs-group" open><summary>Product</summary><div class="fs-links">
-					<a href="../index.html">Overview</a><a href="../product/overview.html">How it works</a><a href="../product/human-ai.html">Human + AI collaboration</a><a href="../product/demo.html">Demo</a>
+					<a href="../">Overview</a><a href="../product/overview.html">How it works</a><a href="../product/human-ai.html">Human + AI collaboration</a><a href="../product/demo.html">Demo</a>
 				</div></details>
 				<details class="fs-group" open><summary>Concepts</summary><div class="fs-links">
-					<a href="architecture.html">Architecture</a><a href="repositories.html">Repositories &amp; Git truth</a><a href="work-attempts.html">Work, Attempts &amp; Pull Requests</a><a href="integration-queue.html">Integration Queue</a><a href="reviews-conflicts.html">Reviews &amp; Conflicts</a><a href="workflows.html">Durable workflows</a><a href="provenance-needs-attention.html">Provenance &amp; Needs Attention</a>
+					<a href="./architecture.html">Architecture</a><a href="./repositories.html">Repositories &amp; Git truth</a><a href="./work-attempts.html">Work, Attempts &amp; Pull Requests</a><a href="./integration-queue.html">Integration Queue</a><a href="./reviews-conflicts.html">Reviews &amp; Conflicts</a><a href="./workflows.html">Durable workflows</a><a href="./provenance-needs-attention.html">Provenance &amp; Needs Attention</a>
 				</div></details>
 				<details class="fs-group" open><summary>Documentation</summary><div class="fs-links">
 					<a href="../docs/getting-started.html">Getting started</a><a href="../docs/configuration.html">Configuration</a><a href="../docs/api.html">API</a><a href="../docs/operations.html">Operations</a><a href="../docs/status.html">Status</a><a href="../docs/internals.html">Internals</a><a href="../docs/performance.html">Performance</a>
@@ -52,20 +52,20 @@
 
 		<main class="site-main" id="main-content">
 			<section class="hero">
-  <div class="kicker">Concepts · Repositories &amp; Git truth</div>
-  <h1>Real Git, hosted in Cloudflare Artifacts.</h1>
-  <p class="lede">Switchyard does not copy your repository into an application database. The repository itself lives in <strong>Cloudflare Artifacts</strong>; ordinary <strong>Git</strong> is what clones, fetches, commits and pushes it.</p>
-</section>
-
-<section class="truth-explainer">
-  <div><span class="truth-label">Git</span><h2>The tool and protocol.</h2><p><code>git clone</code>, <code>git fetch</code>, <code>git commit</code>, merge and <code>git push</code> remain ordinary Git operations.</p></div>
-  <div><span class="truth-label">Cloudflare Artifacts</span><h2>The remote Git server.</h2><p>Repositories, objects, refs, branches, tags and canonical history live in Artifacts. It is Switchyard's authoritative Git truth.</p></div>
-  <div><span class="truth-label">Switchyard</span><h2>The collaboration layer.</h2><p>Switchyard adds Work, Attempts, reviews, durable workflows, policy, provenance and deterministic integration around that real Git repository.</p></div>
-</section>
-
-<h2>Clone, work and push with Git</h2>
-<p>Open a repository in Switchyard and choose <strong>Code</strong>. The HTTPS URL shown there is the repository's Cloudflare Artifacts Git remote.</p>
-<pre><code># Clone the Artifacts-hosted repository
+			  <div class="kicker">Concepts · Repositories &amp; Git truth</div>
+			  <h1>Real Git, hosted in Cloudflare Artifacts.</h1>
+			  <p class="lede">Switchyard does not copy your repository into an application database. The repository itself lives in <strong>Cloudflare Artifacts</strong>; ordinary <strong>Git</strong> is what clones, fetches, commits and pushes it.</p>
+			</section>
+			
+			<section class="truth-explainer">
+			  <div><span class="truth-label">Git</span><h2>The tool and protocol.</h2><p><code>git clone</code>, <code>git fetch</code>, <code>git commit</code>, merge and <code>git push</code> remain ordinary Git operations.</p></div>
+			  <div><span class="truth-label">Cloudflare Artifacts</span><h2>The remote Git server.</h2><p>Repositories, objects, refs, branches, tags and canonical history live in Artifacts. It is Switchyard's authoritative Git truth.</p></div>
+			  <div><span class="truth-label">Switchyard</span><h2>The collaboration layer.</h2><p>Switchyard adds Work, Attempts, reviews, durable workflows, policy, provenance and deterministic integration around that real Git repository.</p></div>
+			</section>
+			
+			<h2>Clone, work and push with Git</h2>
+			<p>Open a repository in Switchyard and choose <strong>Code</strong>. The HTTPS URL shown there is the repository's Cloudflare Artifacts Git remote.</p>
+			<pre><code># Clone the Artifacts-hosted repository
 git clone &lt;https-clone-url-from-switchyard&gt;
 cd &lt;repo&gt;
 
@@ -80,19 +80,19 @@ git push -u origin my-change
 
 # Later, fetch everybody else's Git state normally
 git fetch origin</code></pre>
-<div class="callout"><span class="t">Nothing proprietary in the Git loop</span>The commands above are normal Git. Artifacts is simply the remote server on the other end. Switchyard supplies scoped credentials and observes the resulting ref movement so its coordination state stays in sync.</div>
-
-<h2>Authentication</h2>
-<p>Switchyard obtains short-lived, repository-scoped Artifacts credentials for Git access. The clone URL shown in the Code menu contains no secret. Read credentials can clone/fetch; write credentials can push only where Switchyard policy allows them to.</p>
-
-<h2>Direct Git is first-class</h2>
-<p>A human or external CI system can push directly to an allowed branch with Git. That branch is still in Artifacts. Switchyard observes external ref movement through its event path and reconciliation safety net, then reflects it in the product UI and provenance model.</p>
-
-<h2>Attempts are real branches too</h2>
-<p>When Switchyard creates an Attempt, it creates isolated Git state against the same Artifacts repository. Agent work is not held in a special model-only store: its resulting commits and branch state are ordinary Git. Agents are prevented from writing canonical directly; the Integration Queue is the controlled path that eventually moves the canonical ref.</p>
-
-<h2>Compare-and-swap comes from Git</h2>
-<pre><code>Update(repo, ref, expected_sha, change)
+			<div class="callout"><span class="t">Nothing proprietary in the Git loop</span>The commands above are normal Git. Artifacts is simply the remote server on the other end. Switchyard supplies scoped credentials and observes the resulting ref movement so its coordination state stays in sync.</div>
+			
+			<h2>Authentication</h2>
+			<p>Switchyard obtains short-lived, repository-scoped Artifacts credentials for Git access. The clone URL shown in the Code menu contains no secret. Read credentials can clone/fetch; write credentials can push only where Switchyard policy allows them to.</p>
+			
+			<h2>Direct Git is first-class</h2>
+			<p>A human or external CI system can push directly to an allowed branch with Git. That branch is still in Artifacts. Switchyard observes external ref movement through its event path and reconciliation safety net, then reflects it in the product UI and provenance model.</p>
+			
+			<h2>Attempts are real branches too</h2>
+			<p>When Switchyard creates an Attempt, it creates isolated Git state against the same Artifacts repository. Agent work is not held in a special model-only store: its resulting commits and branch state are ordinary Git. Agents are prevented from writing canonical directly; the Integration Queue is the controlled path that eventually moves the canonical ref.</p>
+			
+			<h2>Compare-and-swap comes from Git</h2>
+			<pre><code>Update(repo, ref, expected_sha, change)
   read current ref from Artifacts
   build an ordinary Git commit
   git push --force=false
@@ -100,8 +100,7 @@ git fetch origin</code></pre>
   if another writer moved the ref first:
       Git rejects the push as stale
       Switchyard reconciles or re-queues</code></pre>
-<p>Switchyard therefore does not pretend Trestle owns repository refs. Git and Artifacts remain authoritative for repository state.</p>
-
+			<p>Switchyard therefore does not pretend Trestle owns repository refs. Git and Artifacts remain authoritative for repository state.</p>
 		</main>
 
 		<footer class="site-footer">

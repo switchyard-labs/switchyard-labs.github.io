@@ -2,18 +2,18 @@
 <html lang="en" data-theme="dark">
 	<head>
 		<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Switchyard</title>
-<link rel="icon" type="image/svg+xml" href="../assets/images/favicon.svg">
-<meta name="description" content="Git collaboration built for humans and concurrent agents. Agents work in isolated Git state; integration into canonical flows through deterministic, policy-controlled serialized integration.">
-<link rel="stylesheet" href="../assets/css/app.css">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<title>Switchyard</title>
+		<link rel="icon" type="image/webp" href="../assets/images/favicon.webp">
+		<meta name="description" content="Git collaboration built for humans and concurrent agents. Agents work in isolated Git state; integration into canonical flows through deterministic, policy-controlled serialized integration.">
+		<link rel="stylesheet" href="../assets/css/app.css">
 	</head>
 	<body>
 		<a class="skip-link" href="#main-content">Skip to content</a>
 		<header class="site-header">
 			<div class="header-inner">
-				<a class="brand" href="../index.html">
-					<img src="../assets/images/favicon.svg" alt="Switchyard mark" width="26" height="26">
+				<a class="brand" href="../">
+					<img src="../assets/images/favicon.webp" alt="Switchyard mark" width="26" height="26">
 					<span>Switchyard</span>
 				</a>
 				<div class="header-right">
@@ -26,18 +26,18 @@
 
 		<nav class="fullscreen-nav" id="fs-nav" aria-label="Site" aria-hidden="true">
 			<div class="fs-head">
-				<span class="brand"><img src="../assets/images/favicon.svg" alt="" width="24" height="24"><span>Switchyard</span></span>
+				<span class="brand"><img src="../assets/images/favicon.webp" alt="" width="24" height="24"><span>Switchyard</span></span>
 				<button class="hamburger" id="menu-close" type="button" aria-label="Close menu">×</button>
 			</div>
 			<div class="fs-groups">
 				<details class="fs-group" open><summary>Product</summary><div class="fs-links">
-					<a href="../index.html">Overview</a><a href="../product/overview.html">How it works</a><a href="../product/human-ai.html">Human + AI collaboration</a><a href="../product/demo.html">Demo</a>
+					<a href="../">Overview</a><a href="../product/overview.html">How it works</a><a href="../product/human-ai.html">Human + AI collaboration</a><a href="../product/demo.html">Demo</a>
 				</div></details>
 				<details class="fs-group" open><summary>Concepts</summary><div class="fs-links">
 					<a href="../concepts/architecture.html">Architecture</a><a href="../concepts/repositories.html">Repositories &amp; Git truth</a><a href="../concepts/work-attempts.html">Work, Attempts &amp; Pull Requests</a><a href="../concepts/integration-queue.html">Integration Queue</a><a href="../concepts/reviews-conflicts.html">Reviews &amp; Conflicts</a><a href="../concepts/workflows.html">Durable workflows</a><a href="../concepts/provenance-needs-attention.html">Provenance &amp; Needs Attention</a>
 				</div></details>
 				<details class="fs-group" open><summary>Documentation</summary><div class="fs-links">
-					<a href="getting-started.html">Getting started</a><a href="configuration.html">Configuration</a><a href="api.html">API</a><a href="operations.html">Operations</a><a href="status.html">Status</a><a href="internals.html">Internals</a><a href="performance.html">Performance</a>
+					<a href="./getting-started.html">Getting started</a><a href="./configuration.html">Configuration</a><a href="./api.html">API</a><a href="./operations.html">Operations</a><a href="./status.html">Status</a><a href="./internals.html">Internals</a><a href="./performance.html">Performance</a>
 				</div></details>
 				<details class="fs-group"><summary>Project</summary><div class="fs-links"><a href="https://github.com/switchyard-labs/switchyard" rel="noopener">GitHub</a><a href="https://gantry.cv" rel="noopener">Gantry</a><a href="https://github.com/switchyard-labs/switchyard-labs.github.io" rel="noopener">Website source</a></div></details>
 			</div>
@@ -45,37 +45,37 @@
 		</nav>
 
 		<aside class="docs-drawer" id="docs-drawer" hidden aria-label="Documentation navigation">
-			<details open><summary>Start</summary><a href="getting-started.html">Getting started</a><a href="configuration.html">Configuration</a></details>
-			<details open><summary>Reference</summary><a href="api.html">API</a><a href="operations.html">Operations</a></details>
-			<details><summary>Project</summary><a href="status.html">Status</a><a href="internals.html">Internals</a><a href="performance.html">Performance</a></details>
+			<details open><summary>Start</summary><a href="./getting-started.html">Getting started</a><a href="./configuration.html">Configuration</a></details>
+			<details open><summary>Reference</summary><a href="./api.html">API</a><a href="./operations.html">Operations</a></details>
+			<details><summary>Project</summary><a href="./status.html">Status</a><a href="./internals.html">Internals</a><a href="./performance.html">Performance</a></details>
 		</aside>
 
 		<main class="site-main" id="main-content">
 			<section class="hero">
-  <div class="kicker">Docs · Getting started</div>
-  <h1>Run Switchyard, then use it like a Git host.</h1>
-  <p class="lede">Switchyard combines a Go control plane, Trestle coordination state and Cloudflare Artifacts as the authoritative remote Git host.</p>
-</section>
-
-<h2>Prerequisites</h2>
-<ul>
-  <li>A Cloudflare account with Artifacts available and credentials carrying <code>artifacts.read</code> + <code>artifacts.write</code>.</li>
-  <li>A token helper capable of supplying a fresh Cloudflare account token to the control plane.</li>
-  <li>A Trestle instance for durable Switchyard coordination state.</li>
-  <li>The repository's declared Go toolchain, <code>git</code>, and any configured runner/worker dependencies.</li>
-</ul>
-
-<h2>Build &amp; run</h2>
-<pre><code>go build -o switchyard ./cmd/switchyard
+			  <div class="kicker">Docs · Getting started</div>
+			  <h1>Run Switchyard, then use it like a Git host.</h1>
+			  <p class="lede">Switchyard combines a Go control plane, Trestle coordination state and Cloudflare Artifacts as the authoritative remote Git host.</p>
+			</section>
+			
+			<h2>Prerequisites</h2>
+			<ul>
+			  <li>A Cloudflare account with Artifacts available and credentials carrying <code>artifacts.read</code> + <code>artifacts.write</code>.</li>
+			  <li>A token helper capable of supplying a fresh Cloudflare account token to the control plane.</li>
+			  <li>A Trestle instance for durable Switchyard coordination state.</li>
+			  <li>The repository's declared Go toolchain, <code>git</code>, and any configured runner/worker dependencies.</li>
+			</ul>
+			
+			<h2>Build &amp; run</h2>
+			<pre><code>go build -o switchyard ./cmd/switchyard
 
 # configure the environment (see Configuration)
 set -a; source switchyard.env; set +a
 ./switchyard</code></pre>
-<p>On startup the control plane provisions the required Trestle collections, connects to the configured Artifacts namespace, starts reconciliation/workflow/integration workers, and serves the product UI.</p>
-
-<h2>Your first repository</h2>
-<p>Once a repository is registered in Switchyard, open it in the browser and click <strong>Code</strong>. The HTTPS remote displayed there is the Cloudflare Artifacts repository itself.</p>
-<pre><code># Copy this URL from Switchyard's Code menu
+			<p>On startup the control plane provisions the required Trestle collections, connects to the configured Artifacts namespace, starts reconciliation/workflow/integration workers, and serves the product UI.</p>
+			
+			<h2>Your first repository</h2>
+			<p>Once a repository is registered in Switchyard, open it in the browser and click <strong>Code</strong>. The HTTPS remote displayed there is the Cloudflare Artifacts repository itself.</p>
+			<pre><code># Copy this URL from Switchyard's Code menu
 git clone &lt;artifacts-https-remote&gt;
 cd &lt;repository&gt;
 
@@ -84,22 +84,21 @@ git switch -c docs/update-readme
 git add README.md
 git commit -m "Update README"
 git push -u origin docs/update-readme</code></pre>
-<p>Those are ordinary Git operations. Git performs the clone and push; Cloudflare Artifacts stores the resulting objects and refs; Switchyard observes and coordinates the work around them.</p>
-
-<h2>What Switchyard adds</h2>
-<ul>
-  <li><strong>Work</strong> records an intent or task.</li>
-  <li><strong>Attempts</strong> give concurrent humans/agents isolated Git state.</li>
-  <li><strong>Pull Requests, checks and findings</strong> evaluate candidate work.</li>
-  <li><strong>Integration Queue</strong> is the controlled path that moves canonical.</li>
-  <li><strong>Trestle</strong> durably records the coordination state without replacing Git.</li>
-</ul>
-
-<h2>Normal Git remains available</h2>
-<p>You do not need the browser editor to work on a Switchyard repository. Clone it, create branches, commit, fetch and push with your normal Git tooling. Switchyard's browser surfaces and agent workflows operate on the same underlying repository.</p>
-
-<div class="callout"><span class="t">Architecture in one line</span><strong>Git</strong> talks to <strong>Cloudflare Artifacts</strong>; <strong>Switchyard</strong> coordinates the collaboration; <strong>Trestle</strong> persists that coordination.</div>
-
+			<p>Those are ordinary Git operations. Git performs the clone and push; Cloudflare Artifacts stores the resulting objects and refs; Switchyard observes and coordinates the work around them.</p>
+			
+			<h2>What Switchyard adds</h2>
+			<ul>
+			  <li><strong>Work</strong> records an intent or task.</li>
+			  <li><strong>Attempts</strong> give concurrent humans/agents isolated Git state.</li>
+			  <li><strong>Pull Requests, checks and findings</strong> evaluate candidate work.</li>
+			  <li><strong>Integration Queue</strong> is the controlled path that moves canonical.</li>
+			  <li><strong>Trestle</strong> durably records the coordination state without replacing Git.</li>
+			</ul>
+			
+			<h2>Normal Git remains available</h2>
+			<p>You do not need the browser editor to work on a Switchyard repository. Clone it, create branches, commit, fetch and push with your normal Git tooling. Switchyard's browser surfaces and agent workflows operate on the same underlying repository.</p>
+			
+			<div class="callout"><span class="t">Architecture in one line</span><strong>Git</strong> talks to <strong>Cloudflare Artifacts</strong>; <strong>Switchyard</strong> coordinates the collaboration; <strong>Trestle</strong> persists that coordination.</div>
 		</main>
 
 		<footer class="site-footer">

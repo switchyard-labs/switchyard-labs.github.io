@@ -2,18 +2,18 @@
 <html lang="en" data-theme="dark">
 	<head>
 		<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Switchyard</title>
-<link rel="icon" type="image/svg+xml" href="../assets/images/favicon.svg">
-<meta name="description" content="Git collaboration built for humans and concurrent agents. Agents work in isolated Git state; integration into canonical flows through deterministic, policy-controlled serialized integration.">
-<link rel="stylesheet" href="../assets/css/app.css">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<title>Switchyard</title>
+		<link rel="icon" type="image/webp" href="../assets/images/favicon.webp">
+		<meta name="description" content="Git collaboration built for humans and concurrent agents. Agents work in isolated Git state; integration into canonical flows through deterministic, policy-controlled serialized integration.">
+		<link rel="stylesheet" href="../assets/css/app.css">
 	</head>
 	<body>
 		<a class="skip-link" href="#main-content">Skip to content</a>
 		<header class="site-header">
 			<div class="header-inner">
-				<a class="brand" href="../index.html">
-					<img src="../assets/images/favicon.svg" alt="Switchyard mark" width="26" height="26">
+				<a class="brand" href="../">
+					<img src="../assets/images/favicon.webp" alt="Switchyard mark" width="26" height="26">
 					<span>Switchyard</span>
 				</a>
 				<div class="header-right">
@@ -26,15 +26,15 @@
 
 		<nav class="fullscreen-nav" id="fs-nav" aria-label="Site" aria-hidden="true">
 			<div class="fs-head">
-				<span class="brand"><img src="../assets/images/favicon.svg" alt="" width="24" height="24"><span>Switchyard</span></span>
+				<span class="brand"><img src="../assets/images/favicon.webp" alt="" width="24" height="24"><span>Switchyard</span></span>
 				<button class="hamburger" id="menu-close" type="button" aria-label="Close menu">×</button>
 			</div>
 			<div class="fs-groups">
 				<details class="fs-group" open><summary>Product</summary><div class="fs-links">
-					<a href="../index.html">Overview</a><a href="../product/overview.html">How it works</a><a href="../product/human-ai.html">Human + AI collaboration</a><a href="../product/demo.html">Demo</a>
+					<a href="../">Overview</a><a href="../product/overview.html">How it works</a><a href="../product/human-ai.html">Human + AI collaboration</a><a href="../product/demo.html">Demo</a>
 				</div></details>
 				<details class="fs-group" open><summary>Concepts</summary><div class="fs-links">
-					<a href="architecture.html">Architecture</a><a href="repositories.html">Repositories &amp; Git truth</a><a href="work-attempts.html">Work, Attempts &amp; Pull Requests</a><a href="integration-queue.html">Integration Queue</a><a href="reviews-conflicts.html">Reviews &amp; Conflicts</a><a href="workflows.html">Durable workflows</a><a href="provenance-needs-attention.html">Provenance &amp; Needs Attention</a>
+					<a href="./architecture.html">Architecture</a><a href="./repositories.html">Repositories &amp; Git truth</a><a href="./work-attempts.html">Work, Attempts &amp; Pull Requests</a><a href="./integration-queue.html">Integration Queue</a><a href="./reviews-conflicts.html">Reviews &amp; Conflicts</a><a href="./workflows.html">Durable workflows</a><a href="./provenance-needs-attention.html">Provenance &amp; Needs Attention</a>
 				</div></details>
 				<details class="fs-group" open><summary>Documentation</summary><div class="fs-links">
 					<a href="../docs/getting-started.html">Getting started</a><a href="../docs/configuration.html">Configuration</a><a href="../docs/api.html">API</a><a href="../docs/operations.html">Operations</a><a href="../docs/status.html">Status</a><a href="../docs/internals.html">Internals</a><a href="../docs/performance.html">Performance</a>
@@ -52,13 +52,13 @@
 
 		<main class="site-main" id="main-content">
 			<section class="hero">
-	<div class="kicker">Concepts · Provenance &amp; Needs Attention</div>
-	<h1>Explainable changes. Actionable decisions.</h1>
-	<p class="lede">Provenance answers “how did this change get here?” Needs Attention answers “what, exactly, do you need me to decide?” They are two views over the same durable engineering history.</p>
-</section>
-
-<h2>A canonical change is a chain, not a mystery commit</h2>
-<pre><code>Work
+				<div class="kicker">Concepts · Provenance &amp; Needs Attention</div>
+				<h1>Explainable changes. Actionable decisions.</h1>
+				<p class="lede">Provenance answers “how did this change get here?” Needs Attention answers “what, exactly, do you need me to decide?” They are two views over the same durable engineering history.</p>
+			</section>
+			
+			<h2>A canonical change is a chain, not a mystery commit</h2>
+			<pre><code>Work
   └─ Attempt
       ├─ Agent / human executions
       ├─ checks + Review Findings
@@ -67,44 +67,43 @@
           └─ Integration Queue
               └─ canonical ref update
 </code></pre>
-<p>Git remains authoritative for the actual commit/ref history in Cloudflare Artifacts. Trestle records the surrounding coordination facts: why the work existed, which Attempt produced it, what ran, which findings were raised, what policy applied and which integration action moved canonical.</p>
-
-<h2>What provenance records are useful for</h2>
-<table>
-	<tr><th>Question</th><th>Evidence Switchyard can connect</th></tr>
-	<tr><td>Why was this change made?</td><td>The originating Work item and its description/comments.</td></tr>
-	<tr><td>Which candidate produced it?</td><td>Attempt branch and execution records.</td></tr>
-	<tr><td>Was it reviewed?</td><td>Review execution plus structured Review Findings.</td></tr>
-	<tr><td>What validation ran?</td><td>Check results, preview result and repository contract findings.</td></tr>
-	<tr><td>Why did it integrate?</td><td>Queue state, risk/policy decision and final ref-update provenance.</td></tr>
-	<tr><td>What failed before the winning path?</td><td>Losing/failed Attempts remain durable history instead of being erased.</td></tr>
-</table>
-
-<h2>Needs Attention is a decision inbox</h2>
-<p>Automation should not escalate merely because an internal operation returned an error. It escalates when the system has reached a point where a human choice is actually required. The consolidated list includes:</p>
-<ul>
-	<li>Attempts parked in unresolved conflict;</li>
-	<li>Integration Queue items blocked by conflict or policy;</li>
-	<li>workflow runs waiting for explicit approval;</li>
-	<li>open error-severity findings that require direction.</li>
-</ul>
-
-<h2>Decision packets</h2>
-<p>An escalation snapshots the information needed to decide rather than forcing the operator to reconstruct logs. For a content conflict the packet can include repository, branch/base, conflicting paths, base/source versions, findings and suggested resolution actions.</p>
-<table>
-	<tr><th>Decision</th><th>Effect</th><th>When it makes sense</th></tr>
-	<tr><td><code>take_ours</code></td><td>Apply canonical/base-side content to the Attempt, resolve, then allow re-preview/requeue.</td><td>The canonical version should win this contested content.</td></tr>
-	<tr><td><code>take_theirs</code></td><td>Keep source-side content and record the choice.</td><td>The Attempt's version is known to be the desired one.</td></tr>
-	<tr><td><code>three_way</code></td><td>Run a real three-way merge and write the result onto the Attempt branch.</td><td>The changes can be reconciled mechanically.</td></tr>
-	<tr><td><code>approve</code></td><td>Release a workflow/policy gate waiting on human approval.</td><td>The evidence is sufficient but policy requires a person.</td></tr>
-	<tr><td><code>requeue</code></td><td>Run the blocked integration item through preview/freshness again.</td><td>The underlying cause has been repaired.</td></tr>
-</table>
-
-<h2>Example</h2>
-<p>Suppose PR A integrates first and PR B now conflicts. Switchyard does not ask “merge failed, what now?” It can show that B was valid against the old base, A moved canonical, B now conflicts in two named files, the conflict-resolver attempted a repair, and the remaining choices are ours/theirs/three-way. The human decision then becomes another attributable event in the same provenance chain.</p>
-
-<div class="callout"><span class="t">Design goal</span>Human intervention is the final escalation path, not the default execution model. When Switchyard asks for attention, it should arrive with evidence and bounded choices.</div>
-
+			<p>Git remains authoritative for the actual commit/ref history in Cloudflare Artifacts. Trestle records the surrounding coordination facts: why the work existed, which Attempt produced it, what ran, which findings were raised, what policy applied and which integration action moved canonical.</p>
+			
+			<h2>What provenance records are useful for</h2>
+			<table>
+				<tr><th>Question</th><th>Evidence Switchyard can connect</th></tr>
+				<tr><td>Why was this change made?</td><td>The originating Work item and its description/comments.</td></tr>
+				<tr><td>Which candidate produced it?</td><td>Attempt branch and execution records.</td></tr>
+				<tr><td>Was it reviewed?</td><td>Review execution plus structured Review Findings.</td></tr>
+				<tr><td>What validation ran?</td><td>Check results, preview result and repository contract findings.</td></tr>
+				<tr><td>Why did it integrate?</td><td>Queue state, risk/policy decision and final ref-update provenance.</td></tr>
+				<tr><td>What failed before the winning path?</td><td>Losing/failed Attempts remain durable history instead of being erased.</td></tr>
+			</table>
+			
+			<h2>Needs Attention is a decision inbox</h2>
+			<p>Automation should not escalate merely because an internal operation returned an error. It escalates when the system has reached a point where a human choice is actually required. The consolidated list includes:</p>
+			<ul>
+				<li>Attempts parked in unresolved conflict;</li>
+				<li>Integration Queue items blocked by conflict or policy;</li>
+				<li>workflow runs waiting for explicit approval;</li>
+				<li>open error-severity findings that require direction.</li>
+			</ul>
+			
+			<h2>Decision packets</h2>
+			<p>An escalation snapshots the information needed to decide rather than forcing the operator to reconstruct logs. For a content conflict the packet can include repository, branch/base, conflicting paths, base/source versions, findings and suggested resolution actions.</p>
+			<table>
+				<tr><th>Decision</th><th>Effect</th><th>When it makes sense</th></tr>
+				<tr><td><code>take_ours</code></td><td>Apply canonical/base-side content to the Attempt, resolve, then allow re-preview/requeue.</td><td>The canonical version should win this contested content.</td></tr>
+				<tr><td><code>take_theirs</code></td><td>Keep source-side content and record the choice.</td><td>The Attempt's version is known to be the desired one.</td></tr>
+				<tr><td><code>three_way</code></td><td>Run a real three-way merge and write the result onto the Attempt branch.</td><td>The changes can be reconciled mechanically.</td></tr>
+				<tr><td><code>approve</code></td><td>Release a workflow/policy gate waiting on human approval.</td><td>The evidence is sufficient but policy requires a person.</td></tr>
+				<tr><td><code>requeue</code></td><td>Run the blocked integration item through preview/freshness again.</td><td>The underlying cause has been repaired.</td></tr>
+			</table>
+			
+			<h2>Example</h2>
+			<p>Suppose PR A integrates first and PR B now conflicts. Switchyard does not ask “merge failed, what now?” It can show that B was valid against the old base, A moved canonical, B now conflicts in two named files, the conflict-resolver attempted a repair, and the remaining choices are ours/theirs/three-way. The human decision then becomes another attributable event in the same provenance chain.</p>
+			
+			<div class="callout"><span class="t">Design goal</span>Human intervention is the final escalation path, not the default execution model. When Switchyard asks for attention, it should arrive with evidence and bounded choices.</div>
 		</main>
 
 		<footer class="site-footer">

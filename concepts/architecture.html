@@ -2,18 +2,18 @@
 <html lang="en" data-theme="dark">
 	<head>
 		<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Switchyard</title>
-<link rel="icon" type="image/svg+xml" href="../assets/images/favicon.svg">
-<meta name="description" content="Git collaboration built for humans and concurrent agents. Agents work in isolated Git state; integration into canonical flows through deterministic, policy-controlled serialized integration.">
-<link rel="stylesheet" href="../assets/css/app.css">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<title>Switchyard</title>
+		<link rel="icon" type="image/webp" href="../assets/images/favicon.webp">
+		<meta name="description" content="Git collaboration built for humans and concurrent agents. Agents work in isolated Git state; integration into canonical flows through deterministic, policy-controlled serialized integration.">
+		<link rel="stylesheet" href="../assets/css/app.css">
 	</head>
 	<body>
 		<a class="skip-link" href="#main-content">Skip to content</a>
 		<header class="site-header">
 			<div class="header-inner">
-				<a class="brand" href="../index.html">
-					<img src="../assets/images/favicon.svg" alt="Switchyard mark" width="26" height="26">
+				<a class="brand" href="../">
+					<img src="../assets/images/favicon.webp" alt="Switchyard mark" width="26" height="26">
 					<span>Switchyard</span>
 				</a>
 				<div class="header-right">
@@ -26,15 +26,15 @@
 
 		<nav class="fullscreen-nav" id="fs-nav" aria-label="Site" aria-hidden="true">
 			<div class="fs-head">
-				<span class="brand"><img src="../assets/images/favicon.svg" alt="" width="24" height="24"><span>Switchyard</span></span>
+				<span class="brand"><img src="../assets/images/favicon.webp" alt="" width="24" height="24"><span>Switchyard</span></span>
 				<button class="hamburger" id="menu-close" type="button" aria-label="Close menu">×</button>
 			</div>
 			<div class="fs-groups">
 				<details class="fs-group" open><summary>Product</summary><div class="fs-links">
-					<a href="../index.html">Overview</a><a href="../product/overview.html">How it works</a><a href="../product/human-ai.html">Human + AI collaboration</a><a href="../product/demo.html">Demo</a>
+					<a href="../">Overview</a><a href="../product/overview.html">How it works</a><a href="../product/human-ai.html">Human + AI collaboration</a><a href="../product/demo.html">Demo</a>
 				</div></details>
 				<details class="fs-group" open><summary>Concepts</summary><div class="fs-links">
-					<a href="architecture.html">Architecture</a><a href="repositories.html">Repositories &amp; Git truth</a><a href="work-attempts.html">Work, Attempts &amp; Pull Requests</a><a href="integration-queue.html">Integration Queue</a><a href="reviews-conflicts.html">Reviews &amp; Conflicts</a><a href="workflows.html">Durable workflows</a><a href="provenance-needs-attention.html">Provenance &amp; Needs Attention</a>
+					<a href="./architecture.html">Architecture</a><a href="./repositories.html">Repositories &amp; Git truth</a><a href="./work-attempts.html">Work, Attempts &amp; Pull Requests</a><a href="./integration-queue.html">Integration Queue</a><a href="./reviews-conflicts.html">Reviews &amp; Conflicts</a><a href="./workflows.html">Durable workflows</a><a href="./provenance-needs-attention.html">Provenance &amp; Needs Attention</a>
 				</div></details>
 				<details class="fs-group" open><summary>Documentation</summary><div class="fs-links">
 					<a href="../docs/getting-started.html">Getting started</a><a href="../docs/configuration.html">Configuration</a><a href="../docs/api.html">API</a><a href="../docs/operations.html">Operations</a><a href="../docs/status.html">Status</a><a href="../docs/internals.html">Internals</a><a href="../docs/performance.html">Performance</a>
@@ -52,46 +52,45 @@
 
 		<main class="site-main" id="main-content">
 			<section class="hero">
-  <div class="kicker">Concepts · Architecture</div>
-  <h1>Git truth and coordination truth stay separate.</h1>
-  <p class="lede">Cloudflare Artifacts owns the repository. Trestle owns Switchyard's durable collaboration state. The control plane connects them without making either pretend to be the other.</p>
-</section>
-
-<section class="architecture-truths">
-  <article class="architecture-truth git-truth"><div class="tag">Git truth</div><h2>Cloudflare Artifacts</h2><p>The actual remote Git server: repositories, objects, commits, branches, tags and canonical refs.</p><code>git clone · fetch · push</code></article>
-  <article class="architecture-control"><div class="tag">Coordination + policy</div><h2>Switchyard</h2><p>Work, Attempts, Pull Requests, review, workflows, Integration Queue, permissions, provenance and the browser experience.</p></article>
-  <article class="architecture-truth coordination-truth"><div class="tag">Coordination truth</div><h2>Trestle</h2><p>Durable records for Switchyard state: idempotency, optimistic concurrency, workflow steps, findings, queue state, policy and audit.</p><code>records · If-Match · events</code></article>
-</section>
-
-<div class="architecture-flow" role="img" aria-label="Git clients and Switchyard interacting with Cloudflare Artifacts and Trestle">
-  <div class="arch-client"><strong>Git clients</strong><span>clone · fetch · push</span></div>
-  <div class="arch-arrow">↕</div>
-  <div class="arch-artifacts"><small>AUTHORITATIVE GIT</small><strong>Cloudflare Artifacts</strong><span>repos · objects · refs · canonical history</span></div>
-  <div class="arch-bridge">↕ <span>Git state + events</span></div>
-  <div class="arch-switchyard"><small>COLLABORATION CONTROL PLANE</small><strong>Switchyard</strong><span>UI · API · Git/ref substrate · workflows · review · Integration Queue · policy</span></div>
-  <div class="arch-bridge">↕ <span>durable coordination</span></div>
-  <div class="arch-trestle"><small>APPLICATION STATE</small><strong>Trestle</strong><span>Work · Attempts · PR state · findings · runs · audit · attention</span></div>
-</div>
-
-<h2>Who does what?</h2>
-<table>
-  <tr><th>Operation</th><th>Responsible layer</th></tr>
-  <tr><td>Clone / fetch / push</td><td><strong>Git</strong>, talking to the <strong>Artifacts</strong> remote.</td></tr>
-  <tr><td>Store commits, trees, branches and tags</td><td><strong>Cloudflare Artifacts</strong>.</td></tr>
-  <tr><td>Create Work / Attempts / findings / workflow runs</td><td><strong>Switchyard</strong>, durably recorded in <strong>Trestle</strong>.</td></tr>
-  <tr><td>Reject a stale non-force push</td><td><strong>Git/Artifacts</strong>; Switchyard interprets the rejection and reconciles.</td></tr>
-  <tr><td>Decide whether canonical may move</td><td><strong>Switchyard Integration Queue</strong> after checks, review and policy.</td></tr>
-  <tr><td>Move canonical</td><td>Switchyard performs a real Git ref mutation against <strong>Artifacts</strong>.</td></tr>
-</table>
-
-<h2>Why two truths?</h2>
-<p>If a branch exists, its SHA comes from Git/Artifacts—not from a Trestle row. If an Attempt is waiting for review, that collaboration state comes from Trestle—not from a magic Git ref. Keeping those responsibilities explicit means ordinary Git remains interoperable while the agent-native workflow can be much richer than Git metadata alone.</p>
-
-<h2>External pushes stay coherent</h2>
-<p>A direct <code>git push</code> changes Artifacts first. Switchyard learns about that movement through the Cloudflare event fast path and its reconciliation safety net. Both feed the same idempotent ingest, so external Git activity becomes visible coordination state without turning Switchyard into the repository authority.</p>
-
-<div class="callout warn"><span class="t">Event delivery vs repository authority</span>Even if event delivery is delayed, Artifacts is still the Git truth. Reconciliation reads the actual refs back from the remote and converges Switchyard's coordination state.</div>
-
+			  <div class="kicker">Concepts · Architecture</div>
+			  <h1>Git truth and coordination truth stay separate.</h1>
+			  <p class="lede">Cloudflare Artifacts owns the repository. Trestle owns Switchyard's durable collaboration state. The control plane connects them without making either pretend to be the other.</p>
+			</section>
+			
+			<section class="architecture-truths">
+			  <article class="architecture-truth git-truth"><div class="tag">Git truth</div><h2>Cloudflare Artifacts</h2><p>The actual remote Git server: repositories, objects, commits, branches, tags and canonical refs.</p><code>git clone · fetch · push</code></article>
+			  <article class="architecture-control"><div class="tag">Coordination + policy</div><h2>Switchyard</h2><p>Work, Attempts, Pull Requests, review, workflows, Integration Queue, permissions, provenance and the browser experience.</p></article>
+			  <article class="architecture-truth coordination-truth"><div class="tag">Coordination truth</div><h2>Trestle</h2><p>Durable records for Switchyard state: idempotency, optimistic concurrency, workflow steps, findings, queue state, policy and audit.</p><code>records · If-Match · events</code></article>
+			</section>
+			
+			<div class="architecture-flow" role="img" aria-label="Git clients and Switchyard interacting with Cloudflare Artifacts and Trestle">
+			  <div class="arch-client"><strong>Git clients</strong><span>clone · fetch · push</span></div>
+			  <div class="arch-arrow">↕</div>
+			  <div class="arch-artifacts"><small>AUTHORITATIVE GIT</small><strong>Cloudflare Artifacts</strong><span>repos · objects · refs · canonical history</span></div>
+			  <div class="arch-bridge">↕ <span>Git state + events</span></div>
+			  <div class="arch-switchyard"><small>COLLABORATION CONTROL PLANE</small><strong>Switchyard</strong><span>UI · API · Git/ref substrate · workflows · review · Integration Queue · policy</span></div>
+			  <div class="arch-bridge">↕ <span>durable coordination</span></div>
+			  <div class="arch-trestle"><small>APPLICATION STATE</small><strong>Trestle</strong><span>Work · Attempts · PR state · findings · runs · audit · attention</span></div>
+			</div>
+			
+			<h2>Who does what?</h2>
+			<table>
+			  <tr><th>Operation</th><th>Responsible layer</th></tr>
+			  <tr><td>Clone / fetch / push</td><td><strong>Git</strong>, talking to the <strong>Artifacts</strong> remote.</td></tr>
+			  <tr><td>Store commits, trees, branches and tags</td><td><strong>Cloudflare Artifacts</strong>.</td></tr>
+			  <tr><td>Create Work / Attempts / findings / workflow runs</td><td><strong>Switchyard</strong>, durably recorded in <strong>Trestle</strong>.</td></tr>
+			  <tr><td>Reject a stale non-force push</td><td><strong>Git/Artifacts</strong>; Switchyard interprets the rejection and reconciles.</td></tr>
+			  <tr><td>Decide whether canonical may move</td><td><strong>Switchyard Integration Queue</strong> after checks, review and policy.</td></tr>
+			  <tr><td>Move canonical</td><td>Switchyard performs a real Git ref mutation against <strong>Artifacts</strong>.</td></tr>
+			</table>
+			
+			<h2>Why two truths?</h2>
+			<p>If a branch exists, its SHA comes from Git/Artifacts—not from a Trestle row. If an Attempt is waiting for review, that collaboration state comes from Trestle—not from a magic Git ref. Keeping those responsibilities explicit means ordinary Git remains interoperable while the agent-native workflow can be much richer than Git metadata alone.</p>
+			
+			<h2>External pushes stay coherent</h2>
+			<p>A direct <code>git push</code> changes Artifacts first. Switchyard learns about that movement through the Cloudflare event fast path and its reconciliation safety net. Both feed the same idempotent ingest, so external Git activity becomes visible coordination state without turning Switchyard into the repository authority.</p>
+			
+			<div class="callout warn"><span class="t">Event delivery vs repository authority</span>Even if event delivery is delayed, Artifacts is still the Git truth. Reconciliation reads the actual refs back from the remote and converges Switchyard's coordination state.</div>
 		</main>
 
 		<footer class="site-footer">

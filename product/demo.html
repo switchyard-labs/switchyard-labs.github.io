@@ -2,18 +2,18 @@
 <html lang="en" data-theme="dark">
 	<head>
 		<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Switchyard</title>
-<link rel="icon" type="image/svg+xml" href="../assets/images/favicon.svg">
-<meta name="description" content="Git collaboration built for humans and concurrent agents. Agents work in isolated Git state; integration into canonical flows through deterministic, policy-controlled serialized integration.">
-<link rel="stylesheet" href="../assets/css/app.css">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<title>Switchyard</title>
+		<link rel="icon" type="image/webp" href="../assets/images/favicon.webp">
+		<meta name="description" content="Git collaboration built for humans and concurrent agents. Agents work in isolated Git state; integration into canonical flows through deterministic, policy-controlled serialized integration.">
+		<link rel="stylesheet" href="../assets/css/app.css">
 	</head>
 	<body>
 		<a class="skip-link" href="#main-content">Skip to content</a>
 		<header class="site-header">
 			<div class="header-inner">
-				<a class="brand" href="../index.html">
-					<img src="../assets/images/favicon.svg" alt="Switchyard mark" width="26" height="26">
+				<a class="brand" href="../">
+					<img src="../assets/images/favicon.webp" alt="Switchyard mark" width="26" height="26">
 					<span>Switchyard</span>
 				</a>
 				<div class="header-right">
@@ -26,12 +26,12 @@
 
 		<nav class="fullscreen-nav" id="fs-nav" aria-label="Site" aria-hidden="true">
 			<div class="fs-head">
-				<span class="brand"><img src="../assets/images/favicon.svg" alt="" width="24" height="24"><span>Switchyard</span></span>
+				<span class="brand"><img src="../assets/images/favicon.webp" alt="" width="24" height="24"><span>Switchyard</span></span>
 				<button class="hamburger" id="menu-close" type="button" aria-label="Close menu">×</button>
 			</div>
 			<div class="fs-groups">
 				<details class="fs-group" open><summary>Product</summary><div class="fs-links">
-					<a href="../index.html">Overview</a><a href="overview.html">How it works</a><a href="human-ai.html">Human + AI collaboration</a><a href="demo.html">Demo</a>
+					<a href="../">Overview</a><a href="./overview.html">How it works</a><a href="./human-ai.html">Human + AI collaboration</a><a href="./demo.html">Demo</a>
 				</div></details>
 				<details class="fs-group" open><summary>Concepts</summary><div class="fs-links">
 					<a href="../concepts/architecture.html">Architecture</a><a href="../concepts/repositories.html">Repositories &amp; Git truth</a><a href="../concepts/work-attempts.html">Work, Attempts &amp; Pull Requests</a><a href="../concepts/integration-queue.html">Integration Queue</a><a href="../concepts/reviews-conflicts.html">Reviews &amp; Conflicts</a><a href="../concepts/workflows.html">Durable workflows</a><a href="../concepts/provenance-needs-attention.html">Provenance &amp; Needs Attention</a>
@@ -52,72 +52,73 @@
 
 		<main class="site-main" id="main-content">
 			<section class="hero">
-	<div class="kicker">Product · Demo</div>
-	<h1>See Switchyard running.</h1>
-	<p class="lede">
-		Real screenshots from the working product, driven by curated demo
-		repositories (ordinary Git, concurrent agent attempts, conflicts, and a
-		durable workflow).
-	</p>
-</section>
-
-<div class="shot-grid">
-	<div class="shot-card"><img src="../assets/images/screenshots/dashboard.png" alt="Switchyard dashboard"><div class="cap">Dashboard — repositories, work, and live activity over SSE.</div></div>
-	<div class="shot-card"><img src="../assets/images/screenshots/repo.png" alt="Switchyard repository browser"><div class="cap">Repository browser — syntax-highlighted source, branches, README rendering, history and the editor path.</div></div>
-	<div class="shot-card"><img src="../assets/images/screenshots/work.png" alt="Switchyard work items"><div class="cap">Work — human-first issues/tasks with comments; Attempts and PRs appear only when needed.</div></div>
-	<div class="shot-card"><img src="../assets/images/screenshots/editor.png" alt="Switchyard browser editor"><div class="cap">Editor — Warden-inspired workbench, Files/Search/Source modes, tabs, draft CAS, diff, findings and interactive Agent proposals.</div></div>
-</div>
-
-<h2>What the product now covers</h2>
-<div class="grid">
-  <div class="card"><span class="tag">Identity</span><h3>Users & organisations</h3><p>Large avatars, profile READMEs, pinned repositories, memberships, teams and settings.</p></div>
-  <div class="card"><span class="tag">Git hosting</span><h3>Repository collaboration</h3><p>Source browsing, commit history, Pull Requests, Work, access controls and repository settings.</p></div>
-  <div class="card"><span class="tag">Agent-native</span><h3>Advanced when needed</h3><p>Durable workflows, Integration Queue, Review Findings, semantic conflicts and Needs Attention.</p></div>
-</div>
-
-<h2>Demo repositories</h2>
-<p>The demo environment ships five curated repositories, themed around a small
-<code>railctl</code> project:</p>
-<ul>
-	<li><strong>demo-basic</strong> — ordinary human Git usage: history, a feature branch, an open PR.</li>
-	<li><strong>demo-agents</strong> — one Work item, two concurrent agent attempts, a review.</li>
-	<li><strong>demo-conflict</strong> — two attempts editing the same line: preview finds the textual conflict, the repair loop resolves it.</li>
-	<li><strong>demo-semantic</strong> — Git merges cleanly, but a repo contract is violated: Switchyard detects the semantic conflict and blocks the queue.</li>
-	<li><strong>demo-workflow</strong> — a durable JS workflow that implemented, checked, and integrated a change.</li>
-</ul>
-
-<h2>How to view it yourself</h2>
-<p>
-	The application is a self-hosted control plane currently bound to
-	<code>127.0.0.1:8080</code> on the CP0 development host. The cleanest way to
-	see it today is an SSH tunnel:
-</p>
-<pre><code>ssh -L 8080:127.0.0.1:8080 switchyard-cp0
+				<div class="kicker">Product · Demo</div>
+				<h1>See Switchyard running.</h1>
+				<p class="lede">
+					Real screenshots from the working product, driven by curated demo
+					repositories (ordinary Git, concurrent agent attempts, conflicts, and a
+					durable workflow).
+				</p>
+			</section>
+			
+			<div class="shot-grid">
+				<div class="shot-card"><img src="../assets/images/screenshots/dashboard.png" alt="Switchyard dashboard"><div class="cap">Dashboard — repositories, work, and live activity over SSE.</div></div>
+				<div class="shot-card"><img src="../assets/images/screenshots/repo.png" alt="Switchyard repository browser"><div class="cap">Repository browser — syntax-highlighted source, branches, README rendering, history and the editor path.</div></div>
+				<div class="shot-card"><img src="../assets/images/screenshots/work.png" alt="Switchyard work items"><div class="cap">Work — human-first issues/tasks with comments; Attempts and PRs appear only when needed.</div></div>
+				<div class="shot-card"><img src="../assets/images/screenshots/editor.png" alt="Switchyard browser editor"><div class="cap">Editor — Warden-inspired workbench, Files/Search/Source modes, tabs, draft CAS, diff, findings and interactive Agent proposals.</div></div>
+				<div class="shot-card"><img src="../assets/images/screenshots/pulls.png" alt="Switchyard pull requests"><div class="cap">Pull Requests — conversation, commits, files, checks, findings and integration state.</div></div>
+				<div class="shot-card"><img src="../assets/images/screenshots/profile.png" alt="Switchyard user profile"><div class="cap">Profile — avatar, pinned repositories, owned repositories, activity and settings.</div></div>
+			</div>
+			
+			<h2>What the product now covers</h2>
+			<div class="grid">
+			  <div class="card"><span class="tag">Identity</span><h3>Users & organisations</h3><p>Large avatars, profile READMEs, pinned repositories, memberships, teams and settings.</p></div>
+			  <div class="card"><span class="tag">Git hosting</span><h3>Repository collaboration</h3><p>Source browsing, commit history, Pull Requests, Work, access controls and repository settings.</p></div>
+			  <div class="card"><span class="tag">Agent-native</span><h3>Advanced when needed</h3><p>Durable workflows, Integration Queue, Review Findings, semantic conflicts and Needs Attention.</p></div>
+			</div>
+			
+			<h2>Demo repositories</h2>
+			<p>The demo environment ships five curated repositories, themed around a small
+			<code>railctl</code> project:</p>
+			<ul>
+				<li><strong>demo-basic</strong> — ordinary human Git usage: history, a feature branch, an open PR.</li>
+				<li><strong>demo-agents</strong> — one Work item, two concurrent agent attempts, a review.</li>
+				<li><strong>demo-conflict</strong> — two attempts editing the same line: preview finds the textual conflict, the repair loop resolves it.</li>
+				<li><strong>demo-semantic</strong> — Git merges cleanly, but a repo contract is violated: Switchyard detects the semantic conflict and blocks the queue.</li>
+				<li><strong>demo-workflow</strong> — a durable JS workflow that implemented, checked, and integrated a change.</li>
+			</ul>
+			
+			<h2>How to view it yourself</h2>
+			<p>
+				The application is a self-hosted control plane currently bound to
+				<code>127.0.0.1:8080</code> on the CP0 development host. The cleanest way to
+				see it today is an SSH tunnel:
+			</p>
+			<pre><code>ssh -L 8080:127.0.0.1:8080 switchyard-cp0
 # then open http://127.0.0.1:8080/</code></pre>
-<p class="muted">
-	There is not yet a public demo URL. A safe public staging deployment is a
-	planned next step (see Status), rather than exposing an administrative
-	service directly.
-</p>
-
-<div class="callout">
-	<span class="t">Run it yourself</span>
-	Everything in the screenshots is reproducible — <a href="../docs/getting-started.html">Getting started</a>
-	walks through building and running the control plane.
-</div>
-<h2>What to look for in each demo</h2>
-<table>
-  <tr><th>Repository</th><th>Open this surface</th><th>What it demonstrates</th></tr>
-  <tr><td><code>demo-basic</code></td><td>Repository → history → Pull Request</td><td>The ordinary Git-host experience without requiring any Agent concepts.</td></tr>
-  <tr><td><code>demo-agents</code></td><td>Work → Attempts → review</td><td>One intent producing multiple isolated candidates with durable execution evidence.</td></tr>
-  <tr><td><code>demo-conflict</code></td><td>Pull Request / Needs Attention</td><td>A real textual Git conflict discovered during preview and routed through repair.</td></tr>
-  <tr><td><code>demo-semantic</code></td><td>Findings / Integration Queue</td><td>A clean Git merge blocked because the merged repository violates a deterministic contract.</td></tr>
-  <tr><td><code>demo-workflow</code></td><td>Operations → Workflows</td><td>Durable programmable orchestration moving through implementation/check/integration steps.</td></tr>
-</table>
-
-<h2>The screenshots are product evidence, not mockups</h2>
-<p>The images on this page were captured from the real Switchyard application against the development control plane. That matters because the UI has been driven by the same live APIs, repository state and concurrency semantics used in the checkpoint gates. As the product evolves, these screenshots should be refreshed from the deployed demo rather than replaced with idealized mockups.</p>
-
+			<p class="muted">
+				There is not yet a public demo URL. A safe public staging deployment is a
+				planned next step (see Status), rather than exposing an administrative
+				service directly.
+			</p>
+			
+			<div class="callout">
+				<span class="t">Run it yourself</span>
+				Everything in the screenshots is reproducible — <a href="../docs/getting-started.html">Getting started</a>
+				walks through building and running the control plane.
+			</div>
+			<h2>What to look for in each demo</h2>
+			<table>
+			  <tr><th>Repository</th><th>Open this surface</th><th>What it demonstrates</th></tr>
+			  <tr><td><code>demo-basic</code></td><td>Repository → history → Pull Request</td><td>The ordinary Git-host experience without requiring any Agent concepts.</td></tr>
+			  <tr><td><code>demo-agents</code></td><td>Work → Attempts → review</td><td>One intent producing multiple isolated candidates with durable execution evidence.</td></tr>
+			  <tr><td><code>demo-conflict</code></td><td>Pull Request / Needs Attention</td><td>A real textual Git conflict discovered during preview and routed through repair.</td></tr>
+			  <tr><td><code>demo-semantic</code></td><td>Findings / Integration Queue</td><td>A clean Git merge blocked because the merged repository violates a deterministic contract.</td></tr>
+			  <tr><td><code>demo-workflow</code></td><td>Operations → Workflows</td><td>Durable programmable orchestration moving through implementation/check/integration steps.</td></tr>
+			</table>
+			
+			<h2>The screenshots are product evidence, not mockups</h2>
+			<p>The images on this page were captured from the real Switchyard application against the development control plane. That matters because the UI has been driven by the same live APIs, repository state and concurrency semantics used in the checkpoint gates. As the product evolves, these screenshots should be refreshed from the deployed demo rather than replaced with idealized mockups.</p>
 		</main>
 
 		<footer class="site-footer">

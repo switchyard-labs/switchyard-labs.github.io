@@ -2,18 +2,18 @@
 <html lang="en" data-theme="dark">
 	<head>
 		<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Switchyard</title>
-<link rel="icon" type="image/svg+xml" href="../assets/images/favicon.svg">
-<meta name="description" content="Git collaboration built for humans and concurrent agents. Agents work in isolated Git state; integration into canonical flows through deterministic, policy-controlled serialized integration.">
-<link rel="stylesheet" href="../assets/css/app.css">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<title>Switchyard</title>
+		<link rel="icon" type="image/webp" href="../assets/images/favicon.webp">
+		<meta name="description" content="Git collaboration built for humans and concurrent agents. Agents work in isolated Git state; integration into canonical flows through deterministic, policy-controlled serialized integration.">
+		<link rel="stylesheet" href="../assets/css/app.css">
 	</head>
 	<body>
 		<a class="skip-link" href="#main-content">Skip to content</a>
 		<header class="site-header">
 			<div class="header-inner">
-				<a class="brand" href="../index.html">
-					<img src="../assets/images/favicon.svg" alt="Switchyard mark" width="26" height="26">
+				<a class="brand" href="../">
+					<img src="../assets/images/favicon.webp" alt="Switchyard mark" width="26" height="26">
 					<span>Switchyard</span>
 				</a>
 				<div class="header-right">
@@ -26,18 +26,18 @@
 
 		<nav class="fullscreen-nav" id="fs-nav" aria-label="Site" aria-hidden="true">
 			<div class="fs-head">
-				<span class="brand"><img src="../assets/images/favicon.svg" alt="" width="24" height="24"><span>Switchyard</span></span>
+				<span class="brand"><img src="../assets/images/favicon.webp" alt="" width="24" height="24"><span>Switchyard</span></span>
 				<button class="hamburger" id="menu-close" type="button" aria-label="Close menu">×</button>
 			</div>
 			<div class="fs-groups">
 				<details class="fs-group" open><summary>Product</summary><div class="fs-links">
-					<a href="../index.html">Overview</a><a href="../product/overview.html">How it works</a><a href="../product/human-ai.html">Human + AI collaboration</a><a href="../product/demo.html">Demo</a>
+					<a href="../">Overview</a><a href="../product/overview.html">How it works</a><a href="../product/human-ai.html">Human + AI collaboration</a><a href="../product/demo.html">Demo</a>
 				</div></details>
 				<details class="fs-group" open><summary>Concepts</summary><div class="fs-links">
 					<a href="../concepts/architecture.html">Architecture</a><a href="../concepts/repositories.html">Repositories &amp; Git truth</a><a href="../concepts/work-attempts.html">Work, Attempts &amp; Pull Requests</a><a href="../concepts/integration-queue.html">Integration Queue</a><a href="../concepts/reviews-conflicts.html">Reviews &amp; Conflicts</a><a href="../concepts/workflows.html">Durable workflows</a><a href="../concepts/provenance-needs-attention.html">Provenance &amp; Needs Attention</a>
 				</div></details>
 				<details class="fs-group" open><summary>Documentation</summary><div class="fs-links">
-					<a href="getting-started.html">Getting started</a><a href="configuration.html">Configuration</a><a href="api.html">API</a><a href="operations.html">Operations</a><a href="status.html">Status</a><a href="internals.html">Internals</a><a href="performance.html">Performance</a>
+					<a href="./getting-started.html">Getting started</a><a href="./configuration.html">Configuration</a><a href="./api.html">API</a><a href="./operations.html">Operations</a><a href="./status.html">Status</a><a href="./internals.html">Internals</a><a href="./performance.html">Performance</a>
 				</div></details>
 				<details class="fs-group"><summary>Project</summary><div class="fs-links"><a href="https://github.com/switchyard-labs/switchyard" rel="noopener">GitHub</a><a href="https://gantry.cv" rel="noopener">Gantry</a><a href="https://github.com/switchyard-labs/switchyard-labs.github.io" rel="noopener">Website source</a></div></details>
 			</div>
@@ -45,68 +45,68 @@
 		</nav>
 
 		<aside class="docs-drawer" id="docs-drawer" hidden aria-label="Documentation navigation">
-			<details open><summary>Start</summary><a href="getting-started.html">Getting started</a><a href="configuration.html">Configuration</a></details>
-			<details open><summary>Reference</summary><a href="api.html">API</a><a href="operations.html">Operations</a></details>
-			<details><summary>Project</summary><a href="status.html">Status</a><a href="internals.html">Internals</a><a href="performance.html">Performance</a></details>
+			<details open><summary>Start</summary><a href="./getting-started.html">Getting started</a><a href="./configuration.html">Configuration</a></details>
+			<details open><summary>Reference</summary><a href="./api.html">API</a><a href="./operations.html">Operations</a></details>
+			<details><summary>Project</summary><a href="./status.html">Status</a><a href="./internals.html">Internals</a><a href="./performance.html">Performance</a></details>
 		</aside>
 
 		<main class="site-main" id="main-content">
 			<section class="hero">
-	<div class="kicker">Docs · API</div>
-	<h1>The HTTP surface.</h1>
-	<p class="lede">Switchyard exposes one authenticated JSON API for Git-aware collaboration: identity, repositories, Work, Attempts, Pull Requests, editor drafts, workflows, the Integration Queue, policy, organisations and realtime events.</p>
-</section>
-
-<h2>Conventions first</h2>
-<table>
-	<tr><th>Concern</th><th>Contract</th></tr>
-	<tr><td>Browser authentication</td><td>Registration/login establish an HttpOnly session cookie. Mutating browser requests are authorized as the signed-in Switchyard principal.</td></tr>
-	<tr><td>Repository identity</td><td>Public-facing repository APIs use <code>owner/repo</code>. The backing Cloudflare Artifacts repository name remains an implementation/storage identity.</td></tr>
-	<tr><td>JSON errors</td><td>Application failures return structured JSON with an <code>error</code> value; concurrency failures use explicit conflict states rather than silent overwrite.</td></tr>
-	<tr><td>Optimistic concurrency</td><td>Drafts use revisions; repository writes use expected Git state. Stale writes are surfaced to the caller.</td></tr>
-	<tr><td>Realtime</td><td>Normalized domain events are available over authenticated Server-Sent Events.</td></tr>
-</table>
-
-<h2>Endpoint map</h2>
-<table>
-	<tr><th>Area</th><th>Representative endpoints</th><th>What they are for</th></tr>
-	<tr><td>Auth &amp; account</td><td><code>POST /api/auth/register</code>, <code>/login</code>, <code>/logout</code> · <code>GET /api/auth/me</code></td><td>Application identity and browser sessions.</td></tr>
-	<tr><td>Users &amp; settings</td><td><code>GET /api/users/{username}</code> · <code>PATCH /api/settings/profile</code> · avatar/password/session endpoints</td><td>Profiles, large avatars, account metadata, password/session management.</td></tr>
-	<tr><td>Owners &amp; organisations</td><td><code>GET /api/owners/{slug}</code> · <code>/api/orgs…</code> · members, teams, invitations, policies, audit</td><td>Git-host ownership, organisation profiles and server-enforced membership/access.</td></tr>
-	<tr><td>Repositories</td><td><code>GET /api/repositories</code> · <code>/api/repositories/{owner}/{repo}</code> · <code>/tree</code> · <code>/content</code> · <code>/refs</code></td><td>Canonical owner/repo browsing. Legacy flat-name <code>/api/repos…</code> routes remain for compatibility.</td></tr>
-	<tr><td>History &amp; compare</td><td><code>/commits</code> · <code>/commits/{sha}</code> · <code>/compare</code></td><td>Ordinary Git history, commit detail and ref comparisons.</td></tr>
-	<tr><td>Repository settings</td><td><code>GET/PATCH …/settings</code> · collaborators · protected refs</td><td>Metadata, access and integration policy.</td></tr>
-	<tr><td>Work</td><td><code>GET/POST /api/work</code> · <code>GET/PATCH /api/work/{id}</code> · comments · provenance</td><td>Human-first issues/tasks. Attempts are an optional execution layer beneath Work.</td></tr>
-	<tr><td>Attempts</td><td><code>POST /api/work/{id}/attempts</code> · <code>/api/attempts/{id}/run|review|preview|resolve</code></td><td>Isolated candidate branches, Agent execution, review and conflict repair.</td></tr>
-	<tr><td>Pull Requests</td><td><code>GET /api/prs</code> · <code>GET /api/prs/{id}</code> · check/enqueue/integrate</td><td>Reviewable integration proposals and their queue state.</td></tr>
-	<tr><td>Editor</td><td><code>POST /api/drafts</code> · <code>GET /api/drafts/…</code> · <code>/agent-propose</code> · <code>/commit</code> · <code>POST /api/diff</code></td><td>Recoverable drafts, interactive Agent proposals, diffing and explicit commit.</td></tr>
-	<tr><td>Workflows</td><td><code>/api/workflows…</code> · <code>/api/workflow_runs…</code></td><td>Create/run workflows; inspect, cancel, approve or retry durable runs.</td></tr>
-	<tr><td>Queue &amp; attention</td><td><code>GET /api/queue</code> · <code>POST /api/queue/{id}/requeue</code> · <code>GET /api/attention</code> · escalations</td><td>Canonical scheduling, blocked work and human decision packets.</td></tr>
-	<tr><td>Events</td><td><code>POST /api/events/ingest</code> · <code>GET /api/events</code> · <code>GET /api/events/stream</code></td><td>Normalized Git/domain event ingestion and SSE delivery.</td></tr>
-	<tr><td>Agents &amp; credentials</td><td><code>GET /api/roles</code> · <code>GET/POST /api/credentials</code> · rotate/delete</td><td>Role configuration and provider credential lifecycle. Provider secrets never imply repository authority.</td></tr>
-</table>
-
-<h2>Example: browse a repository</h2>
-<pre><code class="language-shell"># after authenticating in the browser/session
+				<div class="kicker">Docs · API</div>
+				<h1>The HTTP surface.</h1>
+				<p class="lede">Switchyard exposes one authenticated JSON API for Git-aware collaboration: identity, repositories, Work, Attempts, Pull Requests, editor drafts, workflows, the Integration Queue, policy, organisations and realtime events.</p>
+			</section>
+			
+			<h2>Conventions first</h2>
+			<table>
+				<tr><th>Concern</th><th>Contract</th></tr>
+				<tr><td>Browser authentication</td><td>Registration/login establish an HttpOnly session cookie. Mutating browser requests are authorized as the signed-in Switchyard principal.</td></tr>
+				<tr><td>Repository identity</td><td>Public-facing repository APIs use <code>owner/repo</code>. The backing Cloudflare Artifacts repository name remains an implementation/storage identity.</td></tr>
+				<tr><td>JSON errors</td><td>Application failures return structured JSON with an <code>error</code> value; concurrency failures use explicit conflict states rather than silent overwrite.</td></tr>
+				<tr><td>Optimistic concurrency</td><td>Drafts use revisions; repository writes use expected Git state. Stale writes are surfaced to the caller.</td></tr>
+				<tr><td>Realtime</td><td>Normalized domain events are available over authenticated Server-Sent Events.</td></tr>
+			</table>
+			
+			<h2>Endpoint map</h2>
+			<table>
+				<tr><th>Area</th><th>Representative endpoints</th><th>What they are for</th></tr>
+				<tr><td>Auth &amp; account</td><td><code>POST /api/auth/register</code>, <code>/login</code>, <code>/logout</code> · <code>GET /api/auth/me</code></td><td>Application identity and browser sessions.</td></tr>
+				<tr><td>Users &amp; settings</td><td><code>GET /api/users/{username}</code> · <code>PATCH /api/settings/profile</code> · avatar/password/session endpoints</td><td>Profiles, large avatars, account metadata, password/session management.</td></tr>
+				<tr><td>Owners &amp; organisations</td><td><code>GET /api/owners/{slug}</code> · <code>/api/orgs…</code> · members, teams, invitations, policies, audit</td><td>Git-host ownership, organisation profiles and server-enforced membership/access.</td></tr>
+				<tr><td>Repositories</td><td><code>GET /api/repositories</code> · <code>/api/repositories/{owner}/{repo}</code> · <code>/tree</code> · <code>/content</code> · <code>/refs</code></td><td>Canonical owner/repo browsing. Legacy flat-name <code>/api/repos…</code> routes remain for compatibility.</td></tr>
+				<tr><td>History &amp; compare</td><td><code>/commits</code> · <code>/commits/{sha}</code> · <code>/compare</code></td><td>Ordinary Git history, commit detail and ref comparisons.</td></tr>
+				<tr><td>Repository settings</td><td><code>GET/PATCH …/settings</code> · collaborators · protected refs</td><td>Metadata, access and integration policy.</td></tr>
+				<tr><td>Work</td><td><code>GET/POST /api/work</code> · <code>GET/PATCH /api/work/{id}</code> · comments · provenance</td><td>Human-first issues/tasks. Attempts are an optional execution layer beneath Work.</td></tr>
+				<tr><td>Attempts</td><td><code>POST /api/work/{id}/attempts</code> · <code>/api/attempts/{id}/run|review|preview|resolve</code></td><td>Isolated candidate branches, Agent execution, review and conflict repair.</td></tr>
+				<tr><td>Pull Requests</td><td><code>GET /api/prs</code> · <code>GET /api/prs/{id}</code> · check/enqueue/integrate</td><td>Reviewable integration proposals and their queue state.</td></tr>
+				<tr><td>Editor</td><td><code>POST /api/drafts</code> · <code>GET /api/drafts/…</code> · <code>/agent-propose</code> · <code>/commit</code> · <code>POST /api/diff</code></td><td>Recoverable drafts, interactive Agent proposals, diffing and explicit commit.</td></tr>
+				<tr><td>Workflows</td><td><code>/api/workflows…</code> · <code>/api/workflow_runs…</code></td><td>Create/run workflows; inspect, cancel, approve or retry durable runs.</td></tr>
+				<tr><td>Queue &amp; attention</td><td><code>GET /api/queue</code> · <code>POST /api/queue/{id}/requeue</code> · <code>GET /api/attention</code> · escalations</td><td>Canonical scheduling, blocked work and human decision packets.</td></tr>
+				<tr><td>Events</td><td><code>POST /api/events/ingest</code> · <code>GET /api/events</code> · <code>GET /api/events/stream</code></td><td>Normalized Git/domain event ingestion and SSE delivery.</td></tr>
+				<tr><td>Agents &amp; credentials</td><td><code>GET /api/roles</code> · <code>GET/POST /api/credentials</code> · rotate/delete</td><td>Role configuration and provider credential lifecycle. Provider secrets never imply repository authority.</td></tr>
+			</table>
+			
+			<h2>Example: browse a repository</h2>
+			<pre><code class="language-shell"># after authenticating in the browser/session
 curl -b cookies.txt \
   http://127.0.0.1:8080/api/repositories/switchyard-labs/switchyard/overview
 
 curl -b cookies.txt \
   'http://127.0.0.1:8080/api/repositories/switchyard-labs/switchyard/tree?ref=main'
 </code></pre>
-<p>The overview response is deliberately product-shaped: ownership, visibility, default branch and clone information are resolved there so the UI does not need to reconstruct repository identity from low-level Artifacts records.</p>
-
-<h2>Concurrency semantics you should design around</h2>
-<table>
-	<tr><th>Operation</th><th>Caller supplies</th><th>On stale state</th></tr>
-	<tr><td>Draft save</td><td><code>expected_revision</code></td><td><code>409 draft_stale</code>; newer draft content remains intact.</td></tr>
-	<tr><td>Draft commit</td><td>Draft <code>base_sha</code></td><td><code>409 stale_base</code>; the draft remains recoverable and the user reconciles.</td></tr>
-	<tr><td>Git/ref mutation</td><td>Expected prior SHA</td><td>Normal non-force Git push rejects stale movement; Switchyard reconciles instead of overwriting.</td></tr>
-	<tr><td>Integration Queue</td><td>Validated PR + current canonical state</td><td>Item is re-previewed/re-queued or blocked with an explicit reason.</td></tr>
-</table>
-
-<h2>Example: create Work and an Attempt</h2>
-<pre><code class="language-shell">work=$(curl -s -b cookies.txt \
+			<p>The overview response is deliberately product-shaped: ownership, visibility, default branch and clone information are resolved there so the UI does not need to reconstruct repository identity from low-level Artifacts records.</p>
+			
+			<h2>Concurrency semantics you should design around</h2>
+			<table>
+				<tr><th>Operation</th><th>Caller supplies</th><th>On stale state</th></tr>
+				<tr><td>Draft save</td><td><code>expected_revision</code></td><td><code>409 draft_stale</code>; newer draft content remains intact.</td></tr>
+				<tr><td>Draft commit</td><td>Draft <code>base_sha</code></td><td><code>409 stale_base</code>; the draft remains recoverable and the user reconciles.</td></tr>
+				<tr><td>Git/ref mutation</td><td>Expected prior SHA</td><td>Normal non-force Git push rejects stale movement; Switchyard reconciles instead of overwriting.</td></tr>
+				<tr><td>Integration Queue</td><td>Validated PR + current canonical state</td><td>Item is re-previewed/re-queued or blocked with an explicit reason.</td></tr>
+			</table>
+			
+			<h2>Example: create Work and an Attempt</h2>
+			<pre><code class="language-shell">work=$(curl -s -b cookies.txt \
   -H 'Content-Type: application/json' \
   -d '{"title":"Tighten repository browser errors","kind":"fix"}' \
   http://127.0.0.1:8080/api/work)
@@ -114,9 +114,8 @@ curl -b cookies.txt \
 # Attempts are optional: ordinary human Work can remain just an issue/task.
 # When execution is needed, create an isolated candidate branch underneath it.
 </code></pre>
-
-<div class="callout"><span class="t">API principle</span>The API exposes familiar Git-host concepts where they are truthful, and Switchyard-specific concepts only where they add genuinely new coordination semantics.</div>
-
+			
+			<div class="callout"><span class="t">API principle</span>The API exposes familiar Git-host concepts where they are truthful, and Switchyard-specific concepts only where they add genuinely new coordination semantics.</div>
 		</main>
 
 		<footer class="site-footer">

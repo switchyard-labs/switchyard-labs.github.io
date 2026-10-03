@@ -2,18 +2,18 @@
 <html lang="en" data-theme="dark">
 	<head>
 		<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Switchyard</title>
-<link rel="icon" type="image/svg+xml" href="../assets/images/favicon.svg">
-<meta name="description" content="Git collaboration built for humans and concurrent agents. Agents work in isolated Git state; integration into canonical flows through deterministic, policy-controlled serialized integration.">
-<link rel="stylesheet" href="../assets/css/app.css">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<title>Switchyard</title>
+		<link rel="icon" type="image/webp" href="../assets/images/favicon.webp">
+		<meta name="description" content="Git collaboration built for humans and concurrent agents. Agents work in isolated Git state; integration into canonical flows through deterministic, policy-controlled serialized integration.">
+		<link rel="stylesheet" href="../assets/css/app.css">
 	</head>
 	<body>
 		<a class="skip-link" href="#main-content">Skip to content</a>
 		<header class="site-header">
 			<div class="header-inner">
-				<a class="brand" href="../index.html">
-					<img src="../assets/images/favicon.svg" alt="Switchyard mark" width="26" height="26">
+				<a class="brand" href="../">
+					<img src="../assets/images/favicon.webp" alt="Switchyard mark" width="26" height="26">
 					<span>Switchyard</span>
 				</a>
 				<div class="header-right">
@@ -26,18 +26,18 @@
 
 		<nav class="fullscreen-nav" id="fs-nav" aria-label="Site" aria-hidden="true">
 			<div class="fs-head">
-				<span class="brand"><img src="../assets/images/favicon.svg" alt="" width="24" height="24"><span>Switchyard</span></span>
+				<span class="brand"><img src="../assets/images/favicon.webp" alt="" width="24" height="24"><span>Switchyard</span></span>
 				<button class="hamburger" id="menu-close" type="button" aria-label="Close menu">×</button>
 			</div>
 			<div class="fs-groups">
 				<details class="fs-group" open><summary>Product</summary><div class="fs-links">
-					<a href="../index.html">Overview</a><a href="../product/overview.html">How it works</a><a href="../product/human-ai.html">Human + AI collaboration</a><a href="../product/demo.html">Demo</a>
+					<a href="../">Overview</a><a href="../product/overview.html">How it works</a><a href="../product/human-ai.html">Human + AI collaboration</a><a href="../product/demo.html">Demo</a>
 				</div></details>
 				<details class="fs-group" open><summary>Concepts</summary><div class="fs-links">
 					<a href="../concepts/architecture.html">Architecture</a><a href="../concepts/repositories.html">Repositories &amp; Git truth</a><a href="../concepts/work-attempts.html">Work, Attempts &amp; Pull Requests</a><a href="../concepts/integration-queue.html">Integration Queue</a><a href="../concepts/reviews-conflicts.html">Reviews &amp; Conflicts</a><a href="../concepts/workflows.html">Durable workflows</a><a href="../concepts/provenance-needs-attention.html">Provenance &amp; Needs Attention</a>
 				</div></details>
 				<details class="fs-group" open><summary>Documentation</summary><div class="fs-links">
-					<a href="getting-started.html">Getting started</a><a href="configuration.html">Configuration</a><a href="api.html">API</a><a href="operations.html">Operations</a><a href="status.html">Status</a><a href="internals.html">Internals</a><a href="performance.html">Performance</a>
+					<a href="./getting-started.html">Getting started</a><a href="./configuration.html">Configuration</a><a href="./api.html">API</a><a href="./operations.html">Operations</a><a href="./status.html">Status</a><a href="./internals.html">Internals</a><a href="./performance.html">Performance</a>
 				</div></details>
 				<details class="fs-group"><summary>Project</summary><div class="fs-links"><a href="https://github.com/switchyard-labs/switchyard" rel="noopener">GitHub</a><a href="https://gantry.cv" rel="noopener">Gantry</a><a href="https://github.com/switchyard-labs/switchyard-labs.github.io" rel="noopener">Website source</a></div></details>
 			</div>
@@ -45,71 +45,70 @@
 		</nav>
 
 		<aside class="docs-drawer" id="docs-drawer" hidden aria-label="Documentation navigation">
-			<details open><summary>Start</summary><a href="getting-started.html">Getting started</a><a href="configuration.html">Configuration</a></details>
-			<details open><summary>Reference</summary><a href="api.html">API</a><a href="operations.html">Operations</a></details>
-			<details><summary>Project</summary><a href="status.html">Status</a><a href="internals.html">Internals</a><a href="performance.html">Performance</a></details>
+			<details open><summary>Start</summary><a href="./getting-started.html">Getting started</a><a href="./configuration.html">Configuration</a></details>
+			<details open><summary>Reference</summary><a href="./api.html">API</a><a href="./operations.html">Operations</a></details>
+			<details><summary>Project</summary><a href="./status.html">Status</a><a href="./internals.html">Internals</a><a href="./performance.html">Performance</a></details>
 		</aside>
 
 		<main class="site-main" id="main-content">
 			<section class="hero">
-	<div class="kicker">Docs · Operations</div>
-	<h1>Running it, reliably.</h1>
-	<p class="lede">Switchyard is a stateful control plane around two durable authorities: Git state in Cloudflare Artifacts and coordination state in Trestle. Operations are easier once those responsibilities are kept separate.</p>
-</section>
-
-<h2>What starts with the process</h2>
-<table>
-	<tr><th>Component</th><th>Responsibility</th><th>Failure behaviour</th></tr>
-	<tr><td>HTTP/API server</td><td>Authenticated product UI and JSON API.</td><td>Clients reconnect/retry after restart; durable data is elsewhere.</td></tr>
-	<tr><td>Reconciler</td><td>Compare Artifacts refs with the durable view.</td><td>Missed time only delays convergence; the next pass catches up.</td></tr>
-	<tr><td>Cloudflare Queue consumer</td><td>Fast-path pushed-event ingestion.</td><td>At-least-once messages are retried; reconciliation remains the safety net.</td></tr>
-	<tr><td>Workflow runner</td><td>Advance durable JavaScript workflow steps.</td><td>Completed steps replay recorded results after restart; in-flight work retries.</td></tr>
-	<tr><td>Integration Queue worker</td><td>Serialize validated changes into canonical Git.</td><td>Queue records survive; stale canonical movement is reconciled rather than overwritten.</td></tr>
-</table>
-
-<h2>Service management</h2>
-<p>For a persistent host, run Switchyard under a service manager rather than an interactive shell. Keep the binary and static directory versioned together so an API/UI mismatch cannot be introduced during deployment.</p>
-<pre><code class="language-shell">sudo systemctl status switchyard
+				<div class="kicker">Docs · Operations</div>
+				<h1>Running it, reliably.</h1>
+				<p class="lede">Switchyard is a stateful control plane around two durable authorities: Git state in Cloudflare Artifacts and coordination state in Trestle. Operations are easier once those responsibilities are kept separate.</p>
+			</section>
+			
+			<h2>What starts with the process</h2>
+			<table>
+				<tr><th>Component</th><th>Responsibility</th><th>Failure behaviour</th></tr>
+				<tr><td>HTTP/API server</td><td>Authenticated product UI and JSON API.</td><td>Clients reconnect/retry after restart; durable data is elsewhere.</td></tr>
+				<tr><td>Reconciler</td><td>Compare Artifacts refs with the durable view.</td><td>Missed time only delays convergence; the next pass catches up.</td></tr>
+				<tr><td>Cloudflare Queue consumer</td><td>Fast-path pushed-event ingestion.</td><td>At-least-once messages are retried; reconciliation remains the safety net.</td></tr>
+				<tr><td>Workflow runner</td><td>Advance durable JavaScript workflow steps.</td><td>Completed steps replay recorded results after restart; in-flight work retries.</td></tr>
+				<tr><td>Integration Queue worker</td><td>Serialize validated changes into canonical Git.</td><td>Queue records survive; stale canonical movement is reconciled rather than overwritten.</td></tr>
+			</table>
+			
+			<h2>Service management</h2>
+			<p>For a persistent host, run Switchyard under a service manager rather than an interactive shell. Keep the binary and static directory versioned together so an API/UI mismatch cannot be introduced during deployment.</p>
+			<pre><code class="language-shell">sudo systemctl status switchyard
 sudo systemctl restart switchyard
 sudo journalctl -u switchyard -f
 </code></pre>
-<p>A reverse proxy such as Caddy should listen publicly while Switchyard itself remains on <code>127.0.0.1:8080</code>. Do not expose the Trestle admin/control surface directly to the Internet.</p>
-
-<h2>Restart safety</h2>
-<ul>
-	<li>Provisioning of required Trestle collections is idempotent.</li>
-	<li>Repository truth remains in Artifacts even if Switchyard is stopped.</li>
-	<li>Reconciliation repairs Git movements that happened while the control plane was unavailable.</li>
-	<li>Workflow steps are durable records; completed external effects are replayed, not executed a second time.</li>
-	<li>Integration Queue state is durable and canonical movement remains CAS-guarded.</li>
-</ul>
-
-<h2>Backup matrix</h2>
-<table>
-	<tr><th>State</th><th>Where it lives</th><th>Backup consideration</th></tr>
-	<tr><td>Git objects, refs, commits</td><td>Cloudflare Artifacts</td><td>Authoritative repository state. Normal Git mirroring is also possible if desired.</td></tr>
-	<tr><td>Work, Attempts, PR coordination, workflow runs, findings, queue, audit</td><td>Trestle</td><td>Back up the configured Trestle database/storage.</td></tr>
-	<tr><td>Provider credential ciphertext</td><td>Trestle</td><td>Meaningful only with the matching encryption key.</td></tr>
-	<tr><td>Fallback encryption key</td><td><code>SWITCHYARD_DATA_DIR/secret.key</code></td><td>Back up securely and separately from ordinary application files.</td></tr>
-	<tr><td>Scratch clones/worktrees</td><td>Local data/scratch directory</td><td>Disposable; never treat as authoritative state.</td></tr>
-</table>
-
-<h2>Recovery scenarios</h2>
-<table>
-	<tr><th>Failure</th><th>Expected recovery</th></tr>
-	<tr><td>Switchyard process dies</td><td>Restart service; workflow/queue records resume and Git reconciliation catches up.</td></tr>
-	<tr><td>External human pushes while Switchyard is down</td><td>Artifacts accepts the normal Git push; reconciliation observes the new ref after restart.</td></tr>
-	<tr><td>Queue event duplicated</td><td>Normalized transition identity deduplicates the domain effect.</td></tr>
-	<tr><td>Queue event never arrives</td><td>Periodic reconciliation discovers the same Git movement.</td></tr>
-	<tr><td>Stale integration</td><td>Non-force Git/CAS semantics reject it; Switchyard re-previews/requeues or blocks explicitly.</td></tr>
-</table>
-
-<h2>Credentials and host compromise</h2>
-<p>Provider credentials are encrypted at rest with AES-256-GCM and never returned from metadata APIs. Plaintext is resolved only for an execution. The self-hosted fallback key may live on the same machine, so this protects against database-only or accidental disclosure — not an attacker who controls the whole host. A KMS/external secret backend is the appropriate stronger hosted/enterprise direction.</p>
-
-<h2>Observability</h2>
-<p>Today the control plane logs startup, reconciliation, queue, workflow and integration activity. The durable records themselves are also useful operational evidence: queue state explains why canonical has not moved, workflow steps explain replay, and audit records explain policy decisions. Structured metrics/alerting remain hardening work rather than being falsely claimed as complete.</p>
-
+			<p>A reverse proxy such as Caddy should listen publicly while Switchyard itself remains on <code>127.0.0.1:8080</code>. Do not expose the Trestle admin/control surface directly to the Internet.</p>
+			
+			<h2>Restart safety</h2>
+			<ul>
+				<li>Provisioning of required Trestle collections is idempotent.</li>
+				<li>Repository truth remains in Artifacts even if Switchyard is stopped.</li>
+				<li>Reconciliation repairs Git movements that happened while the control plane was unavailable.</li>
+				<li>Workflow steps are durable records; completed external effects are replayed, not executed a second time.</li>
+				<li>Integration Queue state is durable and canonical movement remains CAS-guarded.</li>
+			</ul>
+			
+			<h2>Backup matrix</h2>
+			<table>
+				<tr><th>State</th><th>Where it lives</th><th>Backup consideration</th></tr>
+				<tr><td>Git objects, refs, commits</td><td>Cloudflare Artifacts</td><td>Authoritative repository state. Normal Git mirroring is also possible if desired.</td></tr>
+				<tr><td>Work, Attempts, PR coordination, workflow runs, findings, queue, audit</td><td>Trestle</td><td>Back up the configured Trestle database/storage.</td></tr>
+				<tr><td>Provider credential ciphertext</td><td>Trestle</td><td>Meaningful only with the matching encryption key.</td></tr>
+				<tr><td>Fallback encryption key</td><td><code>SWITCHYARD_DATA_DIR/secret.key</code></td><td>Back up securely and separately from ordinary application files.</td></tr>
+				<tr><td>Scratch clones/worktrees</td><td>Local data/scratch directory</td><td>Disposable; never treat as authoritative state.</td></tr>
+			</table>
+			
+			<h2>Recovery scenarios</h2>
+			<table>
+				<tr><th>Failure</th><th>Expected recovery</th></tr>
+				<tr><td>Switchyard process dies</td><td>Restart service; workflow/queue records resume and Git reconciliation catches up.</td></tr>
+				<tr><td>External human pushes while Switchyard is down</td><td>Artifacts accepts the normal Git push; reconciliation observes the new ref after restart.</td></tr>
+				<tr><td>Queue event duplicated</td><td>Normalized transition identity deduplicates the domain effect.</td></tr>
+				<tr><td>Queue event never arrives</td><td>Periodic reconciliation discovers the same Git movement.</td></tr>
+				<tr><td>Stale integration</td><td>Non-force Git/CAS semantics reject it; Switchyard re-previews/requeues or blocks explicitly.</td></tr>
+			</table>
+			
+			<h2>Credentials and host compromise</h2>
+			<p>Provider credentials are encrypted at rest with AES-256-GCM and never returned from metadata APIs. Plaintext is resolved only for an execution. The self-hosted fallback key may live on the same machine, so this protects against database-only or accidental disclosure — not an attacker who controls the whole host. A KMS/external secret backend is the appropriate stronger hosted/enterprise direction.</p>
+			
+			<h2>Observability</h2>
+			<p>Today the control plane logs startup, reconciliation, queue, workflow and integration activity. The durable records themselves are also useful operational evidence: queue state explains why canonical has not moved, workflow steps explain replay, and audit records explain policy decisions. Structured metrics/alerting remain hardening work rather than being falsely claimed as complete.</p>
 		</main>
 
 		<footer class="site-footer">

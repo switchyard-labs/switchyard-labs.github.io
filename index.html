@@ -2,18 +2,18 @@
 <html lang="en" data-theme="dark">
 	<head>
 		<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Switchyard</title>
-<link rel="icon" type="image/svg+xml" href="assets/images/favicon.svg">
-<meta name="description" content="Git collaboration built for humans and concurrent agents. Agents work in isolated Git state; integration into canonical flows through deterministic, policy-controlled serialized integration.">
-<link rel="stylesheet" href="assets/css/app.css">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<title>Switchyard</title>
+		<link rel="icon" type="image/webp" href="assets/images/favicon.webp">
+		<meta name="description" content="Git collaboration built for humans and concurrent agents. Agents work in isolated Git state; integration into canonical flows through deterministic, policy-controlled serialized integration.">
+		<link rel="stylesheet" href="assets/css/app.css">
 	</head>
 	<body>
 		<a class="skip-link" href="#main-content">Skip to content</a>
 		<header class="site-header">
 			<div class="header-inner">
 				<a class="brand" href="./">
-					<img src="assets/images/favicon.svg" alt="Switchyard mark" width="26" height="26">
+					<img src="assets/images/favicon.webp" alt="Switchyard mark" width="26" height="26">
 					<span>Switchyard</span>
 				</a>
 				<div class="header-right">
@@ -26,7 +26,7 @@
 
 		<nav class="fullscreen-nav" id="fs-nav" aria-label="Site" aria-hidden="true">
 			<div class="fs-head">
-				<span class="brand"><img src="assets/images/favicon.svg" alt="" width="24" height="24"><span>Switchyard</span></span>
+				<span class="brand"><img src="assets/images/favicon.webp" alt="" width="24" height="24"><span>Switchyard</span></span>
 				<button class="hamburger" id="menu-close" type="button" aria-label="Close menu">×</button>
 			</div>
 			<div class="fs-groups">
@@ -52,87 +52,87 @@
 
 		<main class="site-main" id="main-content">
 			<section class="home-hero">
-  <div class="home-hero-copy">
-    <div class="eyebrow">Open source · self-hosted · agent-native Git</div>
-    <h1>Build software in parallel.<br><span>Keep Git in control.</span></h1>
-    <p class="home-lede">Switchyard is a Git collaboration platform for teams where humans and coding agents work at the same time. Every change stays isolated, reviewable and attributable until it earns its way into canonical.</p>
-    <div class="hero-actions">
-      <a class="button-link primary" href="product/demo.html">Explore the product</a>
-      <a class="button-link" href="docs/getting-started.html">Run Switchyard</a>
-    </div>
-    <div class="hero-proof" aria-label="Switchyard product principles">
-      <span><b>Real Git</b> underneath</span>
-      <span><b>Durable</b> agent workflows</span>
-      <span><b>Deterministic</b> integration</span>
-    </div>
-  </div>
-  <aside class="switchboard" aria-label="Concurrent work converging on canonical Git">
-    <div class="switchboard-head"><span>LIVE MODEL</span><span class="signal-dot"></span></div>
-    <div class="switchboard-work"><span class="node-label">work</span><strong>Improve repository search</strong></div>
-    <div class="track track-a"><span class="track-name">attempt / a</span><b>agent</b><span>implementation</span></div>
-    <div class="track track-b"><span class="track-name">attempt / b</span><b>human</b><span>alternative</span></div>
-    <div class="track track-c"><span class="track-name">attempt / c</span><b>agent</b><span>benchmark</span></div>
-    <div class="junction"><span>review</span><span>checks</span><span>preview</span></div>
-    <div class="queue-block"><small>INTEGRATION QUEUE</small><strong>fresh · clean · policy passed</strong></div>
-    <div class="canonical"><small>CANONICAL</small><strong>main</strong></div>
-  </aside>
-</section>
-
-<section class="statement-section">
-  <div class="section-kicker">Git stays Git</div>
-  <h2>Not an AI sandbox. Not a second source of truth.</h2>
-  <p class="section-lede">Branches, commits, refs, diffs, pull requests and ordinary Git clients stay exactly where developers expect them. Switchyard adds coordination around Git instead of replacing it.</p>
-  <div class="principle-list">
-    <article><span>01</span><div><h3>Every actor gets isolated state.</h3><p>Humans and agents can work concurrently without sharing a writable branch or racing to be the last writer.</p></div></article>
-    <article><span>02</span><div><h3>Canonical is earned, never grabbed.</h3><p>Checks, reviews, semantic validation and repository policy all run before the Integration Queue moves the canonical ref.</p></div></article>
-    <article><span>03</span><div><h3>Failures become evidence, not lost work.</h3><p>Attempts, findings, workflow runs and rejected integrations remain durable and attributable instead of disappearing into an agent transcript.</p></div></article>
-  </div>
-</section>
-
-<section class="git-host-section">
-  <div class="section-kicker">The repository is real</div>
-  <h2>Git does the Git. Cloudflare Artifacts hosts it.</h2>
-  <p class="section-lede">When you click <strong>Code</strong> in Switchyard and run <code>git clone</code>, Git connects directly to the repository's Cloudflare Artifacts HTTPS remote. Fetch and push use that same remote. Switchyard layers collaboration and policy around the repository instead of replacing it.</p>
-  <div class="git-host-flow">
-    <div><small>YOUR TERMINAL / CI</small><strong>git clone · fetch · push</strong></div><span>↔</span><div class="artifacts-node"><small>AUTHORITATIVE REMOTE</small><strong>Cloudflare Artifacts</strong><em>repos · objects · refs · history</em></div><span>↔</span><div><small>COORDINATION</small><strong>Switchyard + Trestle</strong><em>Work · Attempts · review · queue</em></div>
-  </div>
-  <a class="text-link" href="concepts/repositories.html">See how repository hosting works →</a>
-</section>
-
-<section class="product-stage">
-  <div class="stage-copy">
-    <div class="section-kicker">A familiar Git host</div>
-    <h2>The repository still feels like a repository.</h2>
-    <p>Browse source, history, branches, tags, pull requests and Work using familiar Git-host patterns. Agent-native machinery appears progressively when a repository actually needs it.</p>
-    <a class="text-link" href="concepts/repositories.html">Explore repository design →</a>
-  </div>
-  <figure class="product-shot featured-shot">
-    <div class="shot-bar"><i></i><i></i><i></i><span>switchyard / repository</span></div>
-    <img src="assets/images/screenshots/repo.png" alt="Switchyard repository interface">
-  </figure>
-</section>
-
-<section class="split-feature">
-  <div>
-    <div class="section-kicker">Humans + agents</div>
-    <h2>One collaboration model.<br>Different levels of autonomy.</h2>
-    <p>A human can use Switchyard like an ordinary Git host. An agent can operate through a scoped Attempt. Both eventually meet at the same review, validation and integration machinery.</p>
-  </div>
-  <div class="comparison-lines">
-    <div><span>HUMAN</span><strong>Edit → review diff → commit → PR</strong></div>
-    <div><span>AGENT</span><strong>Role → Attempt → evidence → PR</strong></div>
-    <div><span>BOTH</span><strong>Checks → review → Integration Queue</strong></div>
-  </div>
-</section>
-
-<section class="workflow-feature">
-  <div class="workflow-copy">
-    <div class="section-kicker">Programmable engineering</div>
-    <h2>Workflows are code — and they survive the process running them.</h2>
-    <p>Author engineering workflows in JavaScript. Switchyard persists the durable boundaries, so a control-plane restart does not duplicate completed external effects.</p>
-    <ul class="plain-points"><li>parallel agents</li><li>review and repair loops</li><li>checks and approvals</li><li>bounded retries and cancellation</li></ul>
-  </div>
-  <pre class="workflow-code"><code>async function run(ctx) {
+			  <div class="home-hero-copy">
+			    <div class="eyebrow">Open source · self-hosted · agent-native Git</div>
+			    <h1>Build software in parallel.<br><span>Keep Git in control.</span></h1>
+			    <p class="home-lede">Switchyard is a Git collaboration platform for teams where humans and coding agents work at the same time. Every change stays isolated, reviewable and attributable until it earns its way into canonical.</p>
+			    <div class="hero-actions">
+			      <a class="button-link primary" href="product/demo.html">Explore the product</a>
+			      <a class="button-link" href="docs/getting-started.html">Run Switchyard</a>
+			    </div>
+			    <div class="hero-proof" aria-label="Switchyard product principles">
+			      <span><b>Real Git</b> underneath</span>
+			      <span><b>Durable</b> agent workflows</span>
+			      <span><b>Deterministic</b> integration</span>
+			    </div>
+			  </div>
+			  <aside class="switchboard" aria-label="Concurrent work converging on canonical Git">
+			    <div class="switchboard-head"><span>LIVE MODEL</span><span class="signal-dot"></span></div>
+			    <div class="switchboard-work"><span class="node-label">work</span><strong>Improve repository search</strong></div>
+			    <div class="track track-a"><span class="track-name">attempt / a</span><b>agent</b><span>implementation</span></div>
+			    <div class="track track-b"><span class="track-name">attempt / b</span><b>human</b><span>alternative</span></div>
+			    <div class="track track-c"><span class="track-name">attempt / c</span><b>agent</b><span>benchmark</span></div>
+			    <div class="junction"><span>review</span><span>checks</span><span>preview</span></div>
+			    <div class="queue-block"><small>INTEGRATION QUEUE</small><strong>fresh · clean · policy passed</strong></div>
+			    <div class="canonical"><small>CANONICAL</small><strong>main</strong></div>
+			  </aside>
+			</section>
+			
+			<section class="statement-section">
+			  <div class="section-kicker">Git stays Git</div>
+			  <h2>Not an AI sandbox. Not a second source of truth.</h2>
+			  <p class="section-lede">Branches, commits, refs, diffs, pull requests and ordinary Git clients stay exactly where developers expect them. Switchyard adds coordination around Git instead of replacing it.</p>
+			  <div class="principle-list">
+			    <article><span>01</span><div><h3>Every actor gets isolated state.</h3><p>Humans and agents can work concurrently without sharing a writable branch or racing to be the last writer.</p></div></article>
+			    <article><span>02</span><div><h3>Canonical is earned, never grabbed.</h3><p>Checks, reviews, semantic validation and repository policy all run before the Integration Queue moves the canonical ref.</p></div></article>
+			    <article><span>03</span><div><h3>Failures become evidence, not lost work.</h3><p>Attempts, findings, workflow runs and rejected integrations remain durable and attributable instead of disappearing into an agent transcript.</p></div></article>
+			  </div>
+			</section>
+			
+			<section class="git-host-section">
+			  <div class="section-kicker">The repository is real</div>
+			  <h2>Git does the Git. Cloudflare Artifacts hosts it.</h2>
+			  <p class="section-lede">When you click <strong>Code</strong> in Switchyard and run <code>git clone</code>, Git connects directly to the repository's Cloudflare Artifacts HTTPS remote. Fetch and push use that same remote. Switchyard layers collaboration and policy around the repository instead of replacing it.</p>
+			  <div class="git-host-flow">
+			    <div><small>YOUR TERMINAL / CI</small><strong>git clone · fetch · push</strong></div><span>↔</span><div class="artifacts-node"><small>AUTHORITATIVE REMOTE</small><strong>Cloudflare Artifacts</strong><em>repos · objects · refs · history</em></div><span>↔</span><div><small>COORDINATION</small><strong>Switchyard + Trestle</strong><em>Work · Attempts · review · queue</em></div>
+			  </div>
+			  <a class="text-link" href="concepts/repositories.html">See how repository hosting works →</a>
+			</section>
+			
+			<section class="product-stage">
+			  <div class="stage-copy">
+			    <div class="section-kicker">A familiar Git host</div>
+			    <h2>The repository still feels like a repository.</h2>
+			    <p>Browse source, history, branches, tags, pull requests and Work using familiar Git-host patterns. Agent-native machinery appears progressively when a repository actually needs it.</p>
+			    <a class="text-link" href="concepts/repositories.html">Explore repository design →</a>
+			  </div>
+			  <figure class="product-shot featured-shot">
+			    <div class="shot-bar"><i></i><i></i><i></i><span>switchyard / repository</span></div>
+			    <img src="assets/images/screenshots/repo.png" alt="Switchyard repository interface">
+			  </figure>
+			</section>
+			
+			<section class="split-feature">
+			  <div>
+			    <div class="section-kicker">Humans + agents</div>
+			    <h2>One collaboration model.<br>Different levels of autonomy.</h2>
+			    <p>A human can use Switchyard like an ordinary Git host. An agent can operate through a scoped Attempt. Both eventually meet at the same review, validation and integration machinery.</p>
+			  </div>
+			  <div class="comparison-lines">
+			    <div><span>HUMAN</span><strong>Edit → review diff → commit → PR</strong></div>
+			    <div><span>AGENT</span><strong>Role → Attempt → evidence → PR</strong></div>
+			    <div><span>BOTH</span><strong>Checks → review → Integration Queue</strong></div>
+			  </div>
+			</section>
+			
+			<section class="workflow-feature">
+			  <div class="workflow-copy">
+			    <div class="section-kicker">Programmable engineering</div>
+			    <h2>Workflows are code — and they survive the process running them.</h2>
+			    <p>Author engineering workflows in JavaScript. Switchyard persists the durable boundaries, so a control-plane restart does not duplicate completed external effects.</p>
+			    <ul class="plain-points"><li>parallel agents</li><li>review and repair loops</li><li>checks and approvals</li><li>bounded retries and cancellation</li></ul>
+			  </div>
+			  <pre class="workflow-code"><code>async function run(ctx) {
   const change = await ctx.agent("implementer", task);
   const review = await ctx.review(change);
 
@@ -142,23 +142,22 @@
   await ctx.check();
   await ctx.integrate();
 }</code></pre>
-</section>
-
-<section class="proof-section">
-  <div class="proof-intro"><div class="section-kicker">Built against the real stack</div><h2>Evidence before claims.</h2><p>Switchyard has been exercised against real Git repositories, real Trestle state, browser workflows, queue contention, process death, conflicts and self-dogfooding.</p></div>
-  <div class="proof-metrics">
-    <div><strong>Cloudflare Artifacts</strong><span>authoritative Git truth</span></div>
-    <div><strong>Trestle</strong><span>coordination truth</span></div>
-    <div><strong>Durable JS</strong><span>workflow authoring</span></div>
-    <div><strong>Semantic checks</strong><span>clean merge ≠ safe merge</span></div>
-  </div>
-</section>
-
-<section class="home-cta">
-  <div><div class="section-kicker">Start exploring</div><h2>See the product, then inspect how it works.</h2></div>
-  <div class="hero-actions"><a class="button-link primary" href="product/demo.html">Product tour</a><a class="button-link" href="concepts/architecture.html">Architecture</a><a class="button-link" href="https://github.com/switchyard-labs/switchyard">GitHub</a></div>
-</section>
-
+			</section>
+			
+			<section class="proof-section">
+			  <div class="proof-intro"><div class="section-kicker">Built against the real stack</div><h2>Evidence before claims.</h2><p>Switchyard has been exercised against real Git repositories, real Trestle state, browser workflows, queue contention, process death, conflicts and self-dogfooding.</p></div>
+			  <div class="proof-metrics">
+			    <div><strong>Cloudflare Artifacts</strong><span>authoritative Git truth</span></div>
+			    <div><strong>Trestle</strong><span>coordination truth</span></div>
+			    <div><strong>Durable JS</strong><span>workflow authoring</span></div>
+			    <div><strong>Semantic checks</strong><span>clean merge ≠ safe merge</span></div>
+			  </div>
+			</section>
+			
+			<section class="home-cta">
+			  <div><div class="section-kicker">Start exploring</div><h2>See the product, then inspect how it works.</h2></div>
+			  <div class="hero-actions"><a class="button-link primary" href="product/demo.html">Product tour</a><a class="button-link" href="concepts/architecture.html">Architecture</a><a class="button-link" href="https://github.com/switchyard-labs/switchyard">GitHub</a></div>
+			</section>
 		</main>
 
 		<footer class="site-footer">

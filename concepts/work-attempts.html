@@ -2,18 +2,18 @@
 <html lang="en" data-theme="dark">
 	<head>
 		<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Switchyard</title>
-<link rel="icon" type="image/svg+xml" href="../assets/images/favicon.svg">
-<meta name="description" content="Git collaboration built for humans and concurrent agents. Agents work in isolated Git state; integration into canonical flows through deterministic, policy-controlled serialized integration.">
-<link rel="stylesheet" href="../assets/css/app.css">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<title>Switchyard</title>
+		<link rel="icon" type="image/webp" href="../assets/images/favicon.webp">
+		<meta name="description" content="Git collaboration built for humans and concurrent agents. Agents work in isolated Git state; integration into canonical flows through deterministic, policy-controlled serialized integration.">
+		<link rel="stylesheet" href="../assets/css/app.css">
 	</head>
 	<body>
 		<a class="skip-link" href="#main-content">Skip to content</a>
 		<header class="site-header">
 			<div class="header-inner">
-				<a class="brand" href="../index.html">
-					<img src="../assets/images/favicon.svg" alt="Switchyard mark" width="26" height="26">
+				<a class="brand" href="../">
+					<img src="../assets/images/favicon.webp" alt="Switchyard mark" width="26" height="26">
 					<span>Switchyard</span>
 				</a>
 				<div class="header-right">
@@ -26,15 +26,15 @@
 
 		<nav class="fullscreen-nav" id="fs-nav" aria-label="Site" aria-hidden="true">
 			<div class="fs-head">
-				<span class="brand"><img src="../assets/images/favicon.svg" alt="" width="24" height="24"><span>Switchyard</span></span>
+				<span class="brand"><img src="../assets/images/favicon.webp" alt="" width="24" height="24"><span>Switchyard</span></span>
 				<button class="hamburger" id="menu-close" type="button" aria-label="Close menu">×</button>
 			</div>
 			<div class="fs-groups">
 				<details class="fs-group" open><summary>Product</summary><div class="fs-links">
-					<a href="../index.html">Overview</a><a href="../product/overview.html">How it works</a><a href="../product/human-ai.html">Human + AI collaboration</a><a href="../product/demo.html">Demo</a>
+					<a href="../">Overview</a><a href="../product/overview.html">How it works</a><a href="../product/human-ai.html">Human + AI collaboration</a><a href="../product/demo.html">Demo</a>
 				</div></details>
 				<details class="fs-group" open><summary>Concepts</summary><div class="fs-links">
-					<a href="architecture.html">Architecture</a><a href="repositories.html">Repositories &amp; Git truth</a><a href="work-attempts.html">Work, Attempts &amp; Pull Requests</a><a href="integration-queue.html">Integration Queue</a><a href="reviews-conflicts.html">Reviews &amp; Conflicts</a><a href="workflows.html">Durable workflows</a><a href="provenance-needs-attention.html">Provenance &amp; Needs Attention</a>
+					<a href="./architecture.html">Architecture</a><a href="./repositories.html">Repositories &amp; Git truth</a><a href="./work-attempts.html">Work, Attempts &amp; Pull Requests</a><a href="./integration-queue.html">Integration Queue</a><a href="./reviews-conflicts.html">Reviews &amp; Conflicts</a><a href="./workflows.html">Durable workflows</a><a href="./provenance-needs-attention.html">Provenance &amp; Needs Attention</a>
 				</div></details>
 				<details class="fs-group" open><summary>Documentation</summary><div class="fs-links">
 					<a href="../docs/getting-started.html">Getting started</a><a href="../docs/configuration.html">Configuration</a><a href="../docs/api.html">API</a><a href="../docs/operations.html">Operations</a><a href="../docs/status.html">Status</a><a href="../docs/internals.html">Internals</a><a href="../docs/performance.html">Performance</a>
@@ -52,44 +52,44 @@
 
 		<main class="site-main" id="main-content">
 			<section class="hero">
-	<div class="kicker">Concepts · Work, Attempts &amp; Pull Requests</div>
-	<h1>Intent, isolated execution, familiar review.</h1>
-	<p class="lede">Work is the human-facing task or issue. Attempts are optional candidate executions underneath it. Pull Requests are the familiar Git collaboration boundary where a candidate asks to become canonical.</p>
-</section>
-
-<h2>The three layers</h2>
-<table>
-	<tr><th>Concept</th><th>Answers</th><th>Can exist without Agents?</th></tr>
-	<tr><td><strong>Work</strong></td><td>What are we trying to accomplish, who owns it, and is it open/closed?</td><td>Yes. Work is useful as an ordinary issue/task with body, assignee and comments.</td></tr>
-	<tr><td><strong>Attempt</strong></td><td>Which isolated candidate is trying to implement the Work?</td><td>Yes. A human or deterministic tool can own an Attempt; it is not inherently an LLM concept.</td></tr>
-	<tr><td><strong>Pull Request</strong></td><td>Is this concrete Git branch ready to review and integrate?</td><td>Yes. It remains a normal PR surface with commits/files/checks/conversation.</td></tr>
-</table>
-
-<h2>Work is the issue/task model</h2>
-<p>A Work item records durable intent: feature, bug, refactor, investigation, maintenance or release task. It can have a description, status, assignee and comments and may never create an Attempt at all. That keeps the simple human-only case familiar.</p>
-<pre><code>Work #142  Improve repository error states
+				<div class="kicker">Concepts · Work, Attempts &amp; Pull Requests</div>
+				<h1>Intent, isolated execution, familiar review.</h1>
+				<p class="lede">Work is the human-facing task or issue. Attempts are optional candidate executions underneath it. Pull Requests are the familiar Git collaboration boundary where a candidate asks to become canonical.</p>
+			</section>
+			
+			<h2>The three layers</h2>
+			<table>
+				<tr><th>Concept</th><th>Answers</th><th>Can exist without Agents?</th></tr>
+				<tr><td><strong>Work</strong></td><td>What are we trying to accomplish, who owns it, and is it open/closed?</td><td>Yes. Work is useful as an ordinary issue/task with body, assignee and comments.</td></tr>
+				<tr><td><strong>Attempt</strong></td><td>Which isolated candidate is trying to implement the Work?</td><td>Yes. A human or deterministic tool can own an Attempt; it is not inherently an LLM concept.</td></tr>
+				<tr><td><strong>Pull Request</strong></td><td>Is this concrete Git branch ready to review and integrate?</td><td>Yes. It remains a normal PR surface with commits/files/checks/conversation.</td></tr>
+			</table>
+			
+			<h2>Work is the issue/task model</h2>
+			<p>A Work item records durable intent: feature, bug, refactor, investigation, maintenance or release task. It can have a description, status, assignee and comments and may never create an Attempt at all. That keeps the simple human-only case familiar.</p>
+			<pre><code>Work #142  Improve repository error states
   status: open
   assignee: nick
   comments: 3
 
   # no Attempt is required until somebody chooses to execute it
 </code></pre>
-
-<h2>Attempts make concurrency explicit</h2>
-<p>When implementation begins, one Work item can have multiple Attempts. Each Attempt has isolated Git state and its own execution/provenance history. That makes competing approaches first-class instead of forcing every Agent onto one shared branch.</p>
-<table>
-	<tr><th>Attempt</th><th>Actor</th><th>Branch</th><th>Possible outcome</th></tr>
-	<tr><td>A</td><td>implementer Agent</td><td><code>attempt/a</code></td><td>passes review and opens the winning PR</td></tr>
-	<tr><td>B</td><td>human</td><td><code>attempt/b</code></td><td>abandoned after benchmark comparison</td></tr>
-	<tr><td>C</td><td>alternate Agent role</td><td><code>attempt/c</code></td><td>fails a contract check but remains useful provenance</td></tr>
-</table>
-<p>Failed and losing Attempts are not silently discarded. They explain what was tried, which can matter as much as the final diff when automated engineering becomes highly concurrent.</p>
-
-<h2>Pull Requests stay familiar</h2>
-<p>A PR proposes an Attempt branch against a base. The default surface is ordinary Git-host collaboration: conversation, commits, files changed and checks. Switchyard-specific state — Attempt, Agent execution, provenance, risk, queue state — appears progressively when it exists.</p>
-
-<h2>Lifecycle example</h2>
-<pre><code>Work: "Add repository search"
+			
+			<h2>Attempts make concurrency explicit</h2>
+			<p>When implementation begins, one Work item can have multiple Attempts. Each Attempt has isolated Git state and its own execution/provenance history. That makes competing approaches first-class instead of forcing every Agent onto one shared branch.</p>
+			<table>
+				<tr><th>Attempt</th><th>Actor</th><th>Branch</th><th>Possible outcome</th></tr>
+				<tr><td>A</td><td>implementer Agent</td><td><code>attempt/a</code></td><td>passes review and opens the winning PR</td></tr>
+				<tr><td>B</td><td>human</td><td><code>attempt/b</code></td><td>abandoned after benchmark comparison</td></tr>
+				<tr><td>C</td><td>alternate Agent role</td><td><code>attempt/c</code></td><td>fails a contract check but remains useful provenance</td></tr>
+			</table>
+			<p>Failed and losing Attempts are not silently discarded. They explain what was tried, which can matter as much as the final diff when automated engineering becomes highly concurrent.</p>
+			
+			<h2>Pull Requests stay familiar</h2>
+			<p>A PR proposes an Attempt branch against a base. The default surface is ordinary Git-host collaboration: conversation, commits, files changed and checks. Switchyard-specific state — Attempt, Agent execution, provenance, risk, queue state — appears progressively when it exists.</p>
+			
+			<h2>Lifecycle example</h2>
+			<pre><code>Work: "Add repository search"
   ├─ Attempt A (human)  ──┐
   └─ Attempt B (agent)  ──┼─ compare/review
                            └─ PR from B
@@ -98,9 +98,8 @@
                                ├─ preview against current main
                                └─ Integration Queue → main
 </code></pre>
-
-<div class="callout ok"><span class="t">Demo</span><code>demo-agents</code> is one Work item with concurrent Attempts so the distinction can be explored without reading implementation fixtures.</div>
-
+			
+			<div class="callout ok"><span class="t">Demo</span><code>demo-agents</code> is one Work item with concurrent Attempts so the distinction can be explored without reading implementation fixtures.</div>
 		</main>
 
 		<footer class="site-footer">

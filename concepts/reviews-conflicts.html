@@ -2,18 +2,18 @@
 <html lang="en" data-theme="dark">
 	<head>
 		<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Switchyard</title>
-<link rel="icon" type="image/svg+xml" href="../assets/images/favicon.svg">
-<meta name="description" content="Git collaboration built for humans and concurrent agents. Agents work in isolated Git state; integration into canonical flows through deterministic, policy-controlled serialized integration.">
-<link rel="stylesheet" href="../assets/css/app.css">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<title>Switchyard</title>
+		<link rel="icon" type="image/webp" href="../assets/images/favicon.webp">
+		<meta name="description" content="Git collaboration built for humans and concurrent agents. Agents work in isolated Git state; integration into canonical flows through deterministic, policy-controlled serialized integration.">
+		<link rel="stylesheet" href="../assets/css/app.css">
 	</head>
 	<body>
 		<a class="skip-link" href="#main-content">Skip to content</a>
 		<header class="site-header">
 			<div class="header-inner">
-				<a class="brand" href="../index.html">
-					<img src="../assets/images/favicon.svg" alt="Switchyard mark" width="26" height="26">
+				<a class="brand" href="../">
+					<img src="../assets/images/favicon.webp" alt="Switchyard mark" width="26" height="26">
 					<span>Switchyard</span>
 				</a>
 				<div class="header-right">
@@ -26,15 +26,15 @@
 
 		<nav class="fullscreen-nav" id="fs-nav" aria-label="Site" aria-hidden="true">
 			<div class="fs-head">
-				<span class="brand"><img src="../assets/images/favicon.svg" alt="" width="24" height="24"><span>Switchyard</span></span>
+				<span class="brand"><img src="../assets/images/favicon.webp" alt="" width="24" height="24"><span>Switchyard</span></span>
 				<button class="hamburger" id="menu-close" type="button" aria-label="Close menu">×</button>
 			</div>
 			<div class="fs-groups">
 				<details class="fs-group" open><summary>Product</summary><div class="fs-links">
-					<a href="../index.html">Overview</a><a href="../product/overview.html">How it works</a><a href="../product/human-ai.html">Human + AI collaboration</a><a href="../product/demo.html">Demo</a>
+					<a href="../">Overview</a><a href="../product/overview.html">How it works</a><a href="../product/human-ai.html">Human + AI collaboration</a><a href="../product/demo.html">Demo</a>
 				</div></details>
 				<details class="fs-group" open><summary>Concepts</summary><div class="fs-links">
-					<a href="architecture.html">Architecture</a><a href="repositories.html">Repositories &amp; Git truth</a><a href="work-attempts.html">Work, Attempts &amp; Pull Requests</a><a href="integration-queue.html">Integration Queue</a><a href="reviews-conflicts.html">Reviews &amp; Conflicts</a><a href="workflows.html">Durable workflows</a><a href="provenance-needs-attention.html">Provenance &amp; Needs Attention</a>
+					<a href="./architecture.html">Architecture</a><a href="./repositories.html">Repositories &amp; Git truth</a><a href="./work-attempts.html">Work, Attempts &amp; Pull Requests</a><a href="./integration-queue.html">Integration Queue</a><a href="./reviews-conflicts.html">Reviews &amp; Conflicts</a><a href="./workflows.html">Durable workflows</a><a href="./provenance-needs-attention.html">Provenance &amp; Needs Attention</a>
 				</div></details>
 				<details class="fs-group" open><summary>Documentation</summary><div class="fs-links">
 					<a href="../docs/getting-started.html">Getting started</a><a href="../docs/configuration.html">Configuration</a><a href="../docs/api.html">API</a><a href="../docs/operations.html">Operations</a><a href="../docs/status.html">Status</a><a href="../docs/internals.html">Internals</a><a href="../docs/performance.html">Performance</a>
@@ -52,33 +52,33 @@
 
 		<main class="site-main" id="main-content">
 			<section class="hero">
-	<div class="kicker">Concepts · Reviews &amp; Conflicts</div>
-	<h1>Review the change. Name the conflict accurately.</h1>
-	<p class="lede">Switchyard treats review findings, Git merge conflicts, semantic incompatibilities and policy blocks as different things. They can all stop integration, but they require different evidence and different repair paths.</p>
-</section>
-
-<h2>Structured Review Findings</h2>
-<p>Review output is durable data rather than an unstructured Agent transcript. A finding can carry severity, message and file/location context so it can drive the Pull Request, editor, repair loop and Needs Attention without each surface reinterpreting prose.</p>
-<table>
-	<tr><th>Field</th><th>Example</th><th>Used by</th></tr>
-	<tr><td>Severity</td><td><code>info</code>, <code>warning</code>, <code>error</code></td><td>Review summaries, integration gating, Needs Attention prioritisation.</td></tr>
-	<tr><td>File/path</td><td><code>internal/app/router.go</code></td><td>Editor findings and PR file context.</td></tr>
-	<tr><td>Message</td><td>“merged API version does not match consumer requirement”</td><td>Human explanation and repair input.</td></tr>
-	<tr><td>Status</td><td>open / resolved</td><td>Determines whether repair/re-review still has work to do.</td></tr>
-</table>
-
-<h2>Conflict taxonomy</h2>
-<table>
-	<tr><th>Kind</th><th>Detected by</th><th>Example</th><th>Typical action</th></tr>
-	<tr><td>Textual Git conflict</td><td><code>git merge</code> during preview</td><td>Both candidates edit the same lines.</td><td>Three-way/content repair on the Attempt branch.</td></tr>
-	<tr><td>Semantic conflict</td><td>Deterministic validation of the clean preview-merged tree</td><td>API moves to v2 while a newly-added consumer requires v3.</td><td>Change one candidate until the repository contract holds.</td></tr>
-	<tr><td>Policy conflict</td><td>Repository/org policy evaluation</td><td>High-risk integration requires explicit approval.</td><td>Escalate a bounded decision or deny.</td></tr>
-	<tr><td>Intent ambiguity</td><td>Review/Agent/human reasoning</td><td>Two valid implementations satisfy different interpretations of the task.</td><td>Needs Attention or additional Work clarification.</td></tr>
-</table>
-
-<h2>Textual conflicts</h2>
-<p>A textual conflict is deliberately boring: it is ordinary Git merge behavior surfaced early. Preview integration runs a real merge in isolated Git state. If Git reports overlapping content, Switchyard records findings and parks the Attempt rather than discovering the problem only after somebody clicks “merge.”</p>
-<pre><code>main:     timeout = 10
+				<div class="kicker">Concepts · Reviews &amp; Conflicts</div>
+				<h1>Review the change. Name the conflict accurately.</h1>
+				<p class="lede">Switchyard treats review findings, Git merge conflicts, semantic incompatibilities and policy blocks as different things. They can all stop integration, but they require different evidence and different repair paths.</p>
+			</section>
+			
+			<h2>Structured Review Findings</h2>
+			<p>Review output is durable data rather than an unstructured Agent transcript. A finding can carry severity, message and file/location context so it can drive the Pull Request, editor, repair loop and Needs Attention without each surface reinterpreting prose.</p>
+			<table>
+				<tr><th>Field</th><th>Example</th><th>Used by</th></tr>
+				<tr><td>Severity</td><td><code>info</code>, <code>warning</code>, <code>error</code></td><td>Review summaries, integration gating, Needs Attention prioritisation.</td></tr>
+				<tr><td>File/path</td><td><code>internal/app/router.go</code></td><td>Editor findings and PR file context.</td></tr>
+				<tr><td>Message</td><td>“merged API version does not match consumer requirement”</td><td>Human explanation and repair input.</td></tr>
+				<tr><td>Status</td><td>open / resolved</td><td>Determines whether repair/re-review still has work to do.</td></tr>
+			</table>
+			
+			<h2>Conflict taxonomy</h2>
+			<table>
+				<tr><th>Kind</th><th>Detected by</th><th>Example</th><th>Typical action</th></tr>
+				<tr><td>Textual Git conflict</td><td><code>git merge</code> during preview</td><td>Both candidates edit the same lines.</td><td>Three-way/content repair on the Attempt branch.</td></tr>
+				<tr><td>Semantic conflict</td><td>Deterministic validation of the clean preview-merged tree</td><td>API moves to v2 while a newly-added consumer requires v3.</td><td>Change one candidate until the repository contract holds.</td></tr>
+				<tr><td>Policy conflict</td><td>Repository/org policy evaluation</td><td>High-risk integration requires explicit approval.</td><td>Escalate a bounded decision or deny.</td></tr>
+				<tr><td>Intent ambiguity</td><td>Review/Agent/human reasoning</td><td>Two valid implementations satisfy different interpretations of the task.</td><td>Needs Attention or additional Work clarification.</td></tr>
+			</table>
+			
+			<h2>Textual conflicts</h2>
+			<p>A textual conflict is deliberately boring: it is ordinary Git merge behavior surfaced early. Preview integration runs a real merge in isolated Git state. If Git reports overlapping content, Switchyard records findings and parks the Attempt rather than discovering the problem only after somebody clicks “merge.”</p>
+			<pre><code>main:     timeout = 10
 attempt:  timeout = 60
 other PR: timeout = 30
 
@@ -87,10 +87,10 @@ other PR: timeout = 30
 # → repair writes a resolved version onto the source branch
 # → preview runs again before queue integration
 </code></pre>
-
-<h2>Semantic conflicts</h2>
-<p>The more interesting case is: <strong>Git says the combined tree is fine, but Switchyard knows the pieces are incompatible.</strong> A repository can declare a deterministic contract in <code>switchyard.contract.json</code>. After a clean preview merge, Switchyard validates that contract against the merged tree.</p>
-<pre><code class="language-json">{
+			
+			<h2>Semantic conflicts</h2>
+			<p>The more interesting case is: <strong>Git says the combined tree is fine, but Switchyard knows the pieces are incompatible.</strong> A repository can declare a deterministic contract in <code>switchyard.contract.json</code>. After a clean preview merge, Switchyard validates that contract against the merged tree.</p>
+			<pre><code class="language-json">{
   "rules": [
     {
       "kind": "field_equals",
@@ -100,19 +100,18 @@ other PR: timeout = 30
   ]
 }
 </code></pre>
-<p>Attempt A moves the API and its existing consumer to v2 together and integrates. Attempt B adds a <em>new</em> consumer requiring v3. The files do not overlap, so Git merges B cleanly into the new <code>main</code>; the repository contract then fails. Switchyard records a semantic error finding, parks the Attempt in <code>semantic_conflict</code> and blocks the Integration Queue. Canonical remains internally consistent.</p>
-
-<h2>Layered repair instead of one magic Conflict Agent</h2>
-<ol>
-	<li><strong>Deterministic resolution</strong> when the system has a safe mechanical answer.</li>
-	<li><strong>Original implementer repair</strong> when the finding is concrete and bounded.</li>
-	<li><strong>Specialist/reviewer</strong> when another role can provide independent correction.</li>
-	<li><strong>Human escalation</strong> only when the remaining decision genuinely needs direction.</li>
-</ol>
-<p>Autonomous loops are bounded. A system that can call reviewers forever is not durable orchestration; it is an unbounded retry machine.</p>
-
-<div class="callout warn"><span class="t">Precise language</span>“Git reports a conflict” and “Switchyard detects incompatible semantics” are separate claims with separate gates. Keeping the terminology precise makes both features more credible.</div>
-
+			<p>Attempt A moves the API and its existing consumer to v2 together and integrates. Attempt B adds a <em>new</em> consumer requiring v3. The files do not overlap, so Git merges B cleanly into the new <code>main</code>; the repository contract then fails. Switchyard records a semantic error finding, parks the Attempt in <code>semantic_conflict</code> and blocks the Integration Queue. Canonical remains internally consistent.</p>
+			
+			<h2>Layered repair instead of one magic Conflict Agent</h2>
+			<ol>
+				<li><strong>Deterministic resolution</strong> when the system has a safe mechanical answer.</li>
+				<li><strong>Original implementer repair</strong> when the finding is concrete and bounded.</li>
+				<li><strong>Specialist/reviewer</strong> when another role can provide independent correction.</li>
+				<li><strong>Human escalation</strong> only when the remaining decision genuinely needs direction.</li>
+			</ol>
+			<p>Autonomous loops are bounded. A system that can call reviewers forever is not durable orchestration; it is an unbounded retry machine.</p>
+			
+			<div class="callout warn"><span class="t">Precise language</span>“Git reports a conflict” and “Switchyard detects incompatible semantics” are separate claims with separate gates. Keeping the terminology precise makes both features more credible.</div>
 		</main>
 
 		<footer class="site-footer">
