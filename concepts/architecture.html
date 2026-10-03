@@ -29,7 +29,7 @@
 				<span class="brand"><img src="../assets/images/favicon.webp" alt="" width="24" height="24"><span>Switchyard</span></span>
 				<button class="hamburger" id="menu-close" type="button" aria-label="Close menu">×</button>
 			</div>
-			<div class="fs-groups">
+			<div class="fs-scroll"><div class="fs-groups">
 				<details class="fs-group" open><summary>Product</summary><div class="fs-links">
 					<a href="../">Overview</a><a href="../product/overview.html">How it works</a><a href="../product/human-ai.html">Human + AI collaboration</a><a href="../product/demo.html">Demo</a>
 				</div></details>
@@ -41,7 +41,7 @@
 				</div></details>
 				<details class="fs-group"><summary>Project</summary><div class="fs-links"><a href="https://github.com/switchyard-labs/switchyard" rel="noopener">GitHub</a><a href="https://gantry.cv" rel="noopener">Gantry</a><a href="https://github.com/switchyard-labs/switchyard-labs.github.io" rel="noopener">Website source</a></div></details>
 			</div>
-			<div class="fs-foot">Switchyard — agent-native Git collaboration.</div>
+			<div class="fs-foot">Switchyard — agent-native Git collaboration.</div></div>
 		</nav>
 
 		<aside class="docs-drawer" id="docs-drawer" hidden aria-label="Documentation navigation">
@@ -91,6 +91,7 @@
 			<p>A direct <code>git push</code> changes Artifacts first. Switchyard learns about that movement through the Cloudflare event fast path and its reconciliation safety net. Both feed the same idempotent ingest, so external Git activity becomes visible coordination state without turning Switchyard into the repository authority.</p>
 			
 			<div class="callout warn"><span class="t">Event delivery vs repository authority</span>Even if event delivery is delayed, Artifacts is still the Git truth. Reconciliation reads the actual refs back from the remote and converges Switchyard's coordination state.</div>
+			<h2>The active runtime</h2><table><tr><th>Layer</th><th>Responsibility</th></tr><tr><td>Nift</td><td>Builds presentation from source and templates.</td></tr><tr><td>Go</td><td>Control plane, Git boundaries and runner adapters.</td></tr><tr><td>Trestle</td><td>Durable coordination, revisions and workflow effects.</td></tr><tr><td>Artifacts</td><td>Authoritative Git objects and refs.</td></tr><tr><td>Workers / Workflows / CI Sandbox</td><td>Native Git events, approved JavaScript CI and R2 captures.</td></tr><tr><td>Cloudflare Queue</td><td>Optional event transport to the control plane.</td></tr></table><p>Strut appears in historical checkpoints; it is not required by the active deterministic runtime. Workers Builds preview/deployment is a separate conditional provider integration.</p>
 		</main>
 
 		<footer class="site-footer">

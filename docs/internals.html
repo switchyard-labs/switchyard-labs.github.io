@@ -29,7 +29,7 @@
 				<span class="brand"><img src="../assets/images/favicon.webp" alt="" width="24" height="24"><span>Switchyard</span></span>
 				<button class="hamburger" id="menu-close" type="button" aria-label="Close menu">×</button>
 			</div>
-			<div class="fs-groups">
+			<div class="fs-scroll"><div class="fs-groups">
 				<details class="fs-group" open><summary>Product</summary><div class="fs-links">
 					<a href="../">Overview</a><a href="../product/overview.html">How it works</a><a href="../product/human-ai.html">Human + AI collaboration</a><a href="../product/demo.html">Demo</a>
 				</div></details>
@@ -41,7 +41,7 @@
 				</div></details>
 				<details class="fs-group"><summary>Project</summary><div class="fs-links"><a href="https://github.com/switchyard-labs/switchyard" rel="noopener">GitHub</a><a href="https://gantry.cv" rel="noopener">Gantry</a><a href="https://github.com/switchyard-labs/switchyard-labs.github.io" rel="noopener">Website source</a></div></details>
 			</div>
-			<div class="fs-foot">Switchyard — agent-native Git collaboration.</div>
+			<div class="fs-foot">Switchyard — agent-native Git collaboration.</div></div>
 		</nav>
 
 		<aside class="docs-drawer" id="docs-drawer" hidden aria-label="Documentation navigation">
@@ -106,6 +106,11 @@ run script from top
 			<p>Preview, conflict analysis, semantic validation and integration need actual Git trees. The first implementation uses scratch clones because the correctness model is extremely clear: each operation gets isolated repository state. The measured performance cost is real and documented; a cached bare mirror/worktree design is the intended optimization once it passes equivalent isolation and credential-safety gates.</p>
 			
 			<div class="callout"><span class="t">Internals principle</span>Where possible, Switchyard composes existing strong primitives — Git non-force pushes, Trestle CAS/idempotency, durable records — rather than inventing a second source-control or transaction model.</div>
+			
+			<h2>Historical workflows verification</h2>
+			<p>During CP7 the control plane was killed during a running durable workflow and restarted. The already-completed Agent step replayed its recorded result instead of creating another repository effect; the in-flight sleep retried; later Agent/check steps executed once. Earlier false-positive crash tests were rejected before this final gate, which is useful evidence that the final claim is real rather than ceremonial.</p>
+			<h2>Historical integration-queue verification</h2>
+			<p>The CP9 gate exercised same-file contention. The first PR integrated. The second became blocked during preview, its Attempt was routed to conflict state, the conflict-resolver repaired the Attempt branch, and the item was explicitly re-queued. Only after the repaired branch previewed cleanly did it become canonical.</p>
 		</main>
 
 		<footer class="site-footer">

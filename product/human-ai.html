@@ -29,7 +29,7 @@
 				<span class="brand"><img src="../assets/images/favicon.webp" alt="" width="24" height="24"><span>Switchyard</span></span>
 				<button class="hamburger" id="menu-close" type="button" aria-label="Close menu">×</button>
 			</div>
-			<div class="fs-groups">
+			<div class="fs-scroll"><div class="fs-groups">
 				<details class="fs-group" open><summary>Product</summary><div class="fs-links">
 					<a href="../">Overview</a><a href="./overview.html">How it works</a><a href="./human-ai.html">Human + AI collaboration</a><a href="./demo.html">Demo</a>
 				</div></details>
@@ -41,7 +41,7 @@
 				</div></details>
 				<details class="fs-group"><summary>Project</summary><div class="fs-links"><a href="https://github.com/switchyard-labs/switchyard" rel="noopener">GitHub</a><a href="https://gantry.cv" rel="noopener">Gantry</a><a href="https://github.com/switchyard-labs/switchyard-labs.github.io" rel="noopener">Website source</a></div></details>
 			</div>
-			<div class="fs-foot">Switchyard — agent-native Git collaboration.</div>
+			<div class="fs-foot">Switchyard — agent-native Git collaboration.</div></div>
 		</nav>
 
 		<aside class="docs-drawer" id="docs-drawer" hidden aria-label="Documentation navigation">
@@ -94,6 +94,7 @@
 			<p>Many “AI editor” designs blur suggestion, workspace mutation and source-control commit into one action. Switchyard keeps those boundaries explicit. A draft is recoverable working state; a commit is Git history; an Attempt is isolated autonomous work; an integration is a policy/freshness decision. That makes concurrent humans and Agents easier to reason about because each layer has a clear authority model.</p>
 			
 			<div class="callout"><span class="t">Invariant</span>Neither interactive assistance nor autonomous Attempts are allowed to become last-writer-wins. Drafts use revision CAS; Git writes use expected state/non-force push semantics.</div>
+			<p class="callout">The default deterministic adapter validates coordination. Meaningful external Agent execution requires a separately configured provider/CLI; an Agent button alone does not establish model-backed execution.</p>
 		</main>
 
 		<footer class="site-footer">

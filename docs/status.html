@@ -29,7 +29,7 @@
 				<span class="brand"><img src="../assets/images/favicon.webp" alt="" width="24" height="24"><span>Switchyard</span></span>
 				<button class="hamburger" id="menu-close" type="button" aria-label="Close menu">×</button>
 			</div>
-			<div class="fs-groups">
+			<div class="fs-scroll"><div class="fs-groups">
 				<details class="fs-group" open><summary>Product</summary><div class="fs-links">
 					<a href="../">Overview</a><a href="../product/overview.html">How it works</a><a href="../product/human-ai.html">Human + AI collaboration</a><a href="../product/demo.html">Demo</a>
 				</div></details>
@@ -41,7 +41,7 @@
 				</div></details>
 				<details class="fs-group"><summary>Project</summary><div class="fs-links"><a href="https://github.com/switchyard-labs/switchyard" rel="noopener">GitHub</a><a href="https://gantry.cv" rel="noopener">Gantry</a><a href="https://github.com/switchyard-labs/switchyard-labs.github.io" rel="noopener">Website source</a></div></details>
 			</div>
-			<div class="fs-foot">Switchyard — agent-native Git collaboration.</div>
+			<div class="fs-foot">Switchyard — agent-native Git collaboration.</div></div>
 		</nav>
 
 		<aside class="docs-drawer" id="docs-drawer" hidden aria-label="Documentation navigation">
@@ -51,47 +51,7 @@
 		</aside>
 
 		<main class="site-main" id="main-content">
-			<section class="hero">
-				<div class="kicker">Docs · Status</div>
-				<h1>What is proven, what is conditional, what is next.</h1>
-				<p class="lede">Switchyard has moved well beyond the original CP13 prototype: the Git-host product layer, profiles/organisations, Warden-style editor workbench, Pull Requests, settings and read-only demo model now exist. This page distinguishes implemented capability from the remaining live/release certification work.</p>
-			</section>
-			
-			<h2>Implemented product surface</h2>
-			<table>
-				<tr><th>Area</th><th>Status</th><th>Evidence/meaning</th></tr>
-				<tr><td>Git hosting UX</td><td>Implemented</td><td>owner/repo identity, Code clone menu, source viewer, README, branches/tags, commit history/compare, PRs and repo settings.</td></tr>
-				<tr><td>Human task model</td><td>Implemented</td><td>Work is a human-first issue/task model with body, assignee, status and comments; Attempts are optional.</td></tr>
-				<tr><td>Editor</td><td>Implemented</td><td>Warden-inspired Files/Search/Source workbench, tabs, syntax highlighting, draft CAS, diff/findings and interactive Agent-to-draft proposals.</td></tr>
-				<tr><td>Identity</td><td>Implemented</td><td>User/org profiles, large avatars, profile READMEs, pinned repos, invitations, teams and settings surfaces.</td></tr>
-				<tr><td>Agent-native coordination</td><td>Implemented</td><td>Attempts, durable workflows, structured findings, Integration Queue, semantic contracts, Needs Attention and provenance.</td></tr>
-				<tr><td>Public demo model</td><td>Implemented contract</td><td>Anonymous browsing is restricted to public canonical repos/identities; mutation remains authenticated.</td></tr>
-			</table>
-			
-			<h2>Core engineering gates already proven</h2>
-			<div class="grid">
-				<div class="card"><div class="tag">PASS</div><h3>Deterministic loop</h3><p class="muted">Work → Attempt → execution → PR → review → preview → Integration Queue → canonical, including Switchyard-on-Switchyard dogfood.</p></div>
-				<div class="card"><div class="tag">PASS</div><h3>Durable workflows</h3><p class="muted">True process-death replay: completed steps replay recorded results and external effects are not duplicated.</p></div>
-				<div class="card"><div class="tag">PASS</div><h3>Editor concurrency</h3><p class="muted">Draft revision CAS, Agent-vs-human stale protection and external branch movement detection.</p></div>
-				<div class="card"><div class="tag">PASS</div><h3>Conflict honesty</h3><p class="muted">Textual merge conflicts and deterministic repair plus semantic conflicts where Git merges cleanly but a repository contract fails.</p></div>
-			</div>
-			
-			<h2>Still conditional</h2>
-			<div class="callout warn"><span class="t">Real provider-backed coding Agent</span>The runner abstraction and coding-agent adapter path exist, but the original campaign did not execute a real provider-backed coding Agent on the control-plane host. The deterministic adapter certified the substrate. Closing this condition requires a suitable CLI/provider credential and one meaningful end-to-end Agent task.</div>
-			<div class="callout warn"><span class="t">Cloudflare pushed-event source leg</span>The Queue→Switchyard→Trestle→SSE fast path is implemented and tested, and CP0 previously proved Artifacts event delivery. During later certification the upstream Artifacts event-subscription→Queue delivery stopped flowing account-wide, so reconciliation remains the correctness safety net until that source leg is re-certified.</div>
-			
-			<h2>Release/hardening work</h2>
-			<table>
-				<tr><th>Area</th><th>Remaining work</th></tr>
-				<tr><td>Live PX certification</td><td>Run the full Go 1.26 + live Trestle/Artifacts + fresh Chromium/Firefox matrix against the integrated PX0–PX25 product.</td></tr>
-				<tr><td>Security</td><td>Full authorization matrix, CSRF/session review, prompt/tool boundaries, path traversal, capability escalation and credential leak scan.</td></tr>
-				<tr><td>Git hardening</td><td>Protected-ref enforcement breadth, tag/delete/force movement edge cases, queue crash immediately around canonical merge.</td></tr>
-				<tr><td>Performance</td><td>Benchmark cached bare mirror/worktrees against the measured scratch-clone baseline.</td></tr>
-				<tr><td>Operations</td><td>Schema migration strategy, service lifecycle, backup/restore automation, structured metrics/logging and disaster recovery.</td></tr>
-				<tr><td>Public staging</td><td>Deploy behind a reverse proxy/TLS and certify anonymous demo boundaries against direct API calls.</td></tr>
-			</table>
-			
-			<div class="callout"><span class="t">Status principle</span>Implemented does not mean release-certified. The product surface is broad; CP14 remains the deliberate hardening/certification phase.</div>
+			<section class="hero"><div class="kicker">Validation · 3 October 2026</div><h1>Working capability, evidence and limits.</h1><p class="lede">The current campaign is local and has not replaced the shared production deployment.</p></section><h2>Verified in the current campaign</h2><ul><li>Real Artifacts Git writes, exact-SHA publication and draft preservation on stale writes.</li><li>Native Cloudflare push CI, signed snapshots, captured logs, selective rerun and cancellation.</li><li>Sandbox validation excluding privileged Cloudflare/R2 credentials from commands and Git configuration.</li><li>Repository browsing, Work, identities, settings and a Gantry-backed Warden-style editor without an interactive terminal.</li><li>Human/Agent draft revision protection and durable workflow approval/replay.</li></ul><h2>Conditional capabilities</h2><p>Intelligent external Agent execution needs a configured CLI/provider and meaningful live validation. Standard Workers Builds preview/deployment remains uncertified without a verified connection/token. Responsive, performance, restore and final dogfood gates are tracked in the source campaign ledger.</p><h2>Historical evidence</h2><p>CP0–CP13/PX demonstrations apply to their recorded revisions. Native Artifacts-to-Worker events were verified again in the current disposable CI probe; reconciliation remains the control-plane safety net.</p><a href="./internals.html">Engineering boundaries →</a>
 		</main>
 
 		<footer class="site-footer">
