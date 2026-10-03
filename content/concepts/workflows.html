@@ -48,7 +48,7 @@ process restarts
 <p>Switchyard deliberately does not attempt to serialize arbitrary JS closures or VM stack frames. Durability is explicit at Switchyard operations, which keeps the execution model inspectable and testable.</p>
 
 <h2>What the crash gate proved</h2>
-<p>During CP7 the control plane was killed during a running durable workflow and restarted. The already-completed Agent step replayed its recorded result instead of creating another repository effect; the in-flight sleep retried; later Agent/check steps executed once. Earlier false-positive crash tests were rejected before this final gate, which is useful evidence that the final claim is real rather than ceremonial.</p>
+<p>For historical verification details, see <a href="@path('public/docs/internals.html')">Internals</a>.</p>
 
 <h2>Governance and bounds</h2>
 <ul>

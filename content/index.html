@@ -13,21 +13,12 @@
       <span><b>Deterministic</b> integration</span>
     </div>
   </div>
-  <aside class="switchboard" aria-label="Concurrent work converging on canonical Git">
-    <div class="switchboard-head"><span>LIVE MODEL</span><span class="signal-dot"></span></div>
-    <div class="switchboard-work"><span class="node-label">work</span><strong>Improve repository search</strong></div>
-    <div class="track track-a"><span class="track-name">attempt / a</span><b>agent</b><span>implementation</span></div>
-    <div class="track track-b"><span class="track-name">attempt / b</span><b>human</b><span>alternative</span></div>
-    <div class="track track-c"><span class="track-name">attempt / c</span><b>agent</b><span>benchmark</span></div>
-    <div class="junction"><span>review</span><span>checks</span><span>preview</span></div>
-    <div class="queue-block"><small>INTEGRATION QUEUE</small><strong>fresh · clean · policy passed</strong></div>
-    <div class="canonical"><small>CANONICAL</small><strong>main</strong></div>
-  </aside>
+  <figure class="product-shot hero-product"><img src="@path('public/assets/images/screenshots/repo.jpg')" alt="Real Switchyard repository with branch controls, file history and rendered README"><figcaption>Ordinary Git, with coordination when you need it.</figcaption></figure>
 </section>
 
 <section class="statement-section">
   <div class="section-kicker">Git stays Git</div>
-  <h2>Not an AI sandbox. Not a second source of truth.</h2>
+  <h2>Your repository stays yours. Every change stays reviewable.</h2>
   <p class="section-lede">Branches, commits, refs, diffs, pull requests and ordinary Git clients stay exactly where developers expect them. Switchyard adds coordination around Git instead of replacing it.</p>
   <div class="principle-list">
     <article><span>01</span><div><h3>Every actor gets isolated state.</h3><p>Humans and agents can work concurrently without sharing a writable branch or racing to be the last writer.</p></div></article>
@@ -55,7 +46,7 @@
   </div>
   <figure class="product-shot featured-shot">
     <div class="shot-bar"><i></i><i></i><i></i><span>switchyard / repository</span></div>
-    <img src="@path('public/assets/images/screenshots/repo.png')" alt="Switchyard repository interface">
+    <img src="@path('public/assets/images/screenshots/repo.jpg')" alt="Switchyard repository interface">
   </figure>
 </section>
 
@@ -79,15 +70,10 @@
     <p>Author engineering workflows in JavaScript. Switchyard persists the durable boundaries, so a control-plane restart does not duplicate completed external effects.</p>
     <ul class="plain-points"><li>parallel agents</li><li>review and repair loops</li><li>checks and approvals</li><li>bounded retries and cancellation</li></ul>
   </div>
-  <pre class="workflow-code"><code>async function run(ctx) {
-  const change = await ctx.agent("implementer", task);
-  const review = await ctx.review(change);
-
-  if (!review.approved)
-    await ctx.agent("implementer", review.findings);
-
-  await ctx.check();
-  await ctx.integrate();
+  <pre class="workflow-code"><code>function run(ctx) {
+  ctx.note({ text: "Review evidence prepared" });
+  ctx.wait_approval({ reason: "Confirm the next step" });
+  return { approved: true };
 }</code></pre>
 </section>
 

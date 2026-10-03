@@ -41,7 +41,7 @@
 </table>
 
 <h2>Textual conflict repair</h2>
-<p>The CP9 gate exercised same-file contention. The first PR integrated. The second became blocked during preview, its Attempt was routed to conflict state, the conflict-resolver repaired the Attempt branch, and the item was explicitly re-queued. Only after the repaired branch previewed cleanly did it become canonical.</p>
+<p>For historical verification details, see <a href="@path('public/docs/internals.html')">Internals</a>.</p>
 
 <h2>Semantic conflict blocking</h2>
 <p>The queue also validates deterministic repository contracts against the preview-merged tree. This catches the more subtle case where Git itself reports a clean merge but the combined repository violates an invariant. A semantic conflict becomes a structured finding and blocks integration exactly like any other unresolved correctness problem.</p>

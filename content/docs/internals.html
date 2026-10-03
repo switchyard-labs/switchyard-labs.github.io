@@ -53,3 +53,8 @@ run script from top
 <p>Preview, conflict analysis, semantic validation and integration need actual Git trees. The first implementation uses scratch clones because the correctness model is extremely clear: each operation gets isolated repository state. The measured performance cost is real and documented; a cached bare mirror/worktree design is the intended optimization once it passes equivalent isolation and credential-safety gates.</p>
 
 <div class="callout"><span class="t">Internals principle</span>Where possible, Switchyard composes existing strong primitives — Git non-force pushes, Trestle CAS/idempotency, durable records — rather than inventing a second source-control or transaction model.</div>
+
+<h2>Historical workflows verification</h2>
+<p>During CP7 the control plane was killed during a running durable workflow and restarted. The already-completed Agent step replayed its recorded result instead of creating another repository effect; the in-flight sleep retried; later Agent/check steps executed once. Earlier false-positive crash tests were rejected before this final gate, which is useful evidence that the final claim is real rather than ceremonial.</p>
+<h2>Historical integration-queue verification</h2>
+<p>The CP9 gate exercised same-file contention. The first PR integrated. The second became blocked during preview, its Attempt was routed to conflict state, the conflict-resolver repaired the Attempt branch, and the item was explicitly re-queued. Only after the repaired branch previewed cleanly did it become canonical.</p>

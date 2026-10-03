@@ -63,4 +63,5 @@ Switchyard (127.0.0.1:8080)
 </code></pre>
 <p>Keep Trestle and the raw Switchyard listen socket private. Public exposure should terminate TLS at the reverse proxy and forward only the application/control-plane HTTP surface.</p>
 
-<div class="callout warn"><span class="t">Secrets</span>Do not commit environment files, account tokens, Trestle passwords or provider credentials to a repository. Repository configuration should reference roles/profiles; secrets resolve from the user/organisation credential store at execution time.</div>
+<div class="callout warn"><span class="t">Secrets</span>Do not commit environment files, account tokens, Trestle passwords or provider credentials to a repository. Generic CI receives no account, R2 or provider credentials. External coding-agent credentials require scoped executor configuration.</div>
+<h2>Cloudflare Actions</h2><p>Configure <code>SWITCHYARD_ACTIONS_WORKER</code> and <code>SWITCHYARD_ACTIONS_CONTROL_KEY_FILE</code> for the signed provider. Keep the key private and provision Cloudflare/R2 credentials as encrypted Worker secrets. Native push events trigger only administrator-approved definitions.</p>
