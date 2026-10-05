@@ -22,7 +22,7 @@
   <p class="section-lede">Branches, commits, refs, diffs, pull requests and ordinary Git clients stay exactly where developers expect them. Switchyard adds coordination around Git instead of replacing it.</p>
   <div class="principle-list">
     <article><span>01</span><div><h3>Every actor gets isolated state.</h3><p>Humans and agents can work concurrently without sharing a writable branch or racing to be the last writer.</p></div></article>
-    <article><span>02</span><div><h3>Canonical is earned, never grabbed.</h3><p>Checks, reviews, semantic validation and repository policy all run before the Integration Queue moves the canonical ref.</p></div></article>
+    <article><span>02</span><div><h3>Canonical is earned, never grabbed.</h3><p>Configured exact-source checks, JSON contract validation and repository policy gate the immutable source before the Integration Queue moves the canonical ref. Reviews record source-bound evidence; enqueue records the principal’s source decision.</p></div></article>
     <article><span>03</span><div><h3>Failures become evidence, not lost work.</h3><p>Attempts, findings, workflow runs and rejected integrations remain durable and attributable instead of disappearing into an agent transcript.</p></div></article>
   </div>
 </section>

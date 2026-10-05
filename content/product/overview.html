@@ -61,3 +61,5 @@ clone / fetch / push              findings / queue / policy / audit
 </code></pre>
 
 <div class="callout"><span class="t">Mental model</span><strong>Git stays Git.</strong> Switchyard is the collaboration/orchestration layer around real Git, not a replacement source-control database.</div>
+
+<h2>Publication authority</h2><p>Application Agent writes are confined to permitted Attempt/candidate branches; direct canonical and protected-ref publication is denied. The Integration Queue has a separate exact-source, currently authorized publication boundary. Human direct Git remains supported where policy allows it. Independently-issued external Git credentials are outside this application authority boundary.</p>
