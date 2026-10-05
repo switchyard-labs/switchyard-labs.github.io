@@ -94,7 +94,7 @@
 			<p>Many “AI editor” designs blur suggestion, workspace mutation and source-control commit into one action. Switchyard keeps those boundaries explicit. A draft is recoverable working state; a commit is Git history; an Attempt is isolated autonomous work; an integration is a policy/freshness decision. That makes concurrent humans and Agents easier to reason about because each layer has a clear authority model.</p>
 			
 			<div class="callout"><span class="t">Invariant</span>Neither interactive assistance nor autonomous Attempts are allowed to become last-writer-wins. Drafts use revision CAS; Git writes use expected state/non-force push semantics.</div>
-			<p class="callout">Configure provider, model and a private credential profile independently for implementation, review and conflict resolution. Per-task overrides leave saved defaults intact. Real model-backed executions have been verified; the deterministic adapter remains useful for repeatable coordination tests.</p>
+			<p class="callout">Configure provider, model and a private credential profile independently for implementation, review and conflict resolution. Per-task overrides leave saved defaults intact. Real model-backed executions have been verified on isolated local workers; this does not establish production throughput or distributed-worker scaling. The deterministic adapter remains useful for repeatable coordination tests.</p>
 		</main>
 
 		<footer class="site-footer">
