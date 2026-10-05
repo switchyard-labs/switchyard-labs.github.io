@@ -97,7 +97,7 @@
 			<p>For historical verification details, see <a href="../docs/internals.html">Internals</a>.</p>
 			
 			<h2>Semantic conflict blocking</h2>
-			<p>The queue also validates deterministic repository contracts against the preview-merged tree. This catches the more subtle case where Git itself reports a clean merge but the combined repository violates an invariant. A semantic conflict becomes a structured finding and blocks integration exactly like any other unresolved correctness problem.</p>
+			<p>The queue validates the currently supported deterministic JSON <code>field_equals</code> repository contracts against the preview-merged tree. This catches the more subtle case where Git itself reports a clean merge but the combined repository violates an invariant. A semantic conflict becomes a structured finding and blocks integration exactly like any other unresolved correctness problem.</p>
 			
 			<h2>Observed performance</h2>
 			<table>

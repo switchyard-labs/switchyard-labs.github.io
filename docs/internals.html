@@ -71,7 +71,7 @@
                                                        ├─► one normalized ref transition
 periodic git reconciliation ───────────────────────────┘
 </code></pre>
-			<p>Trestle's idempotency behavior also matters here: the same Idempotency-Key with byte-identical content replays, while the same key with different content returns <code>409 idempotency_conflict</code>. Switchyard treats the latter as convergence when the underlying Git fact is already durably represented rather than retrying forever.</p>
+			<p>Trestle's idempotency behavior also matters here: the same Idempotency-Key with byte-identical content replays, while the same key with different content returns <code>409 idempotency_conflict</code>. Switchyard persists the first immutable event envelope and retries its exact bytes. Conflicting bodies are surfaced; a 409 alone is not proof of successful convergence. Publication recovery additionally verifies a matching persisted fact before acknowledging a duplicate receipt.</p>
 			
 			<h2>Git/ref mutation safety</h2>
 			<p>Canonical/ref movement uses ordinary Git as the final stale-write authority. Switchyard reads the expected SHA, creates the desired commit/merge, then performs a normal <strong>non-force</strong> push. If another actor moved the ref first, Git rejects the stale update. Force-push is therefore a policy-sensitive escape hatch rather than part of the normal integration substrate.</p>
@@ -110,6 +110,7 @@ run script from top
 			<p>During CP7 the control plane was killed during a running durable workflow and restarted. The already-completed Agent step replayed its recorded result instead of creating another repository effect; the in-flight sleep retried; later Agent/check steps executed once. Earlier false-positive crash tests were rejected before this final gate, which is useful evidence that the final claim is real rather than ceremonial.</p>
 			<h2>Historical integration-queue verification</h2>
 			<p>The CP9 gate exercised same-file contention. The first PR integrated. The second became blocked during preview, its Attempt was routed to conflict state, the conflict-resolver repaired the Attempt branch, and the item was explicitly re-queued. Only after the repaired branch previewed cleanly did it become canonical.</p>
+			<h2>Recovery boundaries</h2><p>Publication intent precedes the Git effect; stable provenance is acknowledged before operation completion. Remote observation reconciles ambiguous outcomes without another push. Candidate replay and descendant inspection require retained local scratch on the same worker; missing scratch leads to bounded failure and operator recovery rather than invented attribution. Periodic ref polling observes current state and deletions, but cannot reconstruct every intermediate push. Identical transition tuples share a deduplicated event receipt.</p><p>Pages projects share their owner origin. Switchyard protects its own production authentication with a host-only <code>__Host-</code> cookie. Arbitrary sibling content cannot be universally prevented from setting parent-domain cookies at the DNS suffix level.</p><p>The raw <code>sy api</code> command reports HTTP 401 as exit status 1. This is the current behavior, not a uniform authentication-specific exit-code guarantee.</p>
 		</main>
 
 		<footer class="site-footer">
