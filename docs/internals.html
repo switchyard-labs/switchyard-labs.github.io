@@ -101,7 +101,6 @@ run script from top
 				<tr><td>Repository authority</td><td>Granted by Switchyard access/policy and short-lived Git credentials, never by “having an API key.”</td></tr>
 				<tr><td>Fallback encryption key</td><td>May live under the local data directory; protects against database-only compromise, not full-host compromise.</td></tr>
 			</table>
-			
 			<h2>Why scratch Git exists</h2>
 			<p>Preview, conflict analysis, semantic validation and integration need actual Git trees. The first implementation uses scratch clones because the correctness model is extremely clear: each operation gets isolated repository state. The measured performance cost is real and documented; a cached bare mirror/worktree design is the intended optimization once it passes equivalent isolation and credential-safety gates.</p>
 			
