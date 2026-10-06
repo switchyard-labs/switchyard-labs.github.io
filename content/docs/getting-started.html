@@ -46,3 +46,9 @@ git push -u origin docs/update-readme</code></pre>
 <p>You do not need the browser editor to work on a Switchyard repository. Clone it, create branches, commit, fetch and push with your normal Git tooling. Switchyard's browser surfaces and agent workflows operate on the same underlying repository.</p>
 
 <div class="callout"><span class="t">Architecture in one line</span><strong>Git</strong> talks to <strong>Cloudflare Artifacts</strong>; <strong>Switchyard</strong> coordinates the collaboration; <strong>Trestle</strong> persists that coordination.</div>
+
+<h2>Use the terminal collaboration client</h2>
+<p>After ordinary Git clone/fetch/push, use <a href="@path('docs/cli')">sy</a> for Switchyard operations. Build it from source as described in the CLI guide, then authenticate to your host. These examples inspect repository and PR state; they do not mutate production.</p>
+<pre><code class="language-shell">sy auth login --host https://switchyard.cx
+sy repo view alice/demo-semantic --json
+sy pr list --repo alice/demo-semantic --json</code></pre>

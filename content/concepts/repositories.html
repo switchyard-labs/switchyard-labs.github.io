@@ -48,3 +48,8 @@ git fetch origin</code></pre>
       Git rejects the push as stale
       Switchyard reconciles or re-queues</code></pre>
 <p>Switchyard therefore does not pretend Trestle owns repository refs. Git and Artifacts remain authoritative for repository state.</p>
+
+<h2>Git transport, CLI coordination</h2>
+<p>Keep using git clone/fetch/push for repository objects, refs and commits. Use <a href="@path('docs/cli')">sy</a> for Work, Attempts, Proposals, queue state, Actions, Pages and releases. The clone wrapper still invokes ordinary Git; no proprietary Git command is required.</p>
+<pre><code class="language-shell">sy repo view alice/demo-semantic --json
+sy repo archive owner/repo --ref main --format zip --output source.zip</code></pre>

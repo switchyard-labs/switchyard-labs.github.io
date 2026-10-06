@@ -55,3 +55,8 @@
 <p class="muted">The next optimization target is a cached bare mirror plus isolated worktrees, not removing serialization from the final canonical decision.</p>
 
 <div class="callout"><span class="t">Invariant</span>The queue may become faster, but it should never become last-writer-wins. Every item integrates against the canonical state that actually exists when it reaches the head.</div>
+
+<h2>Observe the queue with sy</h2>
+<p>Use the <a href="@path('docs/cli')">CLI</a> to inspect blocked reasons. Explicit requeue never bypasses identity, checks or policy, and cannot repair every legacy/unpinned item.</p>
+<pre><code class="language-shell">sy queue list --status blocked --json
+sy queue view QUEUE_ID --json</code></pre>

@@ -66,6 +66,11 @@
       "template": "templates/template.html"
     },
     {
+      "name": "docs/cli",
+      "title": "sy CLI",
+      "template": "templates/template.html"
+    },
+    {
       "name": "docs/configuration",
       "title": "configuration",
       "template": "templates/template.html"

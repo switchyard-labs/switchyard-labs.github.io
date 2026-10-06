@@ -61,3 +61,8 @@ other PR: timeout = 30
 <div class="callout warn"><span class="t">Precise language</span>“Git reports a conflict” and “Switchyard detects incompatible semantics” are separate claims with separate gates. Keeping the terminology precise makes both features more credible.</div>
 
 <p>The implemented deterministic semantic mechanism currently supports JSON <code>field_equals</code> rules, with bounded inputs. It does not provide general semantic understanding, arbitrary structural reasoning or test-based semantic conflict detection.</p>
+
+<h2>Inspect review evidence with sy</h2>
+<p>Read source-bound checks and findings through the <a href="@path('docs/cli')">CLI</a>; invoking reviews or conflict resolution uses browser/API workflows, not a nonexistent sy review command.</p>
+<pre><code class="language-shell">sy pr checks PR_ID --json
+sy pr findings PR_ID --json</code></pre>

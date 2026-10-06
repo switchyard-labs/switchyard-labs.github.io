@@ -42,3 +42,7 @@
 
 <div class="callout"><span class="t">Invariant</span>Neither interactive assistance nor autonomous Attempts are allowed to become last-writer-wins. Drafts use revision CAS; Git writes use expected state/non-force push semantics.</div>
 <p class="callout">Configure provider, model and a private credential profile independently for implementation, review and conflict resolution. Per-task overrides leave saved defaults intact. Real model-backed executions have been verified on isolated local workers; this does not establish production throughput or distributed-worker scaling. The deterministic adapter remains useful for repeatable coordination tests.</p>
+<h2>A shared terminal interface</h2>
+<p>Humans can use Git, the browser and <a href="@path('docs/cli')">sy</a>. Automation and Agents can consume typed CLI results with --json where supported, or call the API directly. Agents are not required to use sy; their repository permissions and execution roles still apply.</p>
+<pre><code class="language-shell">sy agent roles --json
+sy attention --json</code></pre>

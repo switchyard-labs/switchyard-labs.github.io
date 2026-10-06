@@ -1,0 +1,99 @@
+<section class="hero"><div class="kicker">Docs · sy CLI</div><h1>Git for Git. sy for Switchyard.</h1><p class="lede">The first-party command-line client for terminal collaboration and automation: Work, Attempts, Proposals, review evidence, Actions, Pages, releases and queue state.</p></section>
+<p>Use ordinary <code>git</code> for source control. <code>sy</code> talks to the Switchyard HTTP API for collaboration and control-plane operations; it does not replace Git or grant additional repository authority.</p>
+<table><tr><th>Interface</th><th>Best for</th></tr><tr><td>Git</td><td>Clone, fetch, push, commits and history.</td></tr><tr><td>Browser UI</td><td>Interactive editing, collaboration and review.</td></tr><tr><td>sy CLI</td><td>Terminal workflows and machine-readable typed operations.</td></tr><tr><td>HTTP API</td><td>Direct integrations and custom clients.</td></tr></table>
+<nav aria-label="CLI guide sections"><p><a href="#install">Install</a> · <a href="#authentication">Authentication</a> · <a href="#inventory">Commands</a> · <a href="#automation">JSON and errors</a></p></nav>
+<div id="install"></div><h2>Build from source</h2>
+<p>Install Git and the Go toolchain declared in <a href="https://github.com/switchyard-labs/sy/blob/main/go.mod">sy/go.mod</a> (currently Go 1.26.0). Build the repository; no package-manager installation is advertised. Put the resulting executable on your PATH if you want to invoke it outside this directory.</p>
+<pre><code class="language-shell">git clone https://github.com/switchyard-labs/sy.git
+cd sy
+go build -o sy ./cmd/sy
+./sy version
+./sy --help</code></pre>
+<div id="authentication"></div><h2>Authenticate and choose a host</h2>
+<p>Use an explicit HTTPS URL for production. Login prompts for username and a password without terminal echo. Register through the browser first: there is no CLI signup command. Sessions are stored per host; logging in again replaces that host’s account. There is one saved account per host, not named multi-account profiles.</p>
+<pre><code class="language-shell">sy auth login --host https://switchyard.cx
+sy auth status --json
+sy config list --json
+sy auth switch https://switchyard.cx
+sy auth logout</code></pre>
+<p>For automation, <code>--password-stdin</code> reads username then password on separate lines. Supply those from your secret manager; do not put a password in command arguments or shell history. Local HTTP development is supported, but use it only in a trusted local environment. <code>--host URL</code> selects an already-configured host for one invocation. Logout removes its local profile and attempts server logout; server logout is best-effort if the host is unavailable.</p><p>Config is <code>$XDG_CONFIG_HOME/switchyard/config.json</code>, or <code>~/.config/switchyard/config.json</code>; <code>SY_CONFIG_DIR</code> overrides the whole directory. New directories use 0700 and config files 0600. Tokens are stored locally, not encrypted, and normal config inspection does not print them. Protect this file. Existing token-only configs remain readable; log in again if the server has expired or revoked your session.</p><h2>Repository workflow</h2>
+<p>Copy the Git remote from the repository’s Code menu and use ordinary Git credentials/transport. After configuring sy, read repository state by canonical owner/repo. These read-only examples use the public demo repository.</p>
+<pre><code class="language-shell">git clone GIT_REMOTE
+cd CHECKOUT_DIRECTORY
+sy repo view alice/demo-semantic --json
+sy pr list --repo alice/demo-semantic --json
+sy repo list --json</code></pre>
+<p><code>sy repo clone owner/repo</code> is a convenience wrapper around Git using a short-lived scoped read credential; it does not store a token in <code>.git/config</code>. <code>repo view</code>, Actions, Pages, releases and Proposals can derive repository context from a checkout. Use explicit canonical identity when names are ambiguous. Work, Attempt and queue lists do not automatically scope to your checkout. Work lists are account-wide, and the current <code>work list --repo</code> flag does not narrow results; do not use it as a scope guarantee.</p><h2>Work, Attempts, review and Agents</h2>
+<p>Work is human intent; an Attempt is an existing isolated candidate branch. Inspect IDs before running anything. Commands below create Work or run an Agent only where indicated. ATTEMPT_ID and PR_ID must be replaced with existing IDs.</p>
+<pre><code class="language-shell">sy work list --status open --json
+sy work create --title &quot;Improve documentation&quot; --kind task
+sy attempt list --work WORK_ID --json
+sy attempt view ATTEMPT_ID --json
+sy attempt run ATTEMPT_ID --json
+sy pr checks PR_ID --json
+sy pr findings PR_ID --json
+sy agent roles --json
+sy agent executions --json
+sy attention --json</code></pre>
+<p><code>attempt run</code> invokes the implementer Agent and can publish on its permitted isolated branch. Agent availability depends on the configured worker/provider. <code>agent</code> commands inspect roles/executions; they do not configure all models or start arbitrary roles. The typed CLI does not create Attempts or PRs, run reviews/resolvers, or enqueue a PR: use the browser or documented API for those operations. Permissions and integration policy apply equally to CLI requests.</p><h2>Optional Proposal workflow</h2>
+<p>Proposals can be discussed, accepted, deferred, rejected or completed without creating Work. VERSION is the current Proposal version from view; GRAPH_VERSION is the relationship graph version from links. Use a unique operation ID for linked Work, reusing it only for retries with identical input. These examples after list/view mutate state.</p>
+<pre><code class="language-shell">sy proposal list --repo owner/repo --json
+sy proposal view PROPOSAL_ID --repo owner/repo --json
+sy proposal create --repo owner/repo --title &quot;Discuss the API&quot; --body &quot;Evidence and alternatives&quot;
+sy proposal update PROPOSAL_ID --repo owner/repo --version VERSION --description &quot;Revised evidence&quot;
+sy proposal comment PROPOSAL_ID --repo owner/repo --version VERSION --body &quot;A possible approach&quot;
+sy proposal links PROPOSAL_ID --repo owner/repo --json
+sy proposal link PROPOSAL_ID WORK_ID --repo owner/repo --version GRAPH_VERSION --target-kind work --relation work
+sy proposal accept PROPOSAL_ID --repo owner/repo --version VERSION --reason &quot;Agreed&quot;
+sy proposal work PROPOSAL_ID --repo owner/repo --version VERSION --operation-id proposal-work-example-001</code></pre>
+<p><code>generate</code> asks the proposer Agent; <code>--provider</code>, <code>--model</code> and <code>--credential</code> override that request. The credential argument is an ID, never a secret. <code>--execution-id</code> recovers a completed generation instead of starting another. Check <code>sy proposal generate --help</code> for all options.</p><h2>Integration Queue and Needs Attention</h2>
+<p>Inspect queue and attention state from the terminal. Requeue is a mutation, not policy bypass. Legacy/unpinned items or changed source identities require a fresh source-bound enqueue decision; requeue must not be treated as a repair for every blocked item.</p>
+<pre><code class="language-shell">sy queue list --status blocked --json
+sy queue view QUEUE_ID --json
+sy attention view TARGET_ID --json
+sy queue requeue QUEUE_ID</code></pre>
+<h2>Durable workflows</h2>
+<p>Inspect definitions and runs. Running a workflow can invoke Agents and change repository state under its configured role/policy; it is not a read-only status check.</p>
+<pre><code class="language-shell">sy workflow list --json
+sy workflow view WORKFLOW_ID --json
+sy workflow runs --json
+sy workflow run WORKFLOW_ID --repo owner/repo --branch attempt-branch</code></pre>
+<h2>Actions: inspect, run and capture logs</h2>
+<p>List/view/logs are reads. Manual run, rerun and cancel mutate state. EXACT_SHA is a full 40-hex commit SHA; the selected ref must be allowed by the approved Action definition. A rerun uses the original exact source.</p>
+<pre><code class="language-shell">sy actions list --repo owner/repo --json
+sy actions view RUN_ID --repo owner/repo --json
+sy actions logs RUN_ID --repo owner/repo --follow
+sy actions run --repo owner/repo --sha EXACT_SHA --ref refs/heads/main
+sy actions rerun RUN_ID --repo owner/repo --failed
+sy actions cancel RUN_ID --repo owner/repo</code></pre>
+<p>Logs are bounded captured step output. Following ends at terminal completion; Ctrl-C stops the follower, not the Action. <code>logs --json</code> emits newline-delimited JSON events.</p><h2>Pages: configure, build, then promote</h2>
+<p>The actual listing command is deployments, not list. Project sites are the default; add --kind owner for an owner site with an explicit backing repository. Read VERSION from status and GENERATION from deployments before mutations. Operation IDs identify identical explicit retries.</p>
+<pre><code class="language-shell">sy pages status --repo owner/repo --json
+sy pages deployments --repo owner/repo --json
+sy pages view DEPLOYMENT_ID --repo owner/repo --json
+sy pages configure --repo owner/repo --version VERSION --ref main --directory . --build &quot;nift build&quot; --output public
+sy pages deploy --repo owner/repo --version VERSION --operation-id pages-build-example-001
+sy pages promote DEPLOYMENT_ID --repo owner/repo --generation GENERATION --operation-id pages-promote-example-001</code></pre>
+<p>Initial configuration leaves <code>--version</code> empty; updates require the current version. Private-source public output requires <code>--acknowledge-public</code>. A build does not automatically promote production. <code>rollback</code> selects a retained deployment using the same generation/operation-ID guards. Project assets and routing must respect their site base path.</p><h2>Releases and source archives</h2>
+<p>Create a draft from an existing Git tag. The release records its resolved full commit SHA; publication verifies the tag still points there and freezes assets. Upload/download use bounded transfers; downloads verify metadata size and SHA256 and never overwrite an existing path.</p>
+<pre><code class="language-shell">sy release list --repo owner/repo --json
+sy release view v0.1.0 --repo owner/repo --json
+sy release create v0.1.0 --repo owner/repo --title &quot;First preview&quot; --notes-file notes.md
+sy release upload v0.1.0 package.zip --repo owner/repo
+sy release publish v0.1.0 --repo owner/repo
+sy release download v0.1.0 package.zip --repo owner/repo --output downloaded-package.zip
+sy repo archive owner/repo --ref main --format zip --output source.zip</code></pre>
+<p>The CLI archive command first resolves the requested ref, verifies the server commit header and downloads that SHA. Generic HTTP branch/tag archive URLs resolve when requested. Submodule contents and gitattributes export rules are not supported. Release create/upload/publish are mutations; downloads and archives write local files only.</p><h2>Organisations and operator inspection</h2>
+<p>Organisation commands inspect membership-visible organisations; they do not manage teams or invitations. Status reports host, authenticated user and best-effort checkout identity, not service health or a queue dashboard. Host operators still use their normal service tools.</p>
+<pre><code class="language-shell">sy org list --json
+sy org view ORG_ID --json
+sy status --json</code></pre>
+<h2>Raw API escape hatch</h2>
+<p>Use typed commands for common operations; use api for lower-level access. It returns the server body rather than a typed CLI envelope. Method defaults to GET; --method and --body are available for mutations, subject to the same server permissions.</p>
+<pre><code class="language-shell">sy api /api/repositories --json
+sy api GET /api/repositories/alice/demo-semantic</code></pre>
+<p>The hardened PR enqueue API requires the caller-viewed <code>source_sha</code>. There is no typed enqueue command. Read the current API contract before constructing that mutation; do not assume a branch name alone identifies the checked source.</p><div id="automation"></div><h2>Machine-readable output and exit behavior</h2>
+<p>Most typed operations emit JSON with --json. List commands commonly return an items array; views return domain objects or command-specific envelopes. Inspect each shape rather than assuming all views share a schema. Logs are NDJSON. Errors go to stderr and a nonzero exit means failure.</p>
+<pre><code class="language-shell">sy repo list --json
+sy queue list --status blocked --json</code></pre>
+<p>Exceptions in the current implementation: <code>version --json</code> still prints human text; <code>config get --json</code> and <code>config set-host --json</code> emit no result; auth switch/logout still print text, and browse opens the browser without a JSON result. These are not uniform machine interfaces. Use <code>config list --json</code> and <code>auth status --json</code> for machine inspection.</p><table><tr><th>Exit</th><th>Actual behavior</th></tr><tr><td>0</td><td>Success.</td></tr><tr><td>1</td><td>Generic/remote failure, many invocation/input errors, cancellation; raw api non-2xx responses including HTTP 401.</td></tr><tr><td>3</td><td>Typed API authentication/authorization errors (401/403).</td></tr><tr><td>4</td><td>Typed API conflict/stale state (409).</td></tr><tr><td>5</td><td>Typed API unavailable/rate-limit/server errors, including mapped network failures.</td></tr></table><p>Code 2 is declared for invalid input but the current error mapper does not return it. Raw api does not share the typed HTTP-status taxonomy. Do not branch on a promised invalid-input code or treat every nonzero result as authentication failure.</p><h2 id="inventory">Verified command inventory</h2><p>Audited from the command tree/help and implementation. All network commands require a configured host; protected reads and platform mutations require a valid session plus server permission. Public repository reads may work with a token-free configured profile. Local profile commands do not authenticate merely to switch hosts. Help and version do not need a host.</p><div class="table-wrap"><table><tr><th>Command</th><th>Subcommands</th><th>Purpose / effects</th><th>JSON</th></tr><tr><td>auth</td><td>login, status, logout, switch</td><td>Login/session and local profile changes; status is read-only.</td><td>login/status only</td></tr><tr><td>repo</td><td>list, view, clone, archive</td><td>Repository reads; clone/archive write local files.</td><td>Yes</td></tr><tr><td>work</td><td>list, view, create, comment, close</td><td>Work reads and mutations. create currently sends title/kind only; body flags are not transmitted.</td><td>Yes</td></tr><tr><td>attempt</td><td>list, view, run</td><td>Reads; run starts implementer execution on an existing Attempt.</td><td>Yes</td></tr><tr><td>pr</td><td>list, view, checks, findings</td><td>PR inspection only; no create/enqueue/review commands.</td><td>Yes</td></tr><tr><td>proposal</td><td>list, view, create, update, comment, links, link, accept, defer, reject, complete, reopen, work, generate</td><td>Optional intake; writes/decisions and proposer execution.</td><td>Yes</td></tr><tr><td>queue</td><td>list, view, requeue</td><td>Reads; explicit requeue mutation.</td><td>Yes</td></tr><tr><td>attention</td><td>list, view (default: list)</td><td>Decision packets; read-only.</td><td>Yes</td></tr><tr><td>workflow</td><td>list, view, runs, run</td><td>Reads; run starts a configured workflow.</td><td>Yes</td></tr><tr><td>agent</td><td>roles, executions, execution</td><td>Role and execution inspection only.</td><td>Yes</td></tr><tr><td>actions</td><td>list, view, run, rerun, cancel, logs</td><td>Run reads and dispatch/cancel mutations.</td><td>Yes; logs NDJSON</td></tr><tr><td>pages</td><td>status, deployments, view, configure, deploy, promote, rollback</td><td>Site reads, config/build/production changes.</td><td>Yes</td></tr><tr><td>release</td><td>list, view, create, upload, download, publish</td><td>Release reads/draft writes/publication; local downloads.</td><td>Yes</td></tr><tr><td>org</td><td>list, view</td><td>Organisation inspection only.</td><td>Yes</td></tr><tr><td>api</td><td>[METHOD] PATH</td><td>Raw HTTP request; effect/auth depends on endpoint/method.</td><td>Server body</td></tr><tr><td>status</td><td>—</td><td>Authenticated host/user and checkout identity; read-only.</td><td>Yes</td></tr><tr><td>browse</td><td>—</td><td>Opens a local browser using configured host.</td><td>No result</td></tr><tr><td>config</td><td>list, get, set-host</td><td>Local profile inspection/selection; requires existing active profile to bootstrap.</td><td>list only</td></tr><tr><td>version</td><td>—</td><td>Local build information.</td><td>Human text currently</td></tr><tr><td>help / completion</td><td>help [command]; completion bash/fish/powershell/zsh</td><td>Built-in help and shell-script generation.</td><td>Not JSON results</td></tr></table></div><p>Run <code>sy COMMAND --help</code> for exact flags. The <a href="https://github.com/switchyard-labs/sy">sy repository</a> contains implementation and tests; <a href="https://github.com/switchyard-labs/sy/blob/main/docs/command-inventory.md">the audit inventory</a> records the verified surface and known drift.</p>

@@ -51,3 +51,9 @@
 <p>Suppose PR A integrates first and PR B now conflicts. Switchyard does not ask “merge failed, what now?” It can show that B was valid against the old base, A moved canonical, B now conflicts in two named files, the conflict-resolver attempted a repair, and the remaining choices are ours/theirs/three-way. The human decision then becomes another attributable event in the same provenance chain.</p>
 
 <div class="callout"><span class="t">Design goal</span>Human intervention is the final escalation path, not the default execution model. When Switchyard asks for attention, it should arrive with evidence and bounded choices.</div>
+
+<h2>Decision packets in the terminal</h2>
+<p>Needs Attention is visible through the browser, <a href="@path('docs/cli')">sy</a> and API. Inspect a target before choosing the appropriate browser/API decision or workflow.</p>
+<pre><code class="language-shell">sy attention --json
+sy attention view TARGET_ID --json
+sy agent execution EXECUTION_ID --json</code></pre>

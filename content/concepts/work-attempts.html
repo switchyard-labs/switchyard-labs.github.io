@@ -47,3 +47,9 @@
 </code></pre>
 
 <div class="callout ok"><span class="t">Demo</span><code>demo-agents</code> is one Work item with concurrent Attempts so the distinction can be explored without reading implementation fixtures.</div>
+
+<h2>Inspect from the terminal</h2>
+<p>The <a href="@path('docs/cli')">sy CLI</a> exposes these as usable objects. Replace IDs with values returned by lists. Attempt creation, PR creation and enqueue are browser/API operations; typed CLI coverage here is inspection plus running an existing Attempt.</p>
+<pre><code class="language-shell">sy work list --json
+sy attempt list --work WORK_ID --json
+sy pr view PR_ID --json</code></pre>

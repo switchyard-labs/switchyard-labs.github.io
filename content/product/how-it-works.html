@@ -47,3 +47,9 @@
 <p>Nothing breaks conceptually. If a developer pushes directly from a terminal, Cloudflare Artifacts changes immediately because it is the Git server. Switchyard observes that ref movement through the event/reconciliation paths and updates its coordination view. This is an important design property: the browser UI is a collaboration surface, not a mandatory proprietary transport layer.</p>
 
 <div class="callout ok"><span class="t">Simple case</span>One human with zero Agents can still clone, branch, push, browse history, create Work, open a Pull Request and integrate under repository policy. Agent-native concepts remain additive.</div>
+
+<h2>Two interface paths</h2>
+<p>Git transports repository state. The browser, <a href="@path('docs/cli')">sy CLI</a> and HTTP API operate on the collaboration layer.</p>
+<pre><code class="language-shell">Git client → Cloudflare Artifacts → objects and refs
+Browser / sy / HTTP API → Switchyard control plane
+                       → Trestle coordination and workers</code></pre>

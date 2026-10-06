@@ -63,3 +63,12 @@ clone / fetch / push              findings / queue / policy / audit
 <div class="callout"><span class="t">Mental model</span><strong>Git stays Git.</strong> Switchyard is the collaboration/orchestration layer around real Git, not a replacement source-control database.</div>
 
 <h2>Publication authority</h2><p>Application Agent writes are confined to permitted Attempt/candidate branches; direct canonical and protected-ref publication is denied. The Integration Queue has a separate exact-source, currently authorized publication boundary. Human direct Git remains supported where policy allows it. Independently-issued external Git credentials are outside this application authority boundary.</p>
+
+<h2>Browser or terminal</h2>
+<p>Browser UI, ordinary Git, <a href="@path('docs/cli')">sy CLI</a> and HTTP API are normal interfaces. Git handles transport/history; sy exposes Switchyard collaboration and platform operations over the same control plane. See the CLI guide for Actions, Pages and immutable release flows.</p>
+<h2>Platform workflows from the terminal</h2>
+<p>Proposals are optional intake, not a requirement before Work. Actions, Pages and releases also have typed CLI operations. <a href="@path('docs/cli')">The CLI guide</a> covers creation, decisions, dispatch/logs, configuration/build/promotion and release assets; these examples are read-only.</p>
+<pre><code class="language-shell">sy proposal list --repo owner/repo --json
+sy actions list --repo owner/repo --json
+sy pages deployments --repo owner/repo --json
+sy release list --repo owner/repo --json</code></pre>

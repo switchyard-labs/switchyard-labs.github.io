@@ -56,3 +56,10 @@ sudo journalctl -u switchyard -f
 
 <h2>Observability</h2>
 <p>Today the control plane logs startup, reconciliation, queue, workflow and integration activity. The durable records themselves are also useful operational evidence: queue state explains why canonical has not moved, workflow steps explain replay, and audit records explain policy decisions. Structured metrics/alerting remain hardening work rather than being falsely claimed as complete.</p>
+
+<h2>Terminal inspection</h2>
+<p>Use <a href="@path('docs/cli')">sy</a> for control-plane inspection. Status reports host, user and checkout identity, not host health. Continue using systemd, Caddy and your infrastructure tools for service operations.</p>
+<pre><code class="language-shell">sy status --json
+sy queue list --status blocked --json
+sy actions list --repo owner/repo --json
+sy pages status --repo owner/repo --json</code></pre>

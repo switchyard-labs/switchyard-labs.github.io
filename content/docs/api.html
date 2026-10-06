@@ -63,3 +63,8 @@ curl -b cookies.txt \
 </code></pre>
 
 <div class="callout"><span class="t">API principle</span>The API exposes familiar Git-host concepts where they are truthful, and Switchyard-specific concepts only where they add genuinely new coordination semantics.</div>
+
+<h2>First-party typed client</h2>
+<p>For common operations, use <a href="@path('docs/cli')">sy</a> instead of constructing HTTP requests. It wraps typed operations and provides a raw API escape hatch. The PR enqueue API requires the caller-viewed source_sha; there is no typed enqueue command.</p>
+<pre><code class="language-shell">sy repo list --json
+sy api /api/repositories --json</code></pre>

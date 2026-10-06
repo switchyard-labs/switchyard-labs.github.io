@@ -60,3 +60,8 @@ process restarts
 </ul>
 
 <div class="callout"><span class="t">Why JavaScript?</span>The useful primitive is programmable composition: implementation → review → repair → test → integrate. YAML can describe simple pipelines; JavaScript can express the decision logic around them without making Switchyard's durable state depend on a long-lived JS process.</div>
+
+<h2>Run or inspect workflows with sy</h2>
+<p>The <a href="@path('docs/cli')">CLI workflow commands</a> list definitions and durable runs. Starting a workflow is a mutation; use its configured permissions and runner requirements.</p>
+<pre><code class="language-shell">sy workflow list --json
+sy workflow runs --json</code></pre>
