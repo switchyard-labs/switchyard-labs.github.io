@@ -37,7 +37,7 @@
 					<a href="./architecture.html">Architecture</a><a href="./repositories.html">Repositories &amp; Git truth</a><a href="./work-attempts.html">Work, Attempts &amp; Pull Requests</a><a href="./integration-queue.html">Integration Queue</a><a href="./reviews-conflicts.html">Reviews &amp; Conflicts</a><a href="./workflows.html">Durable workflows</a><a href="./provenance-needs-attention.html">Provenance &amp; Needs Attention</a>
 				</div></details>
 				<details class="fs-group" open><summary>Documentation</summary><div class="fs-links">
-					<a href="../docs/getting-started.html">Getting started</a><a href="../docs/configuration.html">Configuration</a><a href="../docs/api.html">API</a><a href="../docs/operations.html">Operations</a><a href="../docs/status.html">Status</a><a href="../docs/internals.html">Internals</a><a href="../docs/performance.html">Performance</a>
+					<a href="../docs/getting-started.html">Getting started</a><a href="../docs/cli.html">sy CLI</a><a href="../docs/configuration.html">Configuration</a><a href="../docs/api.html">API</a><a href="../docs/operations.html">Operations</a><a href="../docs/status.html">Status</a><a href="../docs/internals.html">Internals</a><a href="../docs/performance.html">Performance</a>
 				</div></details>
 				<details class="fs-group"><summary>Project</summary><div class="fs-links"><a href="https://github.com/switchyard-labs/switchyard" rel="noopener">GitHub</a><a href="https://gantry.cv" rel="noopener">Gantry</a><a href="https://github.com/switchyard-labs/switchyard-labs.github.io" rel="noopener">Website source</a></div></details>
 			</div>
@@ -45,7 +45,7 @@
 		</nav>
 
 		<aside class="docs-drawer" id="docs-drawer" hidden aria-label="Documentation navigation">
-			<details open><summary>Start</summary><a href="../docs/getting-started.html">Getting started</a><a href="../docs/configuration.html">Configuration</a></details>
+			<details open><summary>Start</summary><a href="../docs/getting-started.html">Getting started</a><a href="../docs/cli.html">sy CLI</a><a href="../docs/configuration.html">Configuration</a></details>
 			<details open><summary>Reference</summary><a href="../docs/api.html">API</a><a href="../docs/operations.html">Operations</a></details>
 			<details><summary>Project</summary><a href="../docs/status.html">Status</a><a href="../docs/internals.html">Internals</a><a href="../docs/performance.html">Performance</a></details>
 		</aside>
@@ -108,6 +108,11 @@
 			<p class="muted">The next optimization target is a cached bare mirror plus isolated worktrees, not removing serialization from the final canonical decision.</p>
 			
 			<div class="callout"><span class="t">Invariant</span>The queue may become faster, but it should never become last-writer-wins. Every item integrates against the canonical state that actually exists when it reaches the head.</div>
+			
+			<h2>Observe the queue with sy</h2>
+			<p>Use the <a href="../docs/cli.html">CLI</a> to inspect blocked reasons. Explicit requeue never bypasses identity, checks or policy, and cannot repair every legacy/unpinned item.</p>
+			<pre><code class="language-shell">sy queue list --status blocked --json
+sy queue view QUEUE_ID --json</code></pre>
 		</main>
 
 		<footer class="site-footer">

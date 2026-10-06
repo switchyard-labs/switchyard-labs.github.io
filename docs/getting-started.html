@@ -37,7 +37,7 @@
 					<a href="../concepts/architecture.html">Architecture</a><a href="../concepts/repositories.html">Repositories &amp; Git truth</a><a href="../concepts/work-attempts.html">Work, Attempts &amp; Pull Requests</a><a href="../concepts/integration-queue.html">Integration Queue</a><a href="../concepts/reviews-conflicts.html">Reviews &amp; Conflicts</a><a href="../concepts/workflows.html">Durable workflows</a><a href="../concepts/provenance-needs-attention.html">Provenance &amp; Needs Attention</a>
 				</div></details>
 				<details class="fs-group" open><summary>Documentation</summary><div class="fs-links">
-					<a href="./getting-started.html">Getting started</a><a href="./configuration.html">Configuration</a><a href="./api.html">API</a><a href="./operations.html">Operations</a><a href="./status.html">Status</a><a href="./internals.html">Internals</a><a href="./performance.html">Performance</a>
+					<a href="./getting-started.html">Getting started</a><a href="./cli.html">sy CLI</a><a href="./configuration.html">Configuration</a><a href="./api.html">API</a><a href="./operations.html">Operations</a><a href="./status.html">Status</a><a href="./internals.html">Internals</a><a href="./performance.html">Performance</a>
 				</div></details>
 				<details class="fs-group"><summary>Project</summary><div class="fs-links"><a href="https://github.com/switchyard-labs/switchyard" rel="noopener">GitHub</a><a href="https://gantry.cv" rel="noopener">Gantry</a><a href="https://github.com/switchyard-labs/switchyard-labs.github.io" rel="noopener">Website source</a></div></details>
 			</div>
@@ -45,7 +45,7 @@
 		</nav>
 
 		<aside class="docs-drawer" id="docs-drawer" hidden aria-label="Documentation navigation">
-			<details open><summary>Start</summary><a href="./getting-started.html">Getting started</a><a href="./configuration.html">Configuration</a></details>
+			<details open><summary>Start</summary><a href="./getting-started.html">Getting started</a><a href="./cli.html">sy CLI</a><a href="./configuration.html">Configuration</a></details>
 			<details open><summary>Reference</summary><a href="./api.html">API</a><a href="./operations.html">Operations</a></details>
 			<details><summary>Project</summary><a href="./status.html">Status</a><a href="./internals.html">Internals</a><a href="./performance.html">Performance</a></details>
 		</aside>
@@ -99,6 +99,12 @@ git push -u origin docs/update-readme</code></pre>
 			<p>You do not need the browser editor to work on a Switchyard repository. Clone it, create branches, commit, fetch and push with your normal Git tooling. Switchyard's browser surfaces and agent workflows operate on the same underlying repository.</p>
 			
 			<div class="callout"><span class="t">Architecture in one line</span><strong>Git</strong> talks to <strong>Cloudflare Artifacts</strong>; <strong>Switchyard</strong> coordinates the collaboration; <strong>Trestle</strong> persists that coordination.</div>
+			
+			<h2>Use the terminal collaboration client</h2>
+			<p>After ordinary Git clone/fetch/push, use <a href="./cli.html">sy</a> for Switchyard operations. Build it from source as described in the CLI guide, then authenticate to your host. These examples inspect repository and PR state; they do not mutate production.</p>
+			<pre><code class="language-shell">sy auth login --host https://switchyard.cx
+sy repo view alice/demo-semantic --json
+sy pr list --repo alice/demo-semantic --json</code></pre>
 		</main>
 
 		<footer class="site-footer">

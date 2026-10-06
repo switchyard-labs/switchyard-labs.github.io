@@ -37,7 +37,7 @@
 					<a href="../concepts/architecture.html">Architecture</a><a href="../concepts/repositories.html">Repositories &amp; Git truth</a><a href="../concepts/work-attempts.html">Work, Attempts &amp; Pull Requests</a><a href="../concepts/integration-queue.html">Integration Queue</a><a href="../concepts/reviews-conflicts.html">Reviews &amp; Conflicts</a><a href="../concepts/workflows.html">Durable workflows</a><a href="../concepts/provenance-needs-attention.html">Provenance &amp; Needs Attention</a>
 				</div></details>
 				<details class="fs-group" open><summary>Documentation</summary><div class="fs-links">
-					<a href="./getting-started.html">Getting started</a><a href="./configuration.html">Configuration</a><a href="./api.html">API</a><a href="./operations.html">Operations</a><a href="./status.html">Status</a><a href="./internals.html">Internals</a><a href="./performance.html">Performance</a>
+					<a href="./getting-started.html">Getting started</a><a href="./cli.html">sy CLI</a><a href="./configuration.html">Configuration</a><a href="./api.html">API</a><a href="./operations.html">Operations</a><a href="./status.html">Status</a><a href="./internals.html">Internals</a><a href="./performance.html">Performance</a>
 				</div></details>
 				<details class="fs-group"><summary>Project</summary><div class="fs-links"><a href="https://github.com/switchyard-labs/switchyard" rel="noopener">GitHub</a><a href="https://gantry.cv" rel="noopener">Gantry</a><a href="https://github.com/switchyard-labs/switchyard-labs.github.io" rel="noopener">Website source</a></div></details>
 			</div>
@@ -45,7 +45,7 @@
 		</nav>
 
 		<aside class="docs-drawer" id="docs-drawer" hidden aria-label="Documentation navigation">
-			<details open><summary>Start</summary><a href="./getting-started.html">Getting started</a><a href="./configuration.html">Configuration</a></details>
+			<details open><summary>Start</summary><a href="./getting-started.html">Getting started</a><a href="./cli.html">sy CLI</a><a href="./configuration.html">Configuration</a></details>
 			<details open><summary>Reference</summary><a href="./api.html">API</a><a href="./operations.html">Operations</a></details>
 			<details><summary>Project</summary><a href="./status.html">Status</a><a href="./internals.html">Internals</a><a href="./performance.html">Performance</a></details>
 		</aside>
@@ -116,6 +116,11 @@ curl -b cookies.txt \
 </code></pre>
 			
 			<div class="callout"><span class="t">API principle</span>The API exposes familiar Git-host concepts where they are truthful, and Switchyard-specific concepts only where they add genuinely new coordination semantics.</div>
+			
+			<h2>First-party typed client</h2>
+			<p>For common operations, use <a href="./cli.html">sy</a> instead of constructing HTTP requests. It wraps typed operations and provides a raw API escape hatch. The PR enqueue API requires the caller-viewed source_sha; there is no typed enqueue command.</p>
+			<pre><code class="language-shell">sy repo list --json
+sy api /api/repositories --json</code></pre>
 		</main>
 
 		<footer class="site-footer">

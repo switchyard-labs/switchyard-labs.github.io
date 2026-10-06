@@ -37,7 +37,7 @@
 					<a href="../concepts/architecture.html">Architecture</a><a href="../concepts/repositories.html">Repositories &amp; Git truth</a><a href="../concepts/work-attempts.html">Work, Attempts &amp; Pull Requests</a><a href="../concepts/integration-queue.html">Integration Queue</a><a href="../concepts/reviews-conflicts.html">Reviews &amp; Conflicts</a><a href="../concepts/workflows.html">Durable workflows</a><a href="../concepts/provenance-needs-attention.html">Provenance &amp; Needs Attention</a>
 				</div></details>
 				<details class="fs-group" open><summary>Documentation</summary><div class="fs-links">
-					<a href="../docs/getting-started.html">Getting started</a><a href="../docs/configuration.html">Configuration</a><a href="../docs/api.html">API</a><a href="../docs/operations.html">Operations</a><a href="../docs/status.html">Status</a><a href="../docs/internals.html">Internals</a><a href="../docs/performance.html">Performance</a>
+					<a href="../docs/getting-started.html">Getting started</a><a href="../docs/cli.html">sy CLI</a><a href="../docs/configuration.html">Configuration</a><a href="../docs/api.html">API</a><a href="../docs/operations.html">Operations</a><a href="../docs/status.html">Status</a><a href="../docs/internals.html">Internals</a><a href="../docs/performance.html">Performance</a>
 				</div></details>
 				<details class="fs-group"><summary>Project</summary><div class="fs-links"><a href="https://github.com/switchyard-labs/switchyard" rel="noopener">GitHub</a><a href="https://gantry.cv" rel="noopener">Gantry</a><a href="https://github.com/switchyard-labs/switchyard-labs.github.io" rel="noopener">Website source</a></div></details>
 			</div>
@@ -45,7 +45,7 @@
 		</nav>
 
 		<aside class="docs-drawer" id="docs-drawer" hidden aria-label="Documentation navigation">
-			<details open><summary>Start</summary><a href="../docs/getting-started.html">Getting started</a><a href="../docs/configuration.html">Configuration</a></details>
+			<details open><summary>Start</summary><a href="../docs/getting-started.html">Getting started</a><a href="../docs/cli.html">sy CLI</a><a href="../docs/configuration.html">Configuration</a></details>
 			<details open><summary>Reference</summary><a href="../docs/api.html">API</a><a href="../docs/operations.html">Operations</a></details>
 			<details><summary>Project</summary><a href="../docs/status.html">Status</a><a href="../docs/internals.html">Internals</a><a href="../docs/performance.html">Performance</a></details>
 		</aside>
@@ -116,6 +116,15 @@ clone / fetch / push              findings / queue / policy / audit
 			<div class="callout"><span class="t">Mental model</span><strong>Git stays Git.</strong> Switchyard is the collaboration/orchestration layer around real Git, not a replacement source-control database.</div>
 			
 			<h2>Publication authority</h2><p>Application Agent writes are confined to permitted Attempt/candidate branches; direct canonical and protected-ref publication is denied. The Integration Queue has a separate exact-source, currently authorized publication boundary. Human direct Git remains supported where policy allows it. Independently-issued external Git credentials are outside this application authority boundary.</p>
+			
+			<h2>Browser or terminal</h2>
+			<p>Browser UI, ordinary Git, <a href="../docs/cli.html">sy CLI</a> and HTTP API are normal interfaces. Git handles transport/history; sy exposes Switchyard collaboration and platform operations over the same control plane. See the CLI guide for Actions, Pages and immutable release flows.</p>
+			<h2>Platform workflows from the terminal</h2>
+			<p>Proposals are optional intake, not a requirement before Work. Actions, Pages and releases also have typed CLI operations. <a href="../docs/cli.html">The CLI guide</a> covers creation, decisions, dispatch/logs, configuration/build/promotion and release assets; these examples are read-only.</p>
+			<pre><code class="language-shell">sy proposal list --repo owner/repo --json
+sy actions list --repo owner/repo --json
+sy pages deployments --repo owner/repo --json
+sy release list --repo owner/repo --json</code></pre>
 		</main>
 
 		<footer class="site-footer">

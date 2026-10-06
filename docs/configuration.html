@@ -37,7 +37,7 @@
 					<a href="../concepts/architecture.html">Architecture</a><a href="../concepts/repositories.html">Repositories &amp; Git truth</a><a href="../concepts/work-attempts.html">Work, Attempts &amp; Pull Requests</a><a href="../concepts/integration-queue.html">Integration Queue</a><a href="../concepts/reviews-conflicts.html">Reviews &amp; Conflicts</a><a href="../concepts/workflows.html">Durable workflows</a><a href="../concepts/provenance-needs-attention.html">Provenance &amp; Needs Attention</a>
 				</div></details>
 				<details class="fs-group" open><summary>Documentation</summary><div class="fs-links">
-					<a href="./getting-started.html">Getting started</a><a href="./configuration.html">Configuration</a><a href="./api.html">API</a><a href="./operations.html">Operations</a><a href="./status.html">Status</a><a href="./internals.html">Internals</a><a href="./performance.html">Performance</a>
+					<a href="./getting-started.html">Getting started</a><a href="./cli.html">sy CLI</a><a href="./configuration.html">Configuration</a><a href="./api.html">API</a><a href="./operations.html">Operations</a><a href="./status.html">Status</a><a href="./internals.html">Internals</a><a href="./performance.html">Performance</a>
 				</div></details>
 				<details class="fs-group"><summary>Project</summary><div class="fs-links"><a href="https://github.com/switchyard-labs/switchyard" rel="noopener">GitHub</a><a href="https://gantry.cv" rel="noopener">Gantry</a><a href="https://github.com/switchyard-labs/switchyard-labs.github.io" rel="noopener">Website source</a></div></details>
 			</div>
@@ -45,7 +45,7 @@
 		</nav>
 
 		<aside class="docs-drawer" id="docs-drawer" hidden aria-label="Documentation navigation">
-			<details open><summary>Start</summary><a href="./getting-started.html">Getting started</a><a href="./configuration.html">Configuration</a></details>
+			<details open><summary>Start</summary><a href="./getting-started.html">Getting started</a><a href="./cli.html">sy CLI</a><a href="./configuration.html">Configuration</a></details>
 			<details open><summary>Reference</summary><a href="./api.html">API</a><a href="./operations.html">Operations</a></details>
 			<details><summary>Project</summary><a href="./status.html">Status</a><a href="./internals.html">Internals</a><a href="./performance.html">Performance</a></details>
 		</aside>
@@ -118,6 +118,10 @@ Switchyard (127.0.0.1:8080)
 			
 			<div class="callout warn"><span class="t">Secrets</span>Do not commit environment files, account tokens, Trestle passwords or provider credentials to a repository. Generic CI receives no account, R2 or provider credentials. External coding-agent credentials require scoped executor configuration.</div>
 			<h2>Cloudflare Actions</h2><p>Configure <code>SWITCHYARD_ACTIONS_WORKER</code> and <code>SWITCHYARD_ACTIONS_CONTROL_KEY_FILE</code> for the signed provider. Keep the key private and provision Cloudflare/R2 credentials as encrypted Worker secrets. Native push events trigger only administrator-approved definitions.</p>
+			<h2>CLI host configuration</h2>
+			<p><a href="./cli.html">sy configuration and authentication</a> are local to the client: explicit server URL, one account/session per host, active-host selection and --host override. The guide documents XDG/SY_CONFIG_DIR paths and protected file permissions. Do not confuse these with Switchyard server/provider settings.</p>
+			<pre><code class="language-shell">sy config list --json
+sy auth status --json</code></pre>
 		</main>
 
 		<footer class="site-footer">
